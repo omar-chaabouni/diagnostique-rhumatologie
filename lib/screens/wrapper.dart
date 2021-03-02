@@ -1,0 +1,18 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:rhumatologie/models/app_user.dart';
+import 'package:rhumatologie/screens/authenticate/authenticate.dart';
+import 'package:rhumatologie/screens/navigation%20pages/home.dart';
+
+class Wrapper extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+  final user= Provider.of<AppUser>(context);
+      //return either home or autheenticate widget
+    if(user==null){
+      return Authenticate();
+    }else{
+      return Home();
+    }
+  }
+}

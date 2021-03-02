@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "55544192760",
+    "project_id": "diag-rhumatologie-ins-kassab",
+    "storage_bucket": "diag-rhumatologie-ins-kassab.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:55544192760:android:3f6ceef8f6857fd325650d",
+        "android_client_info": {
+          "package_name": "com.institut_kassab.rhumatologie"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "55544192760-nmmnhb1boeusc3mif2uhhcqrulb73cs2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAWzma55PbIMT1JhSMbg9gKhEaVZfdew_k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "55544192760-nmmnhb1boeusc3mif2uhhcqrulb73cs2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
