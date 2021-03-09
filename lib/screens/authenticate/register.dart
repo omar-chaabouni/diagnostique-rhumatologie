@@ -48,6 +48,7 @@ class _RegisterState extends State<Register> {
             height: 60.0,
             child: TextFormField(
               // validator: (val)=>val.isEmpty ? print('Entrez un email valide'):null,
+              textInputAction: TextInputAction.next,
               keyboardType: TextInputType.emailAddress,
               style: GoogleFonts.oxygen(
                 color: Colors.white,

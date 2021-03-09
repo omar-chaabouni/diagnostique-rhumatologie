@@ -44,9 +44,10 @@ class _ProfileState extends State<Profile> {
           ),
         ],
       ),
-      body: Container(
+      body: new SingleChildScrollView(
+      child:Container(
         color: gris1,
-        height: MediaQuery.of(context).size.height,
+        // height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
         child: Container(
           margin: const EdgeInsets.only(
@@ -139,6 +140,7 @@ class _ProfileState extends State<Profile> {
             ),
           ),
         ),
+      ),
       ),
     );
   }

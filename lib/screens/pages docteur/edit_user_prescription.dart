@@ -115,6 +115,7 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
     final Map patient = ModalRoute.of(context).settings.arguments;
 
     return Scaffold(
+      backgroundColor: gris1,
       resizeToAvoidBottomPadding: false,
       appBar: AppBar(
         backgroundColor: cyan2,
@@ -127,7 +128,6 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
         child: Container(
           color: gris1,
           padding: EdgeInsets.all(10),
-          height: MediaQuery.of(context).size.height-70,
           width: MediaQuery.of(context).size.width,
           child: Container(
             margin: const EdgeInsets.only(
@@ -304,14 +304,8 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
                         ],
                       ),
                     ),
-                    Expanded(
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: cards.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return cards[index];
-                        },
-                      ),
+                    Column(
+                      children: cards,
                     ),
                     Align(
                       alignment: Alignment.bottomRight,
