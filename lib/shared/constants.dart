@@ -10,6 +10,26 @@ final kLabelStyle = GoogleFonts.oxygen(
   fontWeight: FontWeight.bold,
 );
 
+final black18Bold = GoogleFonts.oxygen(
+    fontWeight: FontWeight.w600, color: Colors.black, fontSize: 18.0);
+
+final black18Normal = GoogleFonts.oxygen(
+    color: Colors.black,
+    fontWeight: FontWeight.normal,
+    fontSize: 18.0,
+    height: 1.4);
+
+final white22Normal = GoogleFonts.oxygen(color: Colors.white, fontSize: 22.0);
+
+final white19Normal = GoogleFonts.oxygen(color: Colors.white, fontSize: 19.0);
+
+final cyan18Bold = GoogleFonts.oxygen(
+    fontWeight: FontWeight.w600, color: cyan2, fontSize: 18.0);
+
+final titrePage = GoogleFonts.oxygen(color: Colors.white, fontSize: 22.0);
+
+final disconnectStyle = GoogleFonts.oxygen(color: Colors.white, fontSize: 14.0);
+
 final kBoxDecorationStyle = BoxDecoration(
   color: cyan3,
   borderRadius: BorderRadius.circular(10.0),

@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:rhumatologie/services/auth.dart';
 import 'package:rhumatologie/shared/constants.dart';
 
-class Profile extends StatefulWidget {
+class ContactezMedecin extends StatefulWidget {
   @override
-  _ProfileState createState() => _ProfileState();
+  _ContactezMedecinState createState() => _ContactezMedecinState();
 }
 
-class _ProfileState extends State<Profile> {
+class _ContactezMedecinState extends State<ContactezMedecin> {
   int selectedIndex = 0;
-  final AuthService _auth = AuthService();
 
   @override
   Widget build(BuildContext context) {
@@ -22,33 +20,12 @@ class _ProfileState extends State<Profile> {
         backgroundColor: cyan2,
         title: FlatButton.icon(
           onPressed: null,
-          icon: Icon(FontAwesomeIcons.addressCard, color: Colors.white),
+          icon: Icon(FontAwesomeIcons.userMd, color: Colors.white),
           label: Text(
-            "Profil enfant",
-            style: GoogleFonts.oxygen(
-                fontWeight: FontWeight.w600,
-                color: Colors.white,
-                fontSize: 22.0),
+            "Contactez votre médecin",
+            style: white22Normal,
           ),
         ),
-        actions: [
-          FlatButton.icon(
-            icon: Icon(
-              Icons.logout,
-              color: Colors.white,
-            ),
-            label: Text(
-              "Se déconnecter",
-              style: GoogleFonts.oxygen(
-                  // fontWeight: FontWeight.w600,
-                  color: Colors.white,
-                  fontSize: 14.0),
-            ),
-            onPressed: () async {
-              await _auth.signOut();
-            },
-          ),
-        ],
       ),
       body: Container(
         color: gris1,
@@ -75,7 +52,31 @@ class _ProfileState extends State<Profile> {
                   Padding(
                     padding: const EdgeInsets.only(bottom: 15.0),
                     child: Text(
-                      "Nom et prénom de votre enfant:",
+                      "Votre docteur est :",
+                      style: black18Bold,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 15.0),
+                    child: Text(
+                      "Dr. Yassine CHAKER",
+                      style: GoogleFonts.oxygen(
+                          fontWeight: FontWeight.w600,
+                          color: cyan2,
+                          fontSize: 20.0),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 15.0),
+                    child: Text(
+                      "Vous pouvez le contactez via l'addresse mail :",
+                      style: black18Normal,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 15.0),
+                    child: Text(
+                      "chakira@gmail.com",
                       style: GoogleFonts.oxygen(
                           fontWeight: FontWeight.w600,
                           color: cyan2,
@@ -85,50 +86,17 @@ class _ProfileState extends State<Profile> {
                   Padding(
                     padding: const EdgeInsets.only(bottom: 15.0),
                     child: Text(
-                      "Omar CHAABOUNI",
-                      style: GoogleFonts.oxygen(
-                          fontWeight: FontWeight.w600,
-                          color: Colors.black,
-                          fontSize: 18.0),
+                      "ou bien vous pouvez l'appeler sur :",
+                      style: black18Normal,
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(bottom: 15.0),
                     child: Text(
-                      "Age",
+                      "+216 58205495",
                       style: GoogleFonts.oxygen(
                           fontWeight: FontWeight.w600,
                           color: cyan2,
-                          fontSize: 18.0),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 15.0),
-                    child: Text(
-                      "12",
-                      style: GoogleFonts.oxygen(
-                          fontWeight: FontWeight.w600,
-                          color: Colors.black,
-                          fontSize: 18.0),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 15.0),
-                    child: Text(
-                      "Votre adresse email",
-                      style: GoogleFonts.oxygen(
-                          fontWeight: FontWeight.w600,
-                          color: cyan2,
-                          fontSize: 18.0),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 15.0),
-                    child: Text(
-                      "aaaaaa@gmail.com",
-                      style: GoogleFonts.oxygen(
-                          fontWeight: FontWeight.w600,
-                          color: Colors.black,
                           fontSize: 18.0),
                     ),
                   ),
@@ -138,7 +106,6 @@ class _ProfileState extends State<Profile> {
           ),
         ),
       ),
-      // bottomNavigationBar: MycustomNavigationBar(3),
     );
   }
 }
