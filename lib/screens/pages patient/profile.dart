@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:rhumatologie/services/auth.dart';
 import 'package:rhumatologie/shared/constants.dart';
 
-class ContactezMedecin extends StatefulWidget {
+class Profile extends StatefulWidget {
   @override
-  _ContactezMedecinState createState() => _ContactezMedecinState();
+  _ProfileState createState() => _ProfileState();
 }
 
-class _ContactezMedecinState extends State<ContactezMedecin> {
+class _ProfileState extends State<Profile> {
   int selectedIndex = 0;
+  final AuthService _auth = AuthService();
 
   @override
   Widget build(BuildContext context) {
@@ -20,15 +22,27 @@ class _ContactezMedecinState extends State<ContactezMedecin> {
         backgroundColor: cyan2,
         title: FlatButton.icon(
           onPressed: null,
-          icon: Icon(FontAwesomeIcons.userMd, color: Colors.white),
+          icon: Icon(FontAwesomeIcons.addressCard, color: Colors.white),
           label: Text(
-            "Contactez votre médecin",
-            style: GoogleFonts.oxygen(
-                fontWeight: FontWeight.w600,
-                color: Colors.white,
-                fontSize: 22.0),
+            "Profil enfant",
+            style: titrePage,
           ),
         ),
+        actions: [
+          FlatButton.icon(
+            icon: Icon(
+              Icons.logout,
+              color: Colors.white,
+            ),
+            label: Text(
+              "Se déconnecter",
+              style: disconnectStyle,
+            ),
+            onPressed: () async {
+              await _auth.signOut();
+            },
+          ),
+        ],
       ),
       body: Container(
         color: gris1,
@@ -55,17 +69,58 @@ class _ContactezMedecinState extends State<ContactezMedecin> {
                   Padding(
                     padding: const EdgeInsets.only(bottom: 15.0),
                     child: Text(
-                      "Votre docteur est :",
+                      "Nom et prénom de votre enfant:",
                       style: GoogleFonts.oxygen(
                           fontWeight: FontWeight.w600,
-                          color: Colors.black,
+                          color: cyan2,
                           fontSize: 18.0),
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(bottom: 15.0),
                     child: Text(
-                      "Dr. Yassine CHAKER",
+                      "Omar CHAABOUNI",
+                      style: black18Bold,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 15.0),
+                    child: Text(
+                      "Age",
+                      style: GoogleFonts.oxygen(
+                          fontWeight: FontWeight.w600,
+                          color: cyan2,
+                          fontSize: 18.0),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 15.0),
+                    child: Text(
+                      "12",
+                      style: black18Bold,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 15.0),
+                    child: Text(
+                      "Votre adresse email",
+                      style: GoogleFonts.oxygen(
+                          fontWeight: FontWeight.w600,
+                          color: cyan2,
+                          fontSize: 18.0),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 15.0),
+                    child: Text(
+                      "aaaaaa@gmail.com",
+                      style: black18Bold,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 20.0),
+                    child: Text(
+                      "Vos 5 dernières consultations :",
                       style: GoogleFonts.oxygen(
                           fontWeight: FontWeight.w600,
                           color: cyan2,
@@ -75,41 +130,8 @@ class _ContactezMedecinState extends State<ContactezMedecin> {
                   Padding(
                     padding: const EdgeInsets.only(bottom: 15.0),
                     child: Text(
-                      "Vous pouvez le contactez via l'addresse mail :",
-                      style: GoogleFonts.oxygen(
-                          // fontWeight: FontWeight.w600,
-                          color: Colors.black,
-                          fontSize: 18.0),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 15.0),
-                    child: Text(
-                      "chakira@gmail.com",
-                      style: GoogleFonts.oxygen(
-                          fontWeight: FontWeight.w600,
-                          color: cyan2,
-                          fontSize: 18.0),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 15.0),
-                    child: Text(
-                      "ou bien vous pouvez l'appeler sur :",
-                      style: GoogleFonts.oxygen(
-                          // fontWeight: FontWeight.w600,
-                          color: Colors.black,
-                          fontSize: 18.0),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 15.0),
-                    child: Text(
-                      "+216 58205495",
-                      style: GoogleFonts.oxygen(
-                          fontWeight: FontWeight.w600,
-                          color: cyan2,
-                          fontSize: 18.0),
+                      "- date *5",
+                      style: black18Normal,
                     ),
                   ),
                 ],

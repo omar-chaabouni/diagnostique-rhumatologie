@@ -60,7 +60,7 @@ class _LoadPage_1State extends State<LoadPage_1> {
                   Padding(
                     padding: const EdgeInsets.only(bottom: 20.0),
                     child: Text(
-                      "Combien chakchouka whatever?",
+                      "Combien de fois text test test?",
                       style: GoogleFonts.oxygen(
                           fontWeight: FontWeight.w600,
                           color: cyan2,
@@ -73,10 +73,7 @@ class _LoadPage_1State extends State<LoadPage_1> {
                     children: <Widget>[
                       Text(
                         "0.0",
-                        style: GoogleFonts.oxygen(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                            fontSize: 17.0),
+                        style: black18Bold,
                       ),
                       Container(
                         width: 250,
@@ -94,7 +91,6 @@ class _LoadPage_1State extends State<LoadPage_1> {
                             // tickMarkShape: RoundSliderTickMarkShape(),
                             // activeTickMarkColor: Colors.purple[700],
                             inactiveTickMarkColor: cyan2,
-
                             valueIndicatorShape:
                                 PaddleSliderValueIndicatorShape(),
                             valueIndicatorColor: Colors.blueAccent,
@@ -121,17 +117,14 @@ class _LoadPage_1State extends State<LoadPage_1> {
                       ),
                       Text(
                         "100.0",
-                        style: GoogleFonts.oxygen(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                            fontSize: 17.0),
+                        style: black18Bold,
                       ),
                     ],
                   ),
                   Padding(
                     padding: const EdgeInsets.only(bottom: 10.0, top: 20.0),
                     child: Text(
-                      "Combien chakchouka whatever?",
+                      "Combien de fois text test test?",
                       style: GoogleFonts.oxygen(
                           fontWeight: FontWeight.w600,
                           color: cyan2,
@@ -142,10 +135,7 @@ class _LoadPage_1State extends State<LoadPage_1> {
                     activeColor: cyan3,
                     title: Text(
                       'True',
-                      style: GoogleFonts.oxygen(
-                          fontWeight: FontWeight.w600,
-                          color: Colors.black,
-                          fontSize: 18.0),
+                      style: black18Bold,
                     ),
                     value: isChecked,
                     onChanged: (value) {
@@ -159,10 +149,7 @@ class _LoadPage_1State extends State<LoadPage_1> {
                     activeColor: cyan3,
                     title: Text(
                       'False',
-                      style: GoogleFonts.oxygen(
-                          fontWeight: FontWeight.w600,
-                          color: Colors.black,
-                          fontSize: 18.0),
+                      style: black18Bold,
                     ),
                     value: isChecked,
                     onChanged: (value) {
@@ -175,7 +162,7 @@ class _LoadPage_1State extends State<LoadPage_1> {
                   Padding(
                     padding: const EdgeInsets.only(bottom: 10.0, top: 10.0),
                     child: Text(
-                      "Combien chakchouka whatever?",
+                      "Combien de fois text test test?",
                       style: GoogleFonts.oxygen(
                           fontWeight: FontWeight.w600,
                           color: cyan2,
@@ -191,10 +178,9 @@ class _LoadPage_1State extends State<LoadPage_1> {
                       borderRadius: BorderRadius.all(Radius.circular(8)),
                     ),
                     child: TextFormField(
+                      cursorColor: cyan2,
                       decoration: InputDecoration(border: InputBorder.none),
-                      style: GoogleFonts.oxygen(
-                        color: Colors.black,
-                      ),
+                      style: black18Normal
                     ),
                   ),
                 ],

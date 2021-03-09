@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rhumatologie/models/app_user.dart';
 import 'package:rhumatologie/screens/authenticate/authenticate.dart';
-import 'package:rhumatologie/screens/navigation%20pages/home.dart';
+import 'package:rhumatologie/screens/pages%20docteur/home_doctor.dart';
+import 'package:rhumatologie/screens/pages%20patient/home_user.dart';
 
 class Wrapper extends StatelessWidget {
   @override
@@ -12,7 +13,7 @@ class Wrapper extends StatelessWidget {
     if(user==null){
       return Authenticate();
     }else{
-      return Home();
+      return HomeDoctor();
     }
   }
 }

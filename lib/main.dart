@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:rhumatologie/screens/pages%20docteur/edit_user_prescription.dart';
+import 'package:rhumatologie/screens/pages%20docteur/home_doctor.dart';
 import 'package:rhumatologie/screens/wrapper.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:rhumatologie/services/auth.dart';
@@ -24,6 +26,10 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         theme: ThemeData(fontFamily: 'Oxygen'),
         home: Wrapper(),
+         routes: {
+          EditUserPrescription.routeName: (ctx) => EditUserPrescription(),
+          "/back_home": (_) => new HomeDoctor(),
+    },
       ),
     );
   }
