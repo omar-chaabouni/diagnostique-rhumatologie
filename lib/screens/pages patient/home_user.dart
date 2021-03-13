@@ -3,10 +3,11 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rhumatologie/screens/pages%20patient/profile.dart';
 import 'package:rhumatologie/screens/pages%20patient/user_drugs.dart';
-import 'package:rhumatologie/screens/survey_pages/page_1.dart';
+import 'package:rhumatologie/screens/scores_pages/choose_score.dart';
+import 'package:rhumatologie/screens/scores_pages/page_1.dart';
 import 'package:rhumatologie/shared/constants.dart';
 
-// Diagnostique PAGE
+// Diagnostic PAGE
 class HomeUser extends StatefulWidget {
   HomeUser({Key key}) : super(key: key);
   // final AuthService _auth = AuthService();
@@ -18,18 +19,19 @@ class _HomeUserState extends State<HomeUser> {
   int selectedIndex = 0;
   List<Widget> _screens = <Widget>[
     UserDrugs(),
-    LoadPage_1(),
-    // ContactezMedecin(),
+    ChooseScore(),
     Profile(),
   ];
   int _currentIndex = 0;
 
   final PageController _pageController = PageController();
   void _onPageChanged(int index) {
-    setState(() {
-      // print("current  " + _currentIndex.toString());
-      _currentIndex = index;
-    });
+    if (mounted == true) {
+      setState(() {
+        // print("current  " + _currentIndex.toString());
+        _currentIndex = index;
+      });
+    }
   }
 
   void _onItemTapped(int selectedIndex) {
@@ -42,8 +44,7 @@ class _HomeUserState extends State<HomeUser> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: gris1,
-      body:
-          PageView(
+      body: PageView(
         controller: _pageController,
         onPageChanged: _onPageChanged,
         children: _screens,
@@ -74,7 +75,7 @@ class _HomeUserState extends State<HomeUser> {
                 color: (_currentIndex == 1) ? cyan2 : gris2,
               ),
               // ignore: deprecated_member_use
-              title: Text('Diagnostique',
+              title: Text('Diagnostic',
                   style: GoogleFonts.oxygen(
                     fontSize: 20,
                     color: (_currentIndex == 1) ? cyan2 : gris2,
