@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:rhumatologie/shared/constants.dart';
+import 'package:rhumatologie/shared/utils.dart';
 
 class UserDrugs extends StatefulWidget {
   @override
@@ -11,11 +11,19 @@ class UserDrugs extends StatefulWidget {
 class _UserDrugsState extends State<UserDrugs> {
   int selectedIndex = 1;
   bool isChecked = false;
-  var cards = <Card>[];
-  List<String> list_of_drugs = [
+  bool bilans = true;
+  bool medicaments = true;
+  var drugsCards = <Card>[];
+  var bilansCards = <Card>[];
+  List<String> listOfDrugs = [
     "test",
     "doliprane 5fois par jour 4 jours par semaine 3 semaines",
-    "test médicament"
+    "test médicament",
+  ];
+  List<String> listOfBilans = [
+    "Bilan test numero 1, bilan sur le dos spinal cord",
+    "bilan spinal cord",
+    "troisième bilan",
   ];
 
   @override
@@ -27,53 +35,12 @@ class _UserDrugsState extends State<UserDrugs> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    for (int i = 0; i < list_of_drugs.length; i++) {
-      cards.add(createCard(list_of_drugs[i]));
+    for (int i = 0; i < listOfDrugs.length; i++) {
+      drugsCards.add(createPatientDrugCard(listOfDrugs[i]));
     }
-  }
-
-  Card createCard(String text) {
-    return Card(
-      margin: EdgeInsets.only(bottom: 16),
-      shape: RoundedRectangleBorder(
-        side: BorderSide(color: cyan2, width: 2),
-        borderRadius: BorderRadius.circular(15),
-      ),
-      // elevation: 10,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(
-          vertical: 10,
-          horizontal: 8,
-        ),
-        child: Container(
-          width: MediaQuery.of(context).size.width,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        right: 15.0, left: 5.0, bottom: 5.0),
-                    child: Icon(
-                      FontAwesomeIcons.pills,
-                      size: 30.0,
-                      color: cyan2,
-                    ),
-                  ),
-                  Flexible(
-                    child: Text(
-                      text,
-                      style: black18Normal,
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
+    for (int i = 0; i < listOfBilans.length; i++) {
+      bilansCards.add(createBilanPatientCard(listOfBilans[i]));
+    }
   }
 
   @override
@@ -125,26 +92,65 @@ class _UserDrugsState extends State<UserDrugs> {
                               text: 'Votre docteur ',
                               style: black18Normal,
                               children: <TextSpan>[
+                                TextSpan(text: "Dr. ", style: cyan18Bold1_6),
                                 TextSpan(
-                                    text: "Dr. Hanene Lassoued Ferjani ",
-                                    style: GoogleFonts.oxygen(
-                                        fontWeight: FontWeight.w600,
-                                        color: cyan2,
-                                        height: 1.6,
-                                        fontSize: 18.0)),
-                                TextSpan(
-                                    text:
-                                        ' vous a préscrit ces médicaments : '),
+                                    text: "Hanene Lassoued Ferjani ",
+                                    style: cyan18Bold1_6),
+                                bilans
+                                    ? TextSpan(
+                                        text:
+                                            ' vous demande de faire ces bilans :')
+                                    : TextSpan(text: ''),
+                                (!bilans && medicaments)
+                                    ? TextSpan(
+                                        text:
+                                            " vous a préscrit ces médicaments : ")
+                                    : TextSpan(text: ''),
                               ],
                             ),
                           ),
                         ],
                       ),
                     ),
+                    bilans
+                        ? Container(
+                            margin: EdgeInsets.only(
+                                bottom: 8.0, top: 8.0, right: 10.0, left: 10.0),
+                            padding: EdgeInsets.only(right: 10.0, left: 10.0),
+                            decoration: BoxDecoration(
+                              border: Border.all(color: cyan2, width: 2.0),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(8)),
+                            ),
+                            child: Column(
+                              children: bilansCards,
+                            ),
+                          )
+                        : SizedBox(height: 0),
+                    (bilans && medicaments)
+                        ? Padding(
+                            padding:
+                                const EdgeInsets.only(top: 8.0, bottom: 5.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                RichText(
+                                  text: TextSpan(
+                                    text:
+                                        'et vous a préscrit ces médicaments : ',
+                                    style: black18Normal,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                        : SizedBox(height: 0),
                     SizedBox(height: 15.0),
-                    Column(
-                      children: cards,
-                    ),
+                    medicaments
+                        ? Column(
+                            children: drugsCards,
+                          )
+                        : SizedBox(height: 0),
                     Padding(
                       padding: const EdgeInsets.only(bottom: 15.0, top: 10.0),
                       child: Text(

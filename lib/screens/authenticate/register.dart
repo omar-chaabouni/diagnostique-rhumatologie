@@ -64,7 +64,9 @@ class _RegisterState extends State<Register> {
                 hintStyle: kHintTextStyle,
               ),
               onChanged: (val) {
-                setState(() => email = val);
+                if (mounted == true) {
+                  setState(() => email = val);
+                }
               },
             ),
           ),
@@ -103,7 +105,9 @@ class _RegisterState extends State<Register> {
               hintStyle: kHintTextStyle,
             ),
             onChanged: (val) {
-              setState(() => age = int.parse(val));
+              if (mounted == true) {
+                setState(() => age = int.parse(val));
+              }
             },
           ),
         ),
@@ -147,9 +151,11 @@ class _RegisterState extends State<Register> {
                   ).toList(),
                   value: _currentDoctor,
                   onChanged: (value) {
-                    setState(() {
-                      _currentDoctor = value;
-                    });
+                    if (mounted == true) {
+                      setState(() {
+                        _currentDoctor = value;
+                      });
+                    }
                   },
                 ),
               ),
@@ -184,7 +190,9 @@ class _RegisterState extends State<Register> {
           child: TextFormField(
             // validator: (val)=>val.length<6 ? 'Le mot de passe doit contenir au moins 6 caractères':null,
             onChanged: (val) {
-              setState(() => password = val);
+              if (mounted == true) {
+                setState(() => password = val);
+              }
             },
             obscureText: true,
             style: GoogleFonts.oxygen(
@@ -214,16 +222,20 @@ class _RegisterState extends State<Register> {
         elevation: 5.0,
         onPressed: () async {
           if (_formKey.currentState.validate()) {
-            setState(() {
-              loading = true;
-            });
+            if (mounted == true) {
+              setState(() {
+                loading = true;
+              });
+            }
             dynamic result =
                 await _auth.registerWithEmailAndPassword(email, password);
             if (result == null) {
-              setState(() {
-                error = 'Please enter a valid email';
-                loading = false;
-              });
+              if (mounted == true) {
+                setState(() {
+                  error = 'Please enter a valid email';
+                  loading = false;
+                });
+              }
             }
           }
         },

@@ -26,20 +26,24 @@ class _ConsultationEnAttenteState extends State<ConsultationEnAttente> {
   @override
   void initState() {
     getwaitingPatients().then((data) {
-      setState(() {
-        waitingPatients = filteredWaitingPatients = data;
-      });
+      if (mounted == true) {
+        setState(() {
+          waitingPatients = filteredWaitingPatients = data;
+        });
+      }
     });
     super.initState();
   }
 
   void _filterwaitingPatients(value) {
-    setState(() {
-      filteredWaitingPatients = waitingPatients
-          .where((country) =>
-              country['name'].toLowerCase().contains(value.toLowerCase()))
-          .toList();
-    });
+    if (this.mounted) {
+      setState(() {
+        filteredWaitingPatients = waitingPatients
+            .where((country) =>
+                country['name'].toLowerCase().contains(value.toLowerCase()))
+            .toList();
+      });
+    }
   }
 
   @override
@@ -54,7 +58,8 @@ class _ConsultationEnAttenteState extends State<ConsultationEnAttente> {
                 onPressed: null,
                 icon: Padding(
                   padding: const EdgeInsets.only(right: 8.0),
-                  child: Icon(FontAwesomeIcons.userClock, color: Colors.white),
+                  child: Icon(FontAwesomeIcons.userClock,
+                      color: Colors.white, size: 22.0),
                 ),
                 label: Text(
                   "Consultations en attente",
@@ -79,18 +84,22 @@ class _ConsultationEnAttenteState extends State<ConsultationEnAttente> {
               ? IconButton(
                   icon: Icon(Icons.cancel),
                   onPressed: () {
-                    setState(() {
-                      this.isSearching = false;
-                      filteredWaitingPatients = waitingPatients;
-                    });
+                    if (this.mounted) {
+                      setState(() {
+                        this.isSearching = false;
+                        filteredWaitingPatients = waitingPatients;
+                      });
+                    }
                   },
                 )
               : IconButton(
                   icon: Icon(Icons.search),
                   onPressed: () {
-                    setState(() {
-                      this.isSearching = true;
-                    });
+                    if (this.mounted) {
+                      setState(() {
+                        this.isSearching = true;
+                      });
+                    }
                   },
                 ),
           IconButton(
