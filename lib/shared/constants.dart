@@ -26,6 +26,9 @@ final white19Normal = GoogleFonts.oxygen(color: Colors.white, fontSize: 19.0);
 final cyan18Bold = GoogleFonts.oxygen(
     fontWeight: FontWeight.w600, color: cyan2, fontSize: 18.0);
 
+final cyan20Bold = GoogleFonts.oxygen(
+    fontWeight: FontWeight.w600, color: cyan2, fontSize: 20.0);
+
 final titrePage = GoogleFonts.oxygen(color: Colors.white, fontSize: 22.0);
 
 final disconnectStyle = GoogleFonts.oxygen(color: Colors.white, fontSize: 14.0);
@@ -41,7 +44,10 @@ final kBoxDecorationStyle = BoxDecoration(
     ),
   ],
 );
-
+final white22Bold = GoogleFonts.oxygen(
+    fontWeight: FontWeight.w600, color: Colors.white, fontSize: 22.0);
+final cyan18Bold1_6 = GoogleFonts.oxygen(
+    fontWeight: FontWeight.w600, color: cyan2, height: 1.6, fontSize: 18.0);
 // final questionText = GoogleFonts.oxygen(
 //   color: Colors.white,
 //   fontWeight: FontWeight.bold,

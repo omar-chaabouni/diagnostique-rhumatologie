@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:rhumatologie/models/test_model.dart';
+import 'package:rhumatologie/screens/pages%20docteur/details_score.dart';
+import 'package:rhumatologie/screens/pages%20docteur/historique_score.dart';
 import 'package:rhumatologie/shared/constants.dart';
+import 'package:rhumatologie/shared/utils.dart';
 import 'dart:async';
 
 class EditUserPrescription extends StatefulWidget {
-  static const routeName = '/country';
+  static const routeName = '/patient';
 
   @override
   _EditUserPrescriptionState createState() => _EditUserPrescriptionState();
@@ -23,14 +27,30 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
   var controller3 = TextEditingController();
   var controller4 = TextEditingController();
   var controller5 = TextEditingController();
-  var cards = <Card>[];
+  var cardsOrdonnance = <Card>[];
+  var cardsScore = <Card>[];
+  bool isChecked1 = false;
+  bool isChecked2 = false;
+
+  List scoreNames = <String>[
+    'JADAS',
+    'JSRADA',
+    'CHAQ',
+    'JAMAR'
+  ]; // ordre à spécifier
+  List scoreResults = <String>['40/60', '20/30', '26.2/30', '40/20']; // mel BD
+  bool haveScores = true; // mel BD kenou compte jdid
+  List<bool> demanderTest = [false, false, false, false]; // yjiwni mel BD
 
   int nbrCards = 0;
-  bool _isButtonDisabled = false;
+  bool _isAddOrdonnanceButtonDisabled = false;
+  void initState() {
+    super.initState();
+  }
 
   void _onDone() {
     // List<PersonEntry> entries = [];
-    for (int i = 0; i < cards.length; i++) {
+    for (int i = 0; i < cardsOrdonnance.length; i++) {
       var contenuFinalTextField1 = textfield1[i].text;
       var contenuFinalTextField2 = textfield2[i].text;
       var contenuFinalTextField3 = textfield3[i].text;
@@ -67,7 +87,246 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
     }
   }
 
-  Card createCard(index) {
+  Column createAllScores() {
+    return Column(children: [
+      createScore(scoreNames[0], scoreResults[0], 0),
+      createScore(scoreNames[1], scoreResults[1], 1),
+      createScore(scoreNames[2], scoreResults[2], 2),
+      createScore(scoreNames[3], scoreResults[3], 3),
+    ]);
+  }
+
+  Card createScore(String typeScore, String score, int index) {
+    return Card(
+      shadowColor: null,
+      shape: null,
+      elevation: 0.0,
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 10.0),
+        child: Container(
+          margin: EdgeInsets.only(right: 5.0, left: 5.0),
+          padding: EdgeInsets.only(right: 10.0, left: 10.0),
+          decoration: BoxDecoration(
+            border: Border.all(color: cyan2, width: 2.0),
+            borderRadius: BorderRadius.all(Radius.circular(8)),
+          ),
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  RichText(
+                    text: TextSpan(
+                      text: "Date de prise du test :  ",
+                      style: black18Bold,
+                      children: <TextSpan>[
+                        TextSpan(text: "20-10-2020", style: black18Normal),
+                      ],
+                    ),
+                  ),
+                  RichText(
+                    text: TextSpan(
+                      text: "Score de " + typeScore + " :  ",
+                      style: black18Bold,
+                      children: <TextSpan>[
+                        TextSpan(text: score, style: black18Normal),
+                      ],
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(top: 10.0),
+                        child: new FlatButton(
+                          onPressed: () {
+                            // if (mounted == true) {
+                            //   setState(() {
+
+                            //     //action : envoyer requete walla notification
+                            //   });
+                            // }
+                            Navigator.of(context).pushNamed(
+                                DetailsScore.routeName,
+                                arguments: TestModel("Jamar", "omar"));
+                          },
+                          focusColor: cyan2,
+                          hoverColor: cyan2,
+                          splashColor: cyan2,
+                          color: cyan2,
+                          child: Container(
+                            width: 80,
+                            child: Row(
+                              children: <Widget>[
+                                Text(
+                                  'Détails',
+                                  style: GoogleFonts.oxygen(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                    fontSize: 16.0,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 6.0),
+                                  child: Icon(
+                                    Icons.info,
+                                    size: 20.0,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      Spacer(),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 10.0),
+                        child: new FlatButton(
+                          onPressed: () {
+                            Navigator.of(context).pushNamed(
+                                HistoriqueScore.routeName,
+                                arguments: TestModel("Jamar", "omar"));
+                          },
+                          focusColor: cyan2,
+                          hoverColor: cyan2,
+                          splashColor: cyan2,
+                          color: cyan2,
+                          child: Container(
+                            child: Row(
+                              children: <Widget>[
+                                Text(
+                                  'Voir historique',
+                                  style: GoogleFonts.oxygen(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                    fontSize: 16.0,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 6.0),
+                                  child: Icon(
+                                    FontAwesomeIcons.history,
+                                    size: 18.0,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  demanderTest[index]
+                      ? Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                              new FlatButton(
+                                onPressed: () {
+                                  Timer(Duration(milliseconds: 100), () {
+                                    if (mounted == true) {
+                                      setState(() {
+                                        demanderTest[index] = false;
+                                        //action : envoyer requete walla notification
+                                      });
+                                    }
+                                  });
+                                },
+                                focusColor: Colors.red,
+                                hoverColor: Colors.red,
+                                splashColor: Colors.red,
+                                color: Colors.red,
+                                child: Container(
+                                  width: 140,
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        children: <Widget>[
+                                          Text(
+                                            'Test demandé',
+                                            style: GoogleFonts.oxygen(
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white,
+                                              fontSize: 16.0,
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 6.0),
+                                            child: Icon(
+                                              FontAwesomeIcons.fileAlt,
+                                              size: 16.0,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ])
+                      : Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            new FlatButton(
+                              onPressed: () {
+                                Timer(Duration(milliseconds: 100), () {
+                                  if (mounted == true) {
+                                    setState(() {
+                                      demanderTest[index] = true;
+                                      //action : envoyer requete walla notification
+                                    });
+                                  }
+                                });
+                              },
+                              focusColor: Colors.green,
+                              hoverColor: Colors.green,
+                              splashColor: Colors.green,
+                              color: Colors.green,
+                              child: Container(
+                                width: 140,
+                                child: Column(
+                                  children: [
+                                    Row(
+                                      children: <Widget>[
+                                        Text(
+                                          'Demander test',
+                                          style: GoogleFonts.oxygen(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white,
+                                            fontSize: 16.0,
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(left: 6.0),
+                                          child: Icon(
+                                            FontAwesomeIcons.fileAlt,
+                                            size: 16.0,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Card createOrdonnance(index) {
     print("index " + index.toString());
     textfield1.add(controller1);
     textfield2.add(controller2);
@@ -87,7 +346,7 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
             borderRadius: BorderRadius.all(Radius.circular(8)),
           ),
           child: TextFormField(
-            maxLines: 2,
+            maxLines: 1,
             cursorColor: cyan2,
             controller: _chooseController(index),
             onChanged: (text) {
@@ -100,7 +359,7 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
                 padding: const EdgeInsetsDirectional.only(end: 12.0),
                 child: Icon(
                   FontAwesomeIcons.pills,
-                  size: 30.0,
+                  size: 25.0,
                   color: cyan2,
                 ),
               ),
@@ -119,9 +378,18 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
       resizeToAvoidBottomPadding: false,
       appBar: AppBar(
         backgroundColor: cyan2,
-        title: Text(
-          patient['name'],
-          style: white19Normal,
+        title: Row(
+          children: [
+            Padding(
+              padding:
+                  const EdgeInsets.only(bottom: 10.0, right: 14.0, top: 10.0),
+              child: Icon(FontAwesomeIcons.userInjured, size: 22),
+            ),
+            Text(
+              patient['name'],
+              style: white19Normal,
+            ),
+          ],
         ),
       ),
       body: new SingleChildScrollView(
@@ -151,10 +419,7 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
                       padding: const EdgeInsets.only(left: 10, bottom: 8.0),
                       child: Text(
                         "Patient",
-                        style: GoogleFonts.oxygen(
-                            fontWeight: FontWeight.w600,
-                            color: cyan2,
-                            fontSize: 20.0),
+                        style: cyan20Bold,
                       ),
                     ),
                     Padding(
@@ -180,18 +445,42 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
                                     style: black18Bold,
                                     children: <TextSpan>[
                                       TextSpan(
-                                          text: "Omar Chaabouni test test test",
+                                          text: "Omar Chaabouni",
                                           style: black18Normal),
                                     ],
                                   ),
                                 ),
                                 RichText(
                                   text: TextSpan(
-                                    text: "Date de naissance :  ",
+                                    text: "N° dossier :  ",
                                     style: black18Bold,
                                     children: <TextSpan>[
                                       TextSpan(
-                                          text: "06-05-1976",
+                                          text: "149965", style: black18Normal),
+                                      // TextSpan(
+                                      //     text: ' vous a préscrit ces médicaments : '),
+                                    ],
+                                  ),
+                                ),
+                                RichText(
+                                  text: TextSpan(
+                                    text: "Age :  ",
+                                    style: black18Bold,
+                                    children: <TextSpan>[
+                                      TextSpan(
+                                          text: "12", style: black18Normal),
+                                      // TextSpan(
+                                      //     text: ' vous a préscrit ces médicaments : '),
+                                    ],
+                                  ),
+                                ),
+                                RichText(
+                                  text: TextSpan(
+                                    text: "Diagnostic :  ",
+                                    style: black18Bold,
+                                    children: <TextSpan>[
+                                      TextSpan(
+                                          text: "his back hurts",
                                           style: black18Normal),
                                       // TextSpan(
                                       //     text: ' vous a préscrit ces médicaments : '),
@@ -204,108 +493,126 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
                         ),
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 10, bottom: 8.0),
-                      child: Text(
-                        "Résultat du dernier diagnostique",
-                        style: GoogleFonts.oxygen(
-                            fontWeight: FontWeight.w600,
-                            color: cyan2,
-                            fontSize: 20.0),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 10.0),
-                      child: Container(
-                        margin:
-                            EdgeInsets.only(top: 10.0, right: 5.0, left: 5.0),
-                        padding: EdgeInsets.only(right: 10.0, left: 10.0),
-                        decoration: BoxDecoration(
-                          border: Border.all(color: cyan2, width: 2.0),
-                          borderRadius: BorderRadius.all(Radius.circular(8)),
-                        ),
-                        child: Container(
-                          width: MediaQuery.of(context).size.width,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                RichText(
-                                  text: TextSpan(
-                                    text: "Date de diagnostique :  ",
-                                    style: black18Bold,
-                                    children: <TextSpan>[
-                                      TextSpan(
-                                          text: "20-10-2020",
-                                          style: black18Normal),
-                                    ],
-                                  ),
-                                ),
-                                RichText(
-                                  text: TextSpan(
-                                    text: "Score de JAMAR :  ",
-                                    style: black18Bold,
-                                    children: <TextSpan>[
-                                      TextSpan(
-                                          text: "40/60", style: black18Normal),
-                                      // TextSpan(
-                                      //     text: ' vous a préscrit ces médicaments : '),
-                                    ],
-                                  ),
-                                ),
-                              ],
+                    (haveScores == true)
+                        ? Padding(
+                            padding:
+                                const EdgeInsets.only(left: 10, bottom: 8.0),
+                            child: Text(
+                              "Résultat du dernier diagnostic",
+                              style: GoogleFonts.oxygen(
+                                  fontWeight: FontWeight.w600,
+                                  color: cyan2,
+                                  fontSize: 20.0),
                             ),
-                          ),
-                        ),
-                      ),
-                    ),
+                          )
+                        : SizedBox(height: 0.0),
+                    (haveScores == true)
+                        ? Column(
+                            children: [createAllScores()],
+                          )
+                        : SizedBox(height: 0.0),
+                    // createScore('JADAS','40/60'),
                     Padding(
                       padding: const EdgeInsets.only(left: 10),
                       child: Row(
                         children: [
                           Text(
                             "Ordonnance",
-                            style: GoogleFonts.oxygen(
-                                fontWeight: FontWeight.w600,
-                                color: cyan2,
-                                fontSize: 20.0),
+                            style: cyan20Bold,
                           ),
                           Spacer(),
-                          FlatButton(
-                              autofocus: true,
-                              focusColor: Colors.white,
-                              splashColor: cyan2,
-                              highlightColor: Colors.white,
-                              color: Colors.white,
-                              child: Icon(
-                                FontAwesomeIcons.plusSquare,
-                                color: _isButtonDisabled
-                                    ? Colors.red
-                                    : Colors.green,
-                                size: 26.0,
-                              ),
-                              onPressed: _isButtonDisabled
-                                  ? null
-                                  : () {
-                                      print(nbrCards);
-                                      if (nbrCards == 4) {
-                                        setState(() {
-                                          _isButtonDisabled = true;
-                                        });
-                                      }
-                                      if (nbrCards < 5) {
-                                        setState(() {
-                                          nbrCards++;
-                                          cards.add(createCard(nbrCards - 1));
-                                        });
-                                      }
-                                    }),
+                          Container(
+                            margin: EdgeInsets.only(right: 15.0),
+                            child: FlatButton(
+                                autofocus: true,
+                                focusColor: Colors.green,
+                                splashColor: Colors.green,
+                                highlightColor: Colors.green,
+                                color: Colors.green,
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      'Ajouter',
+                                      style: GoogleFonts.oxygen(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                        fontSize: 16.0,
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 6.0),
+                                      child: Icon(
+                                        FontAwesomeIcons.plusCircle,
+                                        size: 16.0,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                onPressed: _isAddOrdonnanceButtonDisabled
+                                    ? null
+                                    : () {
+                                        print(nbrCards);
+                                        if (nbrCards == 4) {
+                                          if (mounted == true) {
+                                            setState(() {
+                                              _isAddOrdonnanceButtonDisabled =
+                                                  true;
+                                            });
+                                          }
+                                        }
+                                        if (nbrCards < 5) {
+                                          if (this.mounted) {
+                                            setState(() {
+                                              nbrCards++;
+                                              cardsOrdonnance.add(
+                                                  createOrdonnance(
+                                                      nbrCards - 1));
+                                            });
+                                          }
+                                        }
+                                      }),
+                          ),
                         ],
                       ),
                     ),
                     Column(
-                      children: cards,
+                      children: cardsOrdonnance,
+                    ),
+                    Column(
+                      children: [
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                                left: 10, bottom: 8.0, top: 15.0),
+                            child: Text(
+                              "Biologie",
+                              style: cyan20Bold,
+                            ),
+                          ),
+                        ),
+                        flatButtonMultipleChoice(
+                            title: 'bilan dos',
+                            initValue: isChecked1,
+                            onChanged: (newValue) {
+                              if (this.mounted) {
+                                setState(() {
+                                  isChecked1 = newValue;
+                                });
+                              }
+                            }),
+                        flatButtonMultipleChoice(
+                            title: 'bilan spinal cord',
+                            initValue: isChecked2,
+                            onChanged: (newValue) {
+                              if (this.mounted) {
+                                setState(() {
+                                  isChecked2 = newValue;
+                                });
+                              }
+                            }),
+                      ],
                     ),
                     Align(
                       alignment: Alignment.bottomRight,
@@ -345,7 +652,7 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
                             );
                             Timer(Duration(seconds: 2), () {
                               Navigator.pushNamedAndRemoveUntil(
-                                  context, "/back_home", (_) => false);
+                                  context, "/back_home_doctor", (_) => false);
                             });
                           },
                           focusColor: cyan2,
@@ -353,14 +660,15 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
                           splashColor: cyan2,
                           color: cyan2,
                           child: Container(
-                            width: 120,
+                            width: 126,
                             child: Row(
                               children: <Widget>[
                                 Text(
                                   'Enregistrer',
                                   style: GoogleFonts.oxygen(
+                                    fontWeight: FontWeight.bold,
                                     color: Colors.white,
-                                    fontSize: 17,
+                                    fontSize: 16,
                                   ),
                                 ),
                                 Padding(
@@ -386,7 +694,6 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
     );
   }
 }
-
 // class PatientDetailCard extends StatelessWidget {
 //   final String title;
 //   final MaterialColor color;

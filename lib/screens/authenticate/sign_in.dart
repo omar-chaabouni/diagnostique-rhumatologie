@@ -56,7 +56,9 @@ class _SignInState extends State<SignIn> {
                 hintStyle: kHintTextStyle,
               ),
               onChanged: (val) {
-                setState(() => email = val);
+                if (mounted == true) {
+                  setState(() => email = val);
+                }
               },
             ),
           ),
@@ -81,7 +83,9 @@ class _SignInState extends State<SignIn> {
           child: TextFormField(
             // validator: (val)=>val.length<6 ? 'Le mot de passe doit contenir au moins 6 caractères':null,
             onChanged: (val) {
-              setState(() => password = val);
+              if (mounted == true) {
+                setState(() => password = val);
+              }
             },
             obscureText: true,
             style: GoogleFonts.oxygen(
@@ -111,16 +115,20 @@ class _SignInState extends State<SignIn> {
         elevation: 5.0,
         onPressed: () async {
           if (_formKey.currentState.validate()) {
-            setState(() {
-              loading = true;
-            });
+            if (mounted == true) {
+              setState(() {
+                loading = true;
+              });
+            }
             dynamic result =
                 await _auth.signInWithEmailAndPassword(email, password);
             if (result == null) {
-              setState(() {
-                error = 'Could not sign in with those credentials';
-                loading = false;
-              });
+              if (mounted == true) {
+                setState(() {
+                  error = 'Could not sign in with those credentials';
+                  loading = false;
+                });
+              }
             }
           }
         },

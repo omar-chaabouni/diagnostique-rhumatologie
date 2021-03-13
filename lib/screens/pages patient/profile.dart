@@ -45,102 +45,102 @@ class _ProfileState extends State<Profile> {
         ],
       ),
       body: new SingleChildScrollView(
-      child:Container(
-        color: gris1,
-        // height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
         child: Container(
-          margin: const EdgeInsets.only(
-              left: 15.0, right: 15.0, top: 15.0, bottom: 15.0),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.all(Radius.circular(20)),
-          ),
+          color: gris1,
+          // height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
           child: Container(
+            margin: const EdgeInsets.only(
+                left: 15.0, right: 15.0, top: 15.0, bottom: 15.0),
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.all(Radius.circular(20)),
             ),
-            child: Padding(
-              padding: const EdgeInsets.only(
-                  left: 15.0, right: 15.0, top: 10.0, bottom: 10.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 15.0),
-                    child: Text(
-                      "Nom et prénom de votre enfant:",
-                      style: GoogleFonts.oxygen(
-                          fontWeight: FontWeight.w600,
-                          color: cyan2,
-                          fontSize: 18.0),
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.all(Radius.circular(20)),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.only(
+                    left: 15.0, right: 15.0, top: 10.0, bottom: 10.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 15.0),
+                      child: Text(
+                        "Nom et prénom de votre enfant:",
+                        style: GoogleFonts.oxygen(
+                            fontWeight: FontWeight.w600,
+                            color: cyan2,
+                            fontSize: 18.0),
+                      ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 15.0),
-                    child: Text(
-                      "Omar CHAABOUNI",
-                      style: black18Bold,
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 15.0),
+                      child: Text(
+                        "Omar CHAABOUNI",
+                        style: black18Bold,
+                      ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 15.0),
-                    child: Text(
-                      "Age",
-                      style: GoogleFonts.oxygen(
-                          fontWeight: FontWeight.w600,
-                          color: cyan2,
-                          fontSize: 18.0),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 15.0),
+                      child: Text(
+                        "Age",
+                        style: GoogleFonts.oxygen(
+                            fontWeight: FontWeight.w600,
+                            color: cyan2,
+                            fontSize: 18.0),
+                      ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 15.0),
-                    child: Text(
-                      "12",
-                      style: black18Bold,
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 15.0),
+                      child: Text(
+                        "12",
+                        style: black18Bold,
+                      ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 15.0),
-                    child: Text(
-                      "Votre adresse email",
-                      style: GoogleFonts.oxygen(
-                          fontWeight: FontWeight.w600,
-                          color: cyan2,
-                          fontSize: 18.0),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 15.0),
+                      child: Text(
+                        "Votre adresse email",
+                        style: GoogleFonts.oxygen(
+                            fontWeight: FontWeight.w600,
+                            color: cyan2,
+                            fontSize: 18.0),
+                      ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 15.0),
-                    child: Text(
-                      "aaaaaa@gmail.com",
-                      style: black18Bold,
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 15.0),
+                      child: Text(
+                        "aaaaaa@gmail.com",
+                        style: black18Bold,
+                      ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 20.0),
-                    child: Text(
-                      "Vos 5 dernières consultations :",
-                      style: GoogleFonts.oxygen(
-                          fontWeight: FontWeight.w600,
-                          color: cyan2,
-                          fontSize: 20.0),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 20.0),
+                      child: Text(
+                        "Vos 5 dernières consultations :",
+                        style: GoogleFonts.oxygen(
+                            fontWeight: FontWeight.w600,
+                            color: cyan2,
+                            fontSize: 20.0),
+                      ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 15.0),
-                    child: Text(
-                      "- date *5",
-                      style: black18Normal,
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 15.0),
+                      child: Text(
+                        "- date *5",
+                        style: black18Normal,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
         ),
-      ),
       ),
     );
   }
