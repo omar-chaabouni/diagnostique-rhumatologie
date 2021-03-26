@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:rhumatologie/services/auth.dart';
+// import 'package:rhumatologie/services/auth.dart';
 import 'package:rhumatologie/shared/constants.dart';
+import 'package:rhumatologie/shared/utils.dart';
 
 class Profile extends StatefulWidget {
   @override
@@ -11,7 +12,7 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   int selectedIndex = 0;
-  final AuthService _auth = AuthService();
+  // final AuthService _auth = AuthService();
 
   @override
   Widget build(BuildContext context) {
@@ -24,8 +25,8 @@ class _ProfileState extends State<Profile> {
           onPressed: null,
           icon: Icon(FontAwesomeIcons.addressCard, color: Colors.white),
           label: Text(
-            "Profil enfant",
-            style: titrePage,
+            "  Profil",
+            style: white22Bold,
           ),
         ),
         actions: [
@@ -39,7 +40,7 @@ class _ProfileState extends State<Profile> {
               style: disconnectStyle,
             ),
             onPressed: () async {
-              await _auth.signOut();
+              // await _auth.signOut();
             },
           ),
         ],
@@ -67,74 +68,12 @@ class _ProfileState extends State<Profile> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 15.0),
-                      child: Text(
-                        "Nom et prénom de votre enfant:",
-                        style: GoogleFonts.oxygen(
-                            fontWeight: FontWeight.w600,
-                            color: cyan2,
-                            fontSize: 18.0),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 15.0),
-                      child: Text(
-                        "Omar CHAABOUNI",
-                        style: black18Bold,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 15.0),
-                      child: Text(
-                        "Age",
-                        style: GoogleFonts.oxygen(
-                            fontWeight: FontWeight.w600,
-                            color: cyan2,
-                            fontSize: 18.0),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 15.0),
-                      child: Text(
-                        "12",
-                        style: black18Bold,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 15.0),
-                      child: Text(
-                        "Votre adresse email",
-                        style: GoogleFonts.oxygen(
-                            fontWeight: FontWeight.w600,
-                            color: cyan2,
-                            fontSize: 18.0),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 15.0),
-                      child: Text(
-                        "aaaaaa@gmail.com",
-                        style: black18Bold,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 20.0),
-                      child: Text(
-                        "Vos 5 dernières consultations :",
-                        style: GoogleFonts.oxygen(
-                            fontWeight: FontWeight.w600,
-                            color: cyan2,
-                            fontSize: 20.0),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 15.0),
-                      child: Text(
-                        "- date *5",
-                        style: black18Normal,
-                      ),
-                    ),
+                    SizedBox(height: 8),
+                    elementProfile("Nom et prénom", "Omar CHAABOUNI "),
+                    elementProfile("Age", "12"),
+                    elementProfile("N° Dossier", "126153"),
+                    elementProfile("Diagnostic", "spadilalalala"),
+                    elementProfile("N° téléphone", "55555555"),
                   ],
                 ),
               ),

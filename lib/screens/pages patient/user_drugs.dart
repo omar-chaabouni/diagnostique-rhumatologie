@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:rhumatologie/shared/constants.dart';
 import 'package:rhumatologie/shared/utils.dart';
+import 'package:http/http.dart' as http;
 
 class UserDrugs extends StatefulWidget {
   @override
@@ -15,6 +16,7 @@ class _UserDrugsState extends State<UserDrugs> {
   bool medicaments = true;
   var drugsCards = <Card>[];
   var bilansCards = <Card>[];
+  // List<Patient> patientList = [];
   List<String> listOfDrugs = [
     "test",
     "doliprane 5fois par jour 4 jours par semaine 3 semaines",
@@ -26,9 +28,23 @@ class _UserDrugsState extends State<UserDrugs> {
     "troisième bilan",
   ];
 
+  // _getUserApi() async {
+  //   String operationsURL = 'http://192.168.1.16:4000/patients';
+  //   try {
+  //     var operationResponse = await http.get("$operationsURL");
+  //     if (operationResponse.statusCode == 200) {
+  //       patientList = Patient.patientFromJson(operationResponse.body);
+  //       print('test');
+  //       print(patientList[0].nom);
+  //     }
+  //   } catch (e) {
+  //     print(e.toString());
+  //   }
+  // }
+
   @override
   void initState() {
-    //get DATA
+    // _getUserApi();
     super.initState();
   }
 
@@ -54,8 +70,8 @@ class _UserDrugsState extends State<UserDrugs> {
           onPressed: null,
           icon: Icon(FontAwesomeIcons.userMd, color: Colors.white),
           label: Text(
-            "Votre antécédent médical",
-            style: white22Normal,
+            " Antécédent médical",
+            style: white22Bold,
           ),
         ),
       ),
@@ -202,3 +218,83 @@ class _UserDrugsState extends State<UserDrugs> {
     );
   }
 }
+
+// class Patient {
+//   static List<Patient> patientFromJson(String operationsJson) =>
+//       List<Patient>.from(
+//           json.decode(operationsJson).map((x) => Patient.fromJson(x)));
+
+//   Patient({
+//     this.id,
+//     this.nom,
+//     this.prenom,
+//     this.telephone,
+//     this.numDossier,
+//     this.diagnostic,
+//     this.ordonnance,
+//     this.jadas,
+//     this.v,
+//   });
+
+//   String id;
+//   String nom;
+//   String prenom;
+//   int telephone;
+//   int numDossier;
+//   String diagnostic;
+//   String ordonnance;
+//   List<Jada> jadas;
+//   int v;
+
+//   factory Patient.fromJson(Map<String, dynamic> json) => Patient(
+//         id: json["_id"],
+//         nom: json["nom"],
+//         prenom: json["prenom"],
+//         telephone: json["telephone"],
+//         numDossier: json["num_dossier"],
+//         diagnostic: json["diagnostic"],
+//         ordonnance: json["ordonnance"],
+//         jadas: List<Jada>.from(json["JADAS"].map((x) => Jada.fromJson(x))),
+//         v: json["__v"],
+//       );
+
+//   Map<String, dynamic> toJson() => {
+//         "_id": id,
+//         "nom": nom,
+//         "prenom": prenom,
+//         "telephone": telephone,
+//         "num_dossier": numDossier,
+//         "diagnostic": diagnostic,
+//         "ordonnance": ordonnance,
+//         "JADAS": List<dynamic>.from(jadas.map((x) => x.toJson())),
+//         "__v": v,
+//       };
+// }
+
+// class Jada {
+//   Jada({
+//     this.id,
+//     this.score,
+//     this.date,
+//     this.state,
+//   });
+
+//   String id;
+//   int score;
+//   DateTime date;
+//   int state;
+
+//   factory Jada.fromJson(Map<String, dynamic> json) => Jada(
+//         id: json["_id"],
+//         score: json["score"],
+//         date: DateTime.parse(json["date"]),
+//         state: json["state"],
+//       );
+
+//   Map<String, dynamic> toJson() => {
+//         "_id": id,
+//         "score": score,
+//         "date": date.toIso8601String(),
+//         "state": state,
+//       };
+// }

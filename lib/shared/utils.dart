@@ -146,6 +146,30 @@ Container addPatientTitle(String title) {
   );
 }
 
+Container textFormFieldTextWithoutValidator(
+    TextEditingController theController, String hint, Icon iconTFFI) {
+  return Container(
+    margin: EdgeInsets.only(bottom: 8.0, top: 8.0, right: 10.0, left: 10.0),
+    padding: EdgeInsets.only(right: 10.0, left: 10.0, bottom: 2.0),
+    decoration: BoxDecoration(
+      border: Border.all(color: cyan2, width: 2.0),
+      borderRadius: BorderRadius.all(Radius.circular(8)),
+    ),
+    child: TextFormField(
+        decoration: InputDecoration(
+          enabledBorder: InputBorder.none,
+          focusedBorder: InputBorder.none,
+          prefixIcon: iconTFFI,
+          hintText: hint,
+          hintStyle: TextStyle(color: gris2, fontSize: 16.0),
+        ),
+        keyboardType: TextInputType.text,
+        controller: theController,
+        cursorColor: cyan2,
+        style: black18Normal),
+  );
+}
+
 Container textFormFieldText(
     TextEditingController theController, String hint, Icon iconTFFI) {
   return Container(
@@ -229,39 +253,34 @@ Card createRequestedScoreCard(
           children: [
             Row(
               children: [
-                Flexible(
-                  child: Text.rich(
-                    TextSpan(
-                      style: TextStyle(
-                        fontSize: 17,
-                      ),
-                      children: [
-                        WidgetSpan(
-                          child: Padding(
-                            padding:
-                                const EdgeInsets.only(bottom: 1.5, right: 8.0),
-                            child: Icon(
-                              FontAwesomeIcons.fileAlt,
-                              size: 20.0,
-                              color: cyan2,
-                            ),
+                Text.rich(
+                  TextSpan(
+                    style: TextStyle(
+                      fontSize: 17,
+                    ),
+                    children: [
+                      WidgetSpan(
+                        child: Padding(
+                          padding:
+                              const EdgeInsets.only(bottom: 1.5, right: 8.0),
+                          child: Icon(
+                            FontAwesomeIcons.fileAlt,
+                            size: 20.0,
+                            color: cyan2,
                           ),
                         ),
-                        TextSpan(
-                          text: scoreType,
-                          style: black18Normal,
-                        ),
-                      ],
-                    ),
+                      ),
+                      TextSpan(
+                        text: scoreType,
+                        style: black18Normal,
+                      ),
+                    ],
                   ),
                 ),
-              ],
-            ),
-            Row(
-              children: [
                 Spacer(),
                 Padding(
-                  padding: const EdgeInsets.only(top: 0.0, bottom: 0.0),
+                  padding:
+                      const EdgeInsets.only(left: 10, top: 0.0, bottom: 0.0),
                   child: new FlatButton(
                     // minWidth: 124.0,
                     onPressed: () {
@@ -320,9 +339,8 @@ Card createRequestedScoreCard(
                     ),
                   ),
                 ),
-                Spacer(),
               ],
-            )
+            ),
           ],
         ),
       ),
@@ -330,50 +348,53 @@ Card createRequestedScoreCard(
   );
 }
 
-Column historiqueCard(BuildContext context, String date, String resultat) {
-  return Column(
-    children: [
-      Padding(
-        padding: const EdgeInsets.only(bottom: 8.0),
-        child: Container(
-          margin: EdgeInsets.only(top: 10.0, right: 5.0, left: 5.0),
-          padding: EdgeInsets.only(right: 10.0, left: 10.0),
-          decoration: BoxDecoration(
-            border: Border.all(color: cyan2, width: 2.0),
-            borderRadius: BorderRadius.all(Radius.circular(8)),
-          ),
+Card historiqueCard(BuildContext context, String date, String resultat) {
+  return Card(
+    elevation: 0,
+    child: Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(bottom: 8.0),
           child: Container(
-            width: MediaQuery.of(context).size.width,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  RichText(
-                    text: TextSpan(
-                      text: "Date :  ",
-                      style: black18Bold,
-                      children: <TextSpan>[
-                        TextSpan(text: date, style: black18Normal),
-                      ],
+            margin: EdgeInsets.only(top: 10.0, right: 5.0, left: 5.0),
+            padding: EdgeInsets.only(right: 10.0, left: 10.0),
+            decoration: BoxDecoration(
+              border: Border.all(color: cyan2, width: 2.0),
+              borderRadius: BorderRadius.all(Radius.circular(8)),
+            ),
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    RichText(
+                      text: TextSpan(
+                        text: "Date :  ",
+                        style: black18Bold,
+                        children: <TextSpan>[
+                          TextSpan(text: date, style: black18Normal),
+                        ],
+                      ),
                     ),
-                  ),
-                  RichText(
-                    text: TextSpan(
-                      text: "Résultat : ",
-                      style: black18Bold,
-                      children: <TextSpan>[
-                        TextSpan(text: resultat, style: black18Normal),
-                      ],
+                    RichText(
+                      text: TextSpan(
+                        text: "Résultat : ",
+                        style: black18Bold,
+                        children: <TextSpan>[
+                          TextSpan(text: resultat, style: black18Normal),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
         ),
-      ),
-    ],
+      ],
+    ),
   );
 }
 
@@ -421,5 +442,29 @@ Column detailScoreCard(BuildContext context, String date, String resultat) {
         ),
       ),
     ],
+  );
+}
+
+Text sliderLimit(double value) {
+  return Text(
+    "$value",
+    style: black18Bold,
+  );
+}
+
+Padding elementProfile(String champ, String valeur) {
+  return Padding(
+    padding: const EdgeInsets.only(bottom: 10.0),
+    child: RichText(
+      text: TextSpan(
+        text: "$champ :  ",
+        style: cyan20Bold,
+        children: <TextSpan>[
+          TextSpan(text: "$valeur", style: black18Bold),
+          // TextSpan(
+          //     text: ' vous a préscrit ces médicaments : '),
+        ],
+      ),
+    ),
   );
 }

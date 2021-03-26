@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:rhumatologie/services/auth.dart';
 import 'package:rhumatologie/shared/constants.dart';
 import 'package:rhumatologie/shared/utils.dart';
 import 'dart:async';
@@ -13,12 +13,11 @@ class AddPatient extends StatefulWidget {
 }
 
 class _AddPatientState extends State<AddPatient> {
-  final AuthService _auth = AuthService();
   var controllerNomPrenom = TextEditingController();
   var controllerCIN = TextEditingController();
   var controllerTelephone = TextEditingController();
   var controllerNumeroDossier = TextEditingController();
-  var controllerAge = TextEditingController();
+  // var controllerAge = TextEditingController();
   var controllerDiagnostic = TextEditingController();
   var controllerOrdonnance1 = TextEditingController();
   var controllerOrdonnance2 = TextEditingController();
@@ -26,6 +25,7 @@ class _AddPatientState extends State<AddPatient> {
   var controllerOrdonnance4 = TextEditingController();
   var controllerOrdonnance5 = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  String birthday = '';
 
   void _onDone() {
     // List<PersonEntry> entries = [];
@@ -33,7 +33,7 @@ class _AddPatientState extends State<AddPatient> {
     var contenucontrollerCIN = controllerCIN.text;
     var contenucontrollerTelephone = controllerTelephone.text;
     var contenucontrollerNumeroDossier = controllerNumeroDossier.text;
-    var contenucontrollerAge = controllerAge.text;
+    // var contenucontrollerAge = controllerAge.text;
     var contenucontrollerDiagnostic = controllerDiagnostic.text;
     var contenucontrollerOrdonnance1 = controllerOrdonnance1.text;
     var contenucontrollerOrdonnance2 = controllerOrdonnance2.text;
@@ -44,7 +44,7 @@ class _AddPatientState extends State<AddPatient> {
     print("2 :  " + contenucontrollerCIN);
     print("3 :  " + contenucontrollerTelephone);
     print("4 :  " + contenucontrollerNumeroDossier);
-    print("5 :  " + contenucontrollerAge);
+    // print("5 :  " + contenucontrollerAge);
     print("6 :  " + contenucontrollerDiagnostic);
     print("7 :  " + contenucontrollerOrdonnance1);
     print("8 :  " + contenucontrollerOrdonnance2);
@@ -83,7 +83,7 @@ class _AddPatientState extends State<AddPatient> {
               color: Colors.white,
             ),
             onPressed: () async {
-              await _auth.signOut();
+              // await _auth.signOut();
             },
           ),
         ],
@@ -120,18 +120,6 @@ class _AddPatientState extends State<AddPatient> {
                         Icon(Icons.account_circle_rounded,
                             color: gris2, size: 25),
                       ),
-                      addPatientTitle("Numéro CIN : "),
-                      textFormFieldText(
-                        controllerCIN,
-                        'Entrez son n° de carte CIN',
-                        Icon(FontAwesome.id_card, color: gris2, size: 19),
-                      ),
-                      addPatientTitle("Numéro de téléphone : "),
-                      textFormFieldText(
-                        controllerTelephone,
-                        'Entrez son n° de téléphone ',
-                        Icon(FontAwesome.phone_square, color: gris2, size: 22),
-                      ),
                       addPatientTitle("N° Dossier : "),
                       textFormFieldText(
                         controllerNumeroDossier,
@@ -139,14 +127,72 @@ class _AddPatientState extends State<AddPatient> {
                         Icon(Icons.folder_shared_rounded,
                             color: gris2, size: 22),
                       ),
-                      addPatientTitle("Age : "),
-                      textFormFieldNumber(
-                        controllerAge,
-                        'Entrez son age ',
-                        Icon(
-                          Icons.cake,
-                          color: gris2,
-                          size: 19.0,
+                      addPatientTitle("Numéro de téléphone : "),
+                      textFormFieldText(
+                        controllerTelephone,
+                        'Entrez son n° de téléphone ',
+                        Icon(FontAwesome.phone_square, color: gris2, size: 22),
+                      ),
+                      addPatientTitle("Date de naissance : "),
+                      Container(
+                        margin: EdgeInsets.only(
+                            bottom: 8.0, top: 8.0, right: 10.0, left: 10.0),
+                        padding: EdgeInsets.only(
+                            right: 10.0, left: 10.0, bottom: 2.0),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: cyan2, width: 2.0),
+                          borderRadius: BorderRadius.all(Radius.circular(8)),
+                        ),
+                        child: FlatButton(
+                          onPressed: () {
+                            DatePicker.showDatePicker(context,
+                                theme: DatePickerTheme(
+                                  containerHeight: 210.0,
+                                ),
+                                showTitleActions: true,
+                                minTime: DateTime(1925, 1, 1),
+                                maxTime: DateTime.now(), onConfirm: (date) {
+                              print('confirm $date');
+                              birthday =
+                                  '${date.month}/${date.day}/${date.year}';
+                              print('confirm $birthday');
+                              // birthday = '${date.year} - ${date.month} - ${date.day}';
+                              setState(() {});
+                            },
+                                currentTime: DateTime.now(),
+                                locale: LocaleType.fr);
+                          },
+                          child: Container(
+                            alignment: Alignment.center,
+                            height: 50.0,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Row(
+                                  children: <Widget>[
+                                    Container(
+                                      child: Row(
+                                        children: <Widget>[
+                                          Text(
+                                            " $birthday",
+                                            style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 16.0),
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                Text(
+                                  "  Changer",
+                                  style:
+                                      TextStyle(color: cyan2, fontSize: 16.0),
+                                ),
+                              ],
+                            ),
+                          ),
+                          color: Colors.white,
                         ),
                       ),
                       addPatientTitle("Diagnostic : "),
@@ -157,7 +203,7 @@ class _AddPatientState extends State<AddPatient> {
                             color: gris2, size: 19),
                       ),
                       addPatientTitle("Ordonnance : "),
-                      textFormFieldText(
+                      textFormFieldTextWithoutValidator(
                         controllerOrdonnance1,
                         'Entrez un médicament',
                         Icon(
@@ -166,7 +212,7 @@ class _AddPatientState extends State<AddPatient> {
                           size: 21,
                         ),
                       ),
-                      textFormFieldText(
+                      textFormFieldTextWithoutValidator(
                         controllerOrdonnance2,
                         'Entrez un médicament',
                         Icon(
@@ -175,7 +221,7 @@ class _AddPatientState extends State<AddPatient> {
                           size: 21,
                         ),
                       ),
-                      textFormFieldText(
+                      textFormFieldTextWithoutValidator(
                         controllerOrdonnance3,
                         'Entrez un médicament',
                         Icon(
@@ -184,7 +230,7 @@ class _AddPatientState extends State<AddPatient> {
                           size: 21,
                         ),
                       ),
-                      textFormFieldText(
+                      textFormFieldTextWithoutValidator(
                         controllerOrdonnance4,
                         'Entrez un médicament',
                         Icon(
@@ -193,7 +239,7 @@ class _AddPatientState extends State<AddPatient> {
                           size: 21,
                         ),
                       ),
-                      textFormFieldText(
+                      textFormFieldTextWithoutValidator(
                         controllerOrdonnance5,
                         'Entrez un médicament',
                         Icon(
@@ -210,9 +256,6 @@ class _AddPatientState extends State<AddPatient> {
                             minWidth: 60.0,
                             onPressed: () {
                               if (_formKey.currentState.validate()) {
-                                // If the form is valid, display a snackbar. In the real world,
-                                // you'd often call a server or save the information in a database.
-
                                 _onDone();
                                 showDialog(
                                   context: context,
@@ -242,7 +285,7 @@ class _AddPatientState extends State<AddPatient> {
                                         ));
                                   },
                                 );
-                                Timer(Duration(seconds: 2), () {
+                                Future.delayed(Duration(seconds: 2), () {
                                   Navigator.pushNamedAndRemoveUntil(context,
                                       "/back_home_doctor", (_) => false);
                                 });

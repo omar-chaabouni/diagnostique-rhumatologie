@@ -13,6 +13,15 @@ final kLabelStyle = GoogleFonts.oxygen(
 final black18Bold = GoogleFonts.oxygen(
     fontWeight: FontWeight.w600, color: Colors.black, fontSize: 18.0);
 
+final black16Bold = GoogleFonts.oxygen(
+    fontWeight: FontWeight.w600, color: Colors.black, fontSize: 16.0);
+
+final black16Normal = GoogleFonts.oxygen(
+    color: Colors.black,
+    fontWeight: FontWeight.normal,
+    fontSize: 16.0,
+    height: 1.4);
+
 final black18Normal = GoogleFonts.oxygen(
     color: Colors.black,
     fontWeight: FontWeight.normal,
@@ -22,6 +31,9 @@ final black18Normal = GoogleFonts.oxygen(
 final white22Normal = GoogleFonts.oxygen(color: Colors.white, fontSize: 22.0);
 
 final white19Normal = GoogleFonts.oxygen(color: Colors.white, fontSize: 19.0);
+
+final cyan16Bold = GoogleFonts.oxygen(
+    fontWeight: FontWeight.w600, color: cyan2, fontSize: 16.0);
 
 final cyan18Bold = GoogleFonts.oxygen(
     fontWeight: FontWeight.w600, color: cyan2, fontSize: 18.0);
@@ -44,22 +56,12 @@ final kBoxDecorationStyle = BoxDecoration(
     ),
   ],
 );
+
 final white22Bold = GoogleFonts.oxygen(
     fontWeight: FontWeight.w600, color: Colors.white, fontSize: 22.0);
+
 final cyan18Bold1_6 = GoogleFonts.oxygen(
     fontWeight: FontWeight.w600, color: cyan2, height: 1.6, fontSize: 18.0);
-// final questionText = GoogleFonts.oxygen(
-//   color: Colors.white,
-//   fontWeight: FontWeight.bold,
-//   fontSize: 20.0,
-// );
-
-// final yourRating = GoogleFonts.oxygen(
-//   color: Colors.white, fontSize: 24.0,
-//   fontWeight: FontWeight.w700,
-//   // fontWeight: FontWeight.bold,
-// );
-
 final Color cyan1 = Color(0xff40bcd8);
 final Color cyan2 = Color(0xff39a9db);
 final Color cyan3 = Color(0xff1c77c3);

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:rhumatologie/shared/constants.dart';
 import 'package:rhumatologie/shared/utils.dart';
 
@@ -48,80 +47,74 @@ class _ChooseScoreState extends State<ChooseScore> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      // resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: cyan2,
         title: FlatButton.icon(
           onPressed: (null),
           icon: Icon(FontAwesomeIcons.stethoscope, color: Colors.white),
           label: Text(
-            "Diagnostic",
-            style: GoogleFonts.oxygen(
-                fontWeight: FontWeight.w600,
-                color: Colors.white,
-                fontSize: 22.0),
+            " Diagnostic",
+            style: white22Bold,
           ),
         ),
       ),
       body: scores
           ? Builder(
               builder: (BuildContext context) {
-                return new SingleChildScrollView(
+                return Container(
+                  color: gris1,
+                  height: MediaQuery.of(context).size.height,
+                  width: MediaQuery.of(context).size.width,
                   child: Container(
-                    color: gris1,
-                    // height: MediaQuery.of(context).size.height,
-                    width: MediaQuery.of(context).size.width,
+                    margin: const EdgeInsets.only(
+                        left: 15.0, right: 15.0, top: 15.0, bottom: 15.0),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                    ),
                     child: Container(
-                      margin: const EdgeInsets.only(
-                          left: 15.0, right: 15.0, top: 15.0, bottom: 15.0),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.all(Radius.circular(20)),
                       ),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.all(Radius.circular(20)),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                              left: 15.0, right: 15.0, top: 10.0, bottom: 10.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Padding(
-                                padding: const EdgeInsets.only(bottom: 8.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    RichText(
-                                      text: TextSpan(
-                                        text: 'Votre docteur ',
-                                        style: black18Normal,
-                                        children: <TextSpan>[
-                                          TextSpan(
-                                              text: "Dr. ",
-                                              style: cyan18Bold1_6),
-                                          TextSpan(
-                                              text: "Hanene Lassoued Ferjani ",
-                                              style: cyan18Bold1_6),
-                                          TextSpan(
-                                              text:
-                                                  ' vous demande de faire ces tests de score :'),
-                                        ],
-                                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                            left: 15.0, right: 15.0, top: 10.0, bottom: 10.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 8.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  RichText(
+                                    text: TextSpan(
+                                      text: 'Votre docteur ',
+                                      style: black18Normal,
+                                      children: <TextSpan>[
+                                        TextSpan(
+                                            text: "Dr. ", style: cyan18Bold1_6),
+                                        TextSpan(
+                                            text: "Hanene Lassoued Ferjani ",
+                                            style: cyan18Bold1_6),
+                                        TextSpan(
+                                            text:
+                                                ' vous demande de faire ces tests de score :'),
+                                      ],
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
-                              scores
-                                  ? Column(
-                                      children: scoresCards,
-                                    )
-                                  : SizedBox(height: 0),
-                              SizedBox(height: 15.0),
-                            ],
-                          ),
+                            ),
+                            scores
+                                ? Column(
+                                    children: scoresCards,
+                                  )
+                                : SizedBox(height: 0),
+                            SizedBox(height: 15.0),
+                          ],
                         ),
                       ),
                     ),
