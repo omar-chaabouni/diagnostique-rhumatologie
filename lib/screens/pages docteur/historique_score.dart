@@ -1,22 +1,54 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:rhumatologie/models/test_model.dart';
+import 'package:rhumatologie/models/bilan.dart';
+import 'package:rhumatologie/models/historique_arguments.dart';
+import 'package:rhumatologie/models/jadas.dart';
+import 'package:rhumatologie/models/patient.dart';
 import 'package:rhumatologie/shared/constants.dart';
 import 'package:rhumatologie/shared/utils.dart';
 
 class HistoriqueScore extends StatefulWidget {
   static const routeName = '/historique_score';
+  HistoriqueArguments historiqueArguments;
 
   @override
   _HistoriqueScoreState createState() => _HistoriqueScoreState();
 }
 
 class _HistoriqueScoreState extends State<HistoriqueScore> {
+  var allHistoriqueCards = <Card>[];
+  List<Jadas> testsJadas = [];
+  // List <Jadas> tests=[]; //autres types
+  // List <Jadas> tests=[];
+  // List <Jadas> tests=[];
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    widget.historiqueArguments = ModalRoute.of(context).settings.arguments;
+    getHistorique();
+    print(testsJadas);
+    for (int i = 0; i < testsJadas.length; i++) {
+      allHistoriqueCards.add(historiqueCard(
+          context, testsJadas[i].dateDemande.toString(), "40/60"));
+    }
+  }
+
+  void getHistorique() {
+    if (widget.historiqueArguments.typeScore == 'JADAS') {
+      testsJadas = widget.historiqueArguments.patient.jadas;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final TestModel score = ModalRoute.of(context).settings.arguments;
-    // final String score="test";
-
+    final HistoriqueArguments historiqueArguments =
+        ModalRoute.of(context).settings.arguments;
     return Scaffold(
         backgroundColor: gris1,
         resizeToAvoidBottomPadding: false,
@@ -30,7 +62,7 @@ class _HistoriqueScoreState extends State<HistoriqueScore> {
                 child: Icon(FontAwesomeIcons.history, size: 20),
               ),
               Text(
-                "Historique du score de " + score.title,
+                "Historique du score de " + historiqueArguments.typeScore,
                 style: white19Normal,
               ),
             ],
@@ -67,8 +99,9 @@ class _HistoriqueScoreState extends State<HistoriqueScore> {
                             style: cyan20Bold,
                           ),
                         ),
-                        historiqueCard(context, "24-12-2020", "40/60"),
-                        historiqueCard(context, "05-02-2021", "36/60"),
+                        Column(
+                          children: allHistoriqueCards,
+                        ),
                         SizedBox(height: 40),
                       ],
                     ),

@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:rhumatologie/models/test_model.dart';
+import 'package:rhumatologie/models/historique_arguments.dart';
+import 'package:rhumatologie/models/patient.dart';
 import 'package:rhumatologie/screens/pages%20docteur/details_score.dart';
 import 'package:rhumatologie/screens/pages%20docteur/historique_score.dart';
 import 'package:rhumatologie/shared/constants.dart';
 import 'package:rhumatologie/shared/utils.dart';
 import 'dart:async';
 
+// ignore: must_be_immutable
 class EditUserPrescription extends StatefulWidget {
   static const routeName = '/patient';
+  Patient patient;
 
   @override
   _EditUserPrescriptionState createState() => _EditUserPrescriptionState();
@@ -32,7 +35,7 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
   bool isChecked1 = false;
   bool isChecked2 = false;
 
-  List scoreNames = <String>[
+  List<String> scoreNames = [
     'JADAS',
     'JSRADA',
     'CHAQ',
@@ -41,11 +44,17 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
   List scoreResults = <String>['40/60', '20/30', '26.2/30', '40/20']; // mel BD
   bool haveScores = true; // mel BD kenou compte jdid
   List<bool> demanderTest = [false, false, false, false]; // yjiwni mel BD
-
   int nbrCards = 0;
   bool _isAddOrdonnanceButtonDisabled = false;
+
   void initState() {
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    widget?.patient = ModalRoute.of(context).settings.arguments;
   }
 
   void _onDone() {
@@ -89,14 +98,14 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
 
   Column createAllScores() {
     return Column(children: [
-      createScore(scoreNames[0], scoreResults[0], 0),
-      createScore(scoreNames[1], scoreResults[1], 1),
-      createScore(scoreNames[2], scoreResults[2], 2),
-      createScore(scoreNames[3], scoreResults[3], 3),
+      createScore(scoreNames[0], scoreResults[0], 0, widget.patient),
+      createScore(scoreNames[1], scoreResults[1], 1, widget.patient),
+      createScore(scoreNames[2], scoreResults[2], 2, widget.patient),
+      createScoreJamar(scoreNames[3], scoreResults[3], 3),
     ]);
   }
 
-  Card createScore(String typeScore, String score, int index) {
+  Card createScoreJamar(String typeScore, String score, int index) {
     return Card(
       shadowColor: null,
       shape: null,
@@ -143,13 +152,12 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
                           onPressed: () {
                             // if (mounted == true) {
                             //   setState(() {
-
                             //     //action : envoyer requete walla notification
                             //   });
                             // }
                             Navigator.of(context).pushNamed(
                                 DetailsScore.routeName,
-                                arguments: TestModel("Jamar", "omar"));
+                                arguments: widget?.patient);
                           },
                           focusColor: cyan2,
                           hoverColor: cyan2,
@@ -187,7 +195,9 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
                           onPressed: () {
                             Navigator.of(context).pushNamed(
                                 HistoriqueScore.routeName,
-                                arguments: TestModel("Jamar", "omar"));
+                                arguments: HistoriqueArguments(
+                                    patient: widget?.patient,
+                                    typeScore: typeScore));
                           },
                           focusColor: cyan2,
                           hoverColor: cyan2,
@@ -225,7 +235,8 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
                           children: [
                               new FlatButton(
                                 onPressed: () {
-                                  Timer(Duration(milliseconds: 100), () {
+                                  Future.delayed(Duration(milliseconds: 100),
+                                      () {
                                     if (mounted == true) {
                                       setState(() {
                                         demanderTest[index] = false;
@@ -273,7 +284,7 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
                           children: [
                             new FlatButton(
                               onPressed: () {
-                                Timer(Duration(milliseconds: 100), () {
+                                Future.delayed(Duration(milliseconds: 100), () {
                                   if (mounted == true) {
                                     setState(() {
                                       demanderTest[index] = true;
@@ -317,6 +328,197 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
                             ),
                           ],
                         ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Card createScore(String typeScore, String score, int index, Patient patient) {
+    return Card(
+      shadowColor: null,
+      shape: null,
+      elevation: 0.0,
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 10.0),
+        child: Container(
+          margin: EdgeInsets.only(right: 5.0, left: 5.0),
+          padding: EdgeInsets.only(right: 10.0, left: 10.0),
+          decoration: BoxDecoration(
+            border: Border.all(color: cyan2, width: 2.0),
+            borderRadius: BorderRadius.all(Radius.circular(8)),
+          ),
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  RichText(
+                    text: TextSpan(
+                      text: "Date de prise du test :  ",
+                      style: black18Bold,
+                      children: <TextSpan>[
+                        TextSpan(
+                            text: "${patient.jadas[0].dateValidation}",
+                            style: black18Normal),
+                      ],
+                    ),
+                  ),
+                  RichText(
+                    text: TextSpan(
+                      text: "Score de " + typeScore + " :  ",
+                      style: black18Bold,
+                      children: <TextSpan>[
+                        TextSpan(text: score, style: black18Normal),
+                      ],
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(top: 10.0),
+                        child: new FlatButton(
+                          onPressed: () {
+                            Navigator.of(context).pushNamed(
+                                HistoriqueScore.routeName,
+                                arguments: HistoriqueArguments(
+                                    patient: widget?.patient,
+                                    typeScore: typeScore));
+                          },
+                          focusColor: cyan2,
+                          hoverColor: cyan2,
+                          splashColor: cyan2,
+                          color: cyan2,
+                          child: Container(
+                            width: 102,
+                            child: Row(
+                              children: <Widget>[
+                                Text(
+                                  'Historique',
+                                  style: GoogleFonts.oxygen(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                    fontSize: 16.0,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 6.0),
+                                  child: Icon(
+                                    FontAwesomeIcons.history,
+                                    size: 18.0,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      Spacer(),
+                      demanderTest[index]
+                          ? Padding(
+                              padding: const EdgeInsets.only(top: 10.0),
+                              child: new FlatButton(
+                                onPressed: () {
+                                  Future.delayed(Duration(milliseconds: 100),
+                                      () {
+                                    if (mounted == true) {
+                                      setState(() {
+                                        demanderTest[index] = false;
+                                        //action : envoyer requete walla notification
+                                      });
+                                    }
+                                  });
+                                },
+                                focusColor: Colors.red,
+                                hoverColor: Colors.red,
+                                splashColor: Colors.red,
+                                color: Colors.red,
+                                child: Container(
+                                  width: 125,
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        children: <Widget>[
+                                          Text(
+                                            'Test demandé',
+                                            style: GoogleFonts.oxygen(
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white,
+                                              fontSize: 15.0,
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 5.0),
+                                            child: Icon(
+                                              FontAwesomeIcons.fileAlt,
+                                              size: 14.0,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            )
+                          : Padding(
+                              padding: const EdgeInsets.only(top: 10.0),
+                              child: new FlatButton(
+                                onPressed: () {
+                                  Future.delayed(Duration(milliseconds: 100),
+                                      () {
+                                    if (mounted == true) {
+                                      setState(() {
+                                        demanderTest[index] = true;
+                                        //action : envoyer requete walla notification
+                                      });
+                                    }
+                                  });
+                                },
+                                focusColor: Colors.green,
+                                hoverColor: Colors.green,
+                                splashColor: Colors.green,
+                                color: Colors.green,
+                                child: Container(
+                                  width: 125,
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        children: <Widget>[
+                                          Text(
+                                            'Demander test',
+                                            style: GoogleFonts.oxygen(
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white,
+                                              fontSize: 15.0,
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 5.0),
+                                            child: Icon(
+                                              FontAwesomeIcons.fileAlt,
+                                              size: 14.0,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                    ],
+                  ),
                 ],
               ),
             ),
@@ -371,7 +573,7 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
 
   @override
   Widget build(BuildContext context) {
-    final Map patient = ModalRoute.of(context).settings.arguments;
+    final Patient patient = ModalRoute.of(context).settings.arguments;
 
     return Scaffold(
       backgroundColor: gris1,
@@ -386,7 +588,7 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
               child: Icon(FontAwesomeIcons.userInjured, size: 22),
             ),
             Text(
-              patient['name'],
+              patient.prenom + '  ' + patient.nom,
               style: white19Normal,
             ),
           ],
@@ -445,7 +647,8 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
                                     style: black18Bold,
                                     children: <TextSpan>[
                                       TextSpan(
-                                          text: "Omar Chaabouni",
+                                          text:
+                                              "${patient?.prenom} ${patient?.nom}",
                                           style: black18Normal),
                                     ],
                                   ),
@@ -456,7 +659,8 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
                                     style: black18Bold,
                                     children: <TextSpan>[
                                       TextSpan(
-                                          text: "149965", style: black18Normal),
+                                          text: "${patient?.numDossier}",
+                                          style: black18Normal),
                                       // TextSpan(
                                       //     text: ' vous a préscrit ces médicaments : '),
                                     ],
@@ -480,7 +684,7 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
                                     style: black18Bold,
                                     children: <TextSpan>[
                                       TextSpan(
-                                          text: "his back hurts",
+                                          text: "${patient?.diagnostic}",
                                           style: black18Normal),
                                       // TextSpan(
                                       //     text: ' vous a préscrit ces médicaments : '),
@@ -650,7 +854,7 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
                                     ));
                               },
                             );
-                            Timer(Duration(seconds: 2), () {
+                            Future.delayed(Duration(seconds: 2), () {
                               Navigator.pushNamedAndRemoveUntil(
                                   context, "/back_home_doctor", (_) => false);
                             });
