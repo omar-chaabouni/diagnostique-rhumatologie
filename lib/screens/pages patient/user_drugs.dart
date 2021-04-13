@@ -5,6 +5,7 @@ import 'package:rhumatologie/shared/utils.dart';
 import 'package:http/http.dart' as http;
 
 class UserDrugs extends StatefulWidget {
+  static const routeName = '/user_drugs';
   @override
   _UserDrugsState createState() => _UserDrugsState();
 }
@@ -29,7 +30,7 @@ class _UserDrugsState extends State<UserDrugs> {
   ];
 
   // _getUserApi() async {
-  //   String operationsURL = 'http://192.168.1.16:4000/patients';
+  //   String operationsURL = 'http://192.168.1.107:4000/patients';
   //   try {
   //     var operationResponse = await http.get("$operationsURL");
   //     if (operationResponse.statusCode == 200) {

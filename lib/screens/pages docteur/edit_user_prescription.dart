@@ -5,6 +5,7 @@ import 'package:rhumatologie/models/historique_arguments.dart';
 import 'package:rhumatologie/models/patient.dart';
 import 'package:rhumatologie/screens/pages%20docteur/details_score.dart';
 import 'package:rhumatologie/screens/pages%20docteur/historique_score.dart';
+import 'package:rhumatologie/screens/pages%20docteur/home_doctor.dart';
 import 'package:rhumatologie/shared/constants.dart';
 import 'package:rhumatologie/shared/utils.dart';
 import 'dart:async';
@@ -37,7 +38,7 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
 
   List<String> scoreNames = [
     'JADAS',
-    'JSRADA',
+    'JSPADA',
     'CHAQ',
     'JAMAR'
   ]; // ordre à spécifier
@@ -856,7 +857,7 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
                             );
                             Future.delayed(Duration(seconds: 2), () {
                               Navigator.pushNamedAndRemoveUntil(
-                                  context, "/back_home_doctor", (_) => false);
+                                  context, HomeDoctor.routeName, (_) => false);
                             });
                           },
                           focusColor: cyan2,

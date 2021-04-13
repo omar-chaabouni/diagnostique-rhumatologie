@@ -9,6 +9,7 @@ import 'package:rhumatologie/shared/constants.dart';
 // Diagnostic PAGE
 class HomeDoctor extends StatefulWidget {
   HomeDoctor({Key key}) : super(key: key);
+  static const routeName = '/home_doctor';
   // final AuthService _auth = AuthService();
   @override
   _HomeDoctorState createState() => _HomeDoctorState();

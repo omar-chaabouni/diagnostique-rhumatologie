@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:rhumatologie/screens/pages%20patient/home_user.dart';
 import 'package:rhumatologie/shared/constants.dart';
 import 'package:rhumatologie/shared/utils.dart';
 
@@ -12,16 +13,37 @@ class Page1Jadas extends StatefulWidget {
 }
 
 class _Page1JadasState extends State<Page1Jadas> {
-  double _evaluationGlobaleParParent = 5.0;
-  double _nbrArticulationsTumifiees = 5.0;
-  double _vitesseSedimentation = 5.0;
-  bool isChecked1 = false;
-  bool isChecked2 = false;
+  double _evaluationGlobaleParParent = 0.0;
+  double _nbrArticulationsTumefiees = 0.0;
+  double _vitesseSedimentation = 0.0;
+  double d = 0;
+  double sommeScore = 0;
   int selectedIndex = 1;
+  void _setD() {
+    if (_vitesseSedimentation < 20) {
+      setState(() {
+        d = 0;
+      });
+    } else if (_vitesseSedimentation > 120) {
+      setState(() {
+        d = 10;
+      });
+    } else {
+      setState(() {
+        d = _vitesseSedimentation;
+      });
+    }
+  }
+
+  void calculEtEnvoiSomme() {
+    sommeScore = _evaluationGlobaleParParent + _nbrArticulationsTumefiees + d;
+    print(sommeScore / 71);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: gris1,
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: cyan2,
@@ -37,7 +59,7 @@ class _Page1JadasState extends State<Page1Jadas> {
       body: new SingleChildScrollView(
         child: Container(
           color: gris1,
-          height: MediaQuery.of(context).size.height,
+          // height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
           child: Container(
             margin: const EdgeInsets.only(
@@ -87,10 +109,7 @@ class _Page1JadasState extends State<Page1Jadas> {
                                 valueIndicatorShape:
                                     PaddleSliderValueIndicatorShape(),
                                 valueIndicatorColor: Colors.blueAccent,
-                                valueIndicatorTextStyle: GoogleFonts.oxygen(
-                                    color: Colors.white,
-                                    fontSize: 16.0,
-                                    fontWeight: FontWeight.w600),
+                                valueIndicatorTextStyle: white16Bold,
                               ),
                               child: Slider(
                                 value: _evaluationGlobaleParParent,
@@ -144,22 +163,19 @@ class _Page1JadasState extends State<Page1Jadas> {
                                 valueIndicatorShape:
                                     PaddleSliderValueIndicatorShape(),
                                 valueIndicatorColor: Colors.blueAccent,
-                                valueIndicatorTextStyle: GoogleFonts.oxygen(
-                                    color: Colors.white,
-                                    fontSize: 16.0,
-                                    fontWeight: FontWeight.w600),
+                                valueIndicatorTextStyle: white16Bold,
                               ),
                               child: Slider(
-                                value: _nbrArticulationsTumifiees,
+                                value: _nbrArticulationsTumefiees,
                                 min: 0.0,
                                 max: 10.0,
                                 divisions: 10,
-                                label: '$_nbrArticulationsTumifiees',
+                                label: '$_nbrArticulationsTumefiees',
                                 onChanged: (value) {
                                   if (mounted == true) {
                                     setState(
                                       () {
-                                        _nbrArticulationsTumifiees = value;
+                                        _nbrArticulationsTumefiees = value;
                                       },
                                     );
                                   }
@@ -201,17 +217,14 @@ class _Page1JadasState extends State<Page1Jadas> {
                                 valueIndicatorShape:
                                     PaddleSliderValueIndicatorShape(),
                                 valueIndicatorColor: Colors.blueAccent,
-                                valueIndicatorTextStyle: GoogleFonts.oxygen(
-                                    color: Colors.white,
-                                    fontSize: 16.0,
-                                    fontWeight: FontWeight.w600),
+                                valueIndicatorTextStyle: white16Bold,
                               ),
                               child: Slider(
                                 value: _vitesseSedimentation,
                                 min: 0.0,
-                                max: 10.0,
-                                divisions: 10,
-                                label: '$_vitesseSedimentation',
+                                max: 150.0,
+                                divisions: 15,
+                                label: '${_vitesseSedimentation.round()}',
                                 onChanged: (value) {
                                   if (mounted == true) {
                                     setState(
@@ -225,61 +238,70 @@ class _Page1JadasState extends State<Page1Jadas> {
                             ),
                           ),
                         ),
-                        sliderLimit(10.0),
+                        sliderLimit(150.0),
                       ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 10.0, top: 20.0),
-                      child: Text(
-                        "Combien de fois text test test?",
-                        style: GoogleFonts.oxygen(
-                            fontWeight: FontWeight.w600,
-                            color: cyan2,
-                            fontSize: 20.0),
-                      ),
-                    ),
-                    flatButtonMultipleChoice(
-                        title: 'test',
-                        initValue: isChecked1,
-                        onChanged: (newValue) {
-                          if (this.mounted) {
-                            setState(() {
-                              isChecked1 = newValue;
+                    Align(
+                      alignment: Alignment.bottomRight,
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 10.0),
+                        child: new FlatButton(
+                          minWidth: 60.0,
+                          onPressed: () {
+                            _setD();
+                            calculEtEnvoiSomme();
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                    // content: Text(myController.text),
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10.0))),
+                                    content: Container(
+                                      height: 60,
+                                      child: Column(
+                                        children: [
+                                          Text("Test enregistré avec succès",
+                                              style: green18Bold),
+                                          Icon(
+                                            FontAwesomeIcons.checkCircle,
+                                            color: Colors.green,
+                                          )
+                                        ],
+                                      ),
+                                    ));
+                              },
+                            );
+                            Future.delayed(Duration(seconds: 1), () {
+                              Navigator.pushNamedAndRemoveUntil(
+                                  context, HomeUser.routeName, (_) => false);
                             });
-                          }
-                        }),
-                    flatButtonMultipleChoice(
-                        title: 'test',
-                        initValue: isChecked2,
-                        onChanged: (newValue) {
-                          if (this.mounted) {
-                            setState(() {
-                              isChecked2 = newValue;
-                            });
-                          }
-                        }),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 10.0, top: 10.0),
-                      child: Text(
-                        "Combien de fois text test test?",
-                        style: GoogleFonts.oxygen(
-                            fontWeight: FontWeight.w600,
-                            color: cyan2,
-                            fontSize: 20.0),
+                          },
+                          focusColor: cyan2,
+                          hoverColor: cyan2,
+                          splashColor: cyan2,
+                          color: cyan2,
+                          child: Container(
+                            width: 120,
+                            child: Row(
+                              children: <Widget>[
+                                Text(
+                                  'Enregistrer',
+                                  style: white16Bold,
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 12.0),
+                                  child: Icon(
+                                    Icons.save,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(
-                          bottom: 10.0, top: 15.0, right: 20.0, left: 20.0),
-                      padding: EdgeInsets.only(right: 10.0, left: 10.0),
-                      decoration: BoxDecoration(
-                        border: Border.all(color: cyan2, width: 2.0),
-                        borderRadius: BorderRadius.all(Radius.circular(8)),
-                      ),
-                      child: TextFormField(
-                          cursorColor: cyan2,
-                          decoration: InputDecoration(border: InputBorder.none),
-                          style: black18Normal),
                     ),
                   ],
                 ),
