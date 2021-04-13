@@ -1,56 +1,76 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:grouped_buttons/grouped_buttons.dart';
-import 'package:rhumatologie/models/jamar_arguments.dart';
-import 'package:rhumatologie/screens/scores_pages/score%20de%20jamar/page_2_jamar.dart';
+import 'package:rhumatologie/screens/pages%20patient/home_user.dart';
 import 'package:rhumatologie/shared/constants.dart';
 import 'package:rhumatologie/shared/utils.dart';
 
-class Page1Jamar extends StatefulWidget {
-  static const routeName = '/jamar_1';
+class Page6Jamar extends StatefulWidget {
+  static const routeName = '/jamar_6';
 
   @override
-  _Page1JamarState createState() => _Page1JamarState();
+  _Page6JamarState createState() => _Page6JamarState();
 }
 
-class _Page1JamarState extends State<Page1Jamar> {
+class _Page6JamarState extends State<Page6Jamar> {
   bool testDemanded = true;
-  List<String> question_1 = [];
-  List<String> question_2 = [];
-  List<String> question_3 = [];
-  List<String> question_4 = [];
-  List<String> question_5 = [];
-  List<String> question_6 = [];
-  List<String> question_7 = [];
-  List<String> question_8 = [];
-  int index_1 = 0;
-  int index_2 = 0;
-  int index_3 = 0;
-  int index_4 = 0;
-  int index_5 = 0;
-  int index_6 = 0;
-  int index_7 = 0;
-  int index_8 = 0;
+  var controllerMedicament = TextEditingController();
+  var controllerNePrendPadDeMedicament = TextEditingController();
+  var controllerMedicamentDifficileAAdministrerRegulierement =
+      TextEditingController();
+  var controllerDifficultesMilieuScolaire = TextEditingController();
+
+  List<String> question_33 = [];
+  List<String> question_34 = [];
+  List<String> question_35 = [];
+  List<String> question_36 = [];
+  List<String> question_37 = [];
+  List<String> question_38 = [];
+  List<String> question_39 = [];
+  List<String> question_40 = [];
+  List<String> question_41 = [];
+  List<String> question_42 = [];
+
+  int index_33 = 0;
+  int index_34 = 0;
+  int index_35 = 0;
+  int index_36 = 0;
+  int index_37 = 0;
+  int index_38 = 0;
+  int index_39 = 0;
+  int index_40 = 0;
+  int index_41 = 0;
+  int index_42 = 0;
+
   List categories = <String>[
-    "Sans aucune difficulté",
-    "Avec quelque difficulté",
-    "Avec beaucoup de difficuté",
-    "Incapable à accomplir",
+    "Jamais",
+    "Parfois",
+    "Souvent",
+    "Tous les jours",
     "Non applicable",
   ];
+  double commentSeSentEnfant = 0;
+  bool accordSituationEnfantResteStable = false;
   double sommeScore = 0;
   double nbrOfItems = 0;
   List<int> allQuestionsAutresActivites = [];
   void calculEtEnvoiSomme() {
-    allQuestionsAutresActivites
-        .addAll([index_1, index_2, index_3, index_4, index_5, index_6]);
-    allQuestionsAutresActivites.removeWhere((item) => item == 4);
-    nbrOfItems += allQuestionsAutresActivites.length;
+    var contenuControllerMedicament = controllerMedicament.text;
+    var contenuControllerNePrendPadDeMedicament =
+        controllerNePrendPadDeMedicament.text;
+    var contenuControllerMedicamentDifficileAAdministrerRegulierement =
+        controllerMedicamentDifficileAAdministrerRegulierement.text;
+    var contenuControllerDifficultesMilieuScolaire =
+        controllerDifficultesMilieuScolaire.text;
 
-    sommeScore += allQuestionsAutresActivites.reduce(max);
-    print("nbrOfItems " + nbrOfItems.toString());
-    print("sommeScore " + sommeScore.toString());
+    // allQuestionsAutresActivites
+    //     .addAll([index_9, index_10, index_11, index_12, index_13, index_14]);
+    // allQuestionsAutresActivites.removeWhere((item) => item == 4);
+    // nbrOfItems += allQuestionsAutresActivites.length;
+
+    // sommeScore += allQuestionsAutresActivites.reduce(max);
+    // print("nbrOfItems " + nbrOfItems.toString());
+    // print("sommeScore " + sommeScore.toString());
   }
 
   @override
@@ -63,7 +83,7 @@ class _Page1JamarState extends State<Page1Jamar> {
           onPressed: (null),
           icon: Icon(FontAwesomeIcons.fileAlt, color: Colors.white),
           label: Text(
-            "Score JAMAR     Page 1/6",
+            "Score JAMAR     Page 6/6",
             style: white22Bold,
           ),
         ),
@@ -103,21 +123,13 @@ class _Page1JamarState extends State<Page1Jamar> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                            bottom: 10.0, top: 10.0),
-                                        child: Text(
-                                          "Choisissez la réponse qui décrit le mieux la capacité de votre enfant à accomplir à bien les activités énumérés ci dessous au cours des quatres dernières semaines",
-                                          style: cyan20Bold,
-                                        ),
-                                      ),
                                       questionChaq(
-                                          "1. Courir une distance d\'au moins 10 mètres sur le plat "),
+                                          "33. A eu des difficultés à prendre soin de lui même, par exemple pour manger, pour se laver ou s\'habiller"),
                                       CheckboxGroup(
                                         orientation: GroupedButtonsOrientation
                                             .HORIZONTAL,
                                         labels: categories,
-                                        checked: question_1,
+                                        checked: question_33,
                                         itemBuilder:
                                             (Checkbox cb, Text txt, int i) {
                                           return Flexible(
@@ -145,12 +157,12 @@ class _Page1JamarState extends State<Page1Jamar> {
                                           );
                                         },
                                         onChange: (bool isChecked, String label,
-                                            int index_1) {
+                                            int index_33) {
                                           print(
-                                              "isChecked: $isChecked   label: $label  index: $index_1");
-                                          this.index_1 = index_1;
+                                              "isChecked: $isChecked   label: $label  index: $index_33");
+                                          this.index_33 = index_33;
                                           if (isChecked == false) {
-                                            this.index_1 = 0;
+                                            this.index_33 = 0;
                                           }
                                         },
                                         onSelected: (List selected) =>
@@ -161,173 +173,16 @@ class _Page1JamarState extends State<Page1Jamar> {
                                           }
                                           print(selected);
                                           // else {print("only one");}
-                                          question_1 = selected;
-                                        }),
-                                      ),
-
-                                      questionChaq("2. Monter 5 marches "),
-                                      CheckboxGroup(
-                                        orientation: GroupedButtonsOrientation
-                                            .HORIZONTAL,
-                                        labels: categories,
-                                        checked: question_2,
-                                        itemBuilder:
-                                            (Checkbox cb, Text txt, int i) {
-                                          return Flexible(
-                                            child: SizedBox(
-                                              height: 120,
-                                              child: Column(
-                                                children: <Widget>[
-                                                  Container(
-                                                    child: Center(
-                                                      child: cb,
-                                                    ),
-                                                  ),
-                                                  Container(
-                                                    child: Text(
-                                                      txt.data,
-                                                      maxLines: 4,
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                      style: black13Normal,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          );
-                                        },
-                                        onChange: (bool isChecked, String label,
-                                            int index_2) {
-                                          print(
-                                              "isChecked: $isChecked   label: $label  index: $index_2");
-                                          this.index_2 = index_2;
-                                          if (isChecked == false) {
-                                            this.index_2 = 0;
-                                          }
-                                        },
-                                        onSelected: (List selected) =>
-                                            setState(() {
-                                          if (selected.length > 1) {
-                                            selected.removeAt(0);
-                                            // print('selected length  ${selected.length}');
-                                          }
-                                          print(selected);
-                                          // else {print("only one");}
-                                          question_2 = selected;
-                                        }),
-                                      ),
-                                      questionChaq("3. Sauter en avant "),
-                                      CheckboxGroup(
-                                        orientation: GroupedButtonsOrientation
-                                            .HORIZONTAL,
-                                        labels: categories,
-                                        checked: question_3,
-                                        itemBuilder:
-                                            (Checkbox cb, Text txt, int i) {
-                                          return Flexible(
-                                            child: SizedBox(
-                                              height: 120,
-                                              child: Column(
-                                                children: <Widget>[
-                                                  Container(
-                                                    child: Center(
-                                                      child: cb,
-                                                    ),
-                                                  ),
-                                                  Container(
-                                                    child: Text(
-                                                      txt.data,
-                                                      maxLines: 4,
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                      style: black13Normal,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          );
-                                        },
-                                        onChange: (bool isChecked, String label,
-                                            int index_3) {
-                                          print(
-                                              "isChecked: $isChecked   label: $label  index: $index_3");
-                                          this.index_3 = index_3;
-                                          if (isChecked == false) {
-                                            this.index_3 = 0;
-                                          }
-                                        },
-                                        onSelected: (List selected) =>
-                                            setState(() {
-                                          if (selected.length > 1) {
-                                            selected.removeAt(0);
-                                            // print('selected length  ${selected.length}');
-                                          }
-                                          print(selected);
-                                          // else {print("only one");}
-                                          question_3 = selected;
-                                        }),
-                                      ),
-                                      questionChaq("4. S\'accroupir "),
-                                      CheckboxGroup(
-                                        orientation: GroupedButtonsOrientation
-                                            .HORIZONTAL,
-                                        labels: categories,
-                                        checked: question_4,
-                                        itemBuilder:
-                                            (Checkbox cb, Text txt, int i) {
-                                          return Flexible(
-                                            child: SizedBox(
-                                              height: 120,
-                                              child: Column(
-                                                children: <Widget>[
-                                                  Container(
-                                                    child: Center(
-                                                      child: cb,
-                                                    ),
-                                                  ),
-                                                  Container(
-                                                    child: Text(
-                                                      txt.data,
-                                                      maxLines: 4,
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                      style: black13Normal,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          );
-                                        },
-                                        onChange: (bool isChecked, String label,
-                                            int index_4) {
-                                          print(
-                                              "isChecked: $isChecked   label: $label  index: $index_4");
-                                          this.index_4 = index_4;
-                                          if (isChecked == false) {
-                                            this.index_4 = 0;
-                                          }
-                                        },
-                                        onSelected: (List selected) =>
-                                            setState(() {
-                                          if (selected.length > 1) {
-                                            selected.removeAt(0);
-                                            // print('selected length  ${selected.length}');
-                                          }
-                                          print(selected);
-                                          // else {print("only one");}
-                                          question_4 = selected;
+                                          question_33 = selected;
                                         }),
                                       ),
                                       questionChaq(
-                                          "5. Se pencher pour ramasser un objet par terre "),
+                                          "34. A eu des difficultés à marcher pendant 15 minutes ou à monter quelques marches d\'escalier"),
                                       CheckboxGroup(
                                         orientation: GroupedButtonsOrientation
                                             .HORIZONTAL,
                                         labels: categories,
-                                        checked: question_5,
+                                        checked: question_34,
                                         itemBuilder:
                                             (Checkbox cb, Text txt, int i) {
                                           return Flexible(
@@ -355,12 +210,12 @@ class _Page1JamarState extends State<Page1Jamar> {
                                           );
                                         },
                                         onChange: (bool isChecked, String label,
-                                            int index_5) {
+                                            int index_34) {
                                           print(
-                                              "isChecked: $isChecked   label: $label  index: $index_5");
-                                          this.index_5 = index_5;
+                                              "isChecked: $isChecked   label: $label  index: $index_34");
+                                          this.index_34 = index_34;
                                           if (isChecked == false) {
-                                            this.index_5 = 0;
+                                            this.index_34 = 0;
                                           }
                                         },
                                         onSelected: (List selected) =>
@@ -371,16 +226,16 @@ class _Page1JamarState extends State<Page1Jamar> {
                                           }
                                           print(selected);
                                           // else {print("only one");}
-                                          question_5 = selected;
+                                          question_34 = selected;
                                         }),
                                       ),
                                       questionChaq(
-                                          "6. Faire des activités qui implique l\'usage de ses doights "),
+                                          "35. A eu des difficultés à faire des activités qui requièrent beaucoup d\'énergie comme courir, jouer au football, danser etc.."),
                                       CheckboxGroup(
                                         orientation: GroupedButtonsOrientation
                                             .HORIZONTAL,
                                         labels: categories,
-                                        checked: question_6,
+                                        checked: question_35,
                                         itemBuilder:
                                             (Checkbox cb, Text txt, int i) {
                                           return Flexible(
@@ -408,12 +263,12 @@ class _Page1JamarState extends State<Page1Jamar> {
                                           );
                                         },
                                         onChange: (bool isChecked, String label,
-                                            int index_6) {
+                                            int index_35) {
                                           print(
-                                              "isChecked: $isChecked   label: $label  index: $index_6");
-                                          this.index_6 = index_6;
+                                              "isChecked: $isChecked   label: $label  index: $index_35");
+                                          this.index_35 = index_35;
                                           if (isChecked == false) {
-                                            this.index_6 = 0;
+                                            this.index_35 = 0;
                                           }
                                         },
                                         onSelected: (List selected) =>
@@ -424,16 +279,16 @@ class _Page1JamarState extends State<Page1Jamar> {
                                           }
                                           print(selected);
                                           // else {print("only one");}
-                                          question_6 = selected;
+                                          question_35 = selected;
                                         }),
                                       ),
                                       questionChaq(
-                                          "7. Serrer et desserer ses poignets "),
+                                          "36. A eu des difficultés à garder ses activités à l\'école ou jouer avec des amis"),
                                       CheckboxGroup(
                                         orientation: GroupedButtonsOrientation
                                             .HORIZONTAL,
                                         labels: categories,
-                                        checked: question_7,
+                                        checked: question_36,
                                         itemBuilder:
                                             (Checkbox cb, Text txt, int i) {
                                           return Flexible(
@@ -461,12 +316,12 @@ class _Page1JamarState extends State<Page1Jamar> {
                                           );
                                         },
                                         onChange: (bool isChecked, String label,
-                                            int index_7) {
+                                            int index_36) {
                                           print(
-                                              "isChecked: $isChecked   label: $label  index: $index_7");
-                                          this.index_7 = index_7;
+                                              "isChecked: $isChecked   label: $label  index: $index_36");
+                                          this.index_36 = index_36;
                                           if (isChecked == false) {
-                                            this.index_7 = 0;
+                                            this.index_36 = 0;
                                           }
                                         },
                                         onSelected: (List selected) =>
@@ -477,16 +332,68 @@ class _Page1JamarState extends State<Page1Jamar> {
                                           }
                                           print(selected);
                                           // else {print("only one");}
-                                          question_7 = selected;
+                                          question_36 = selected;
+                                        }),
+                                      ),
+                                      questionChaq("37. A eu des douleurs "),
+                                      CheckboxGroup(
+                                        orientation: GroupedButtonsOrientation
+                                            .HORIZONTAL,
+                                        labels: categories,
+                                        checked: question_37,
+                                        itemBuilder:
+                                            (Checkbox cb, Text txt, int i) {
+                                          return Flexible(
+                                            child: SizedBox(
+                                              height: 120,
+                                              child: Column(
+                                                children: <Widget>[
+                                                  Container(
+                                                    child: Center(
+                                                      child: cb,
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    child: Text(
+                                                      txt.data,
+                                                      maxLines: 4,
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style: black13Normal,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                        onChange: (bool isChecked, String label,
+                                            int index_37) {
+                                          print(
+                                              "isChecked: $isChecked   label: $label  index: $index_37");
+                                          this.index_37 = index_37;
+                                          if (isChecked == false) {
+                                            this.index_37 = 0;
+                                          }
+                                        },
+                                        onSelected: (List selected) =>
+                                            setState(() {
+                                          if (selected.length > 1) {
+                                            selected.removeAt(0);
+                                            // print('selected length  ${selected.length}');
+                                          }
+                                          print(selected);
+                                          // else {print("only one");}
+                                          question_37 = selected;
                                         }),
                                       ),
                                       questionChaq(
-                                          "8. Serrer un objet avec ses mains "),
+                                          "38. Est apparu triste ou déprimé"),
                                       CheckboxGroup(
                                         orientation: GroupedButtonsOrientation
                                             .HORIZONTAL,
                                         labels: categories,
-                                        checked: question_8,
+                                        checked: question_38,
                                         itemBuilder:
                                             (Checkbox cb, Text txt, int i) {
                                           return Flexible(
@@ -514,12 +421,12 @@ class _Page1JamarState extends State<Page1Jamar> {
                                           );
                                         },
                                         onChange: (bool isChecked, String label,
-                                            int index_8) {
+                                            int index_38) {
                                           print(
-                                              "isChecked: $isChecked   label: $label  index: $index_8");
-                                          this.index_8 = index_8;
+                                              "isChecked: $isChecked   label: $label  index: $index_38");
+                                          this.index_38 = index_38;
                                           if (isChecked == false) {
-                                            this.index_8 = 0;
+                                            this.index_38 = 0;
                                           }
                                         },
                                         onSelected: (List selected) =>
@@ -530,8 +437,311 @@ class _Page1JamarState extends State<Page1Jamar> {
                                           }
                                           print(selected);
                                           // else {print("only one");}
-                                          question_8 = selected;
+                                          question_38 = selected;
                                         }),
+                                      ),
+                                      questionChaq(
+                                          "39. Est apparu nerveux ou anxieux "),
+                                      CheckboxGroup(
+                                        orientation: GroupedButtonsOrientation
+                                            .HORIZONTAL,
+                                        labels: categories,
+                                        checked: question_39,
+                                        itemBuilder:
+                                            (Checkbox cb, Text txt, int i) {
+                                          return Flexible(
+                                            child: SizedBox(
+                                              height: 120,
+                                              child: Column(
+                                                children: <Widget>[
+                                                  Container(
+                                                    child: Center(
+                                                      child: cb,
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    child: Text(
+                                                      txt.data,
+                                                      maxLines: 4,
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style: black13Normal,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                        onChange: (bool isChecked, String label,
+                                            int index_39) {
+                                          print(
+                                              "isChecked: $isChecked   label: $label  index: $index_39");
+                                          this.index_39 = index_39;
+                                          if (isChecked == false) {
+                                            this.index_39 = 0;
+                                          }
+                                        },
+                                        onSelected: (List selected) =>
+                                            setState(() {
+                                          if (selected.length > 1) {
+                                            selected.removeAt(0);
+                                            // print('selected length  ${selected.length}');
+                                          }
+                                          print(selected);
+                                          // else {print("only one");}
+                                          question_39 = selected;
+                                        }),
+                                      ),
+                                      questionChaq(
+                                          "40. A eu du mal à s\'entendre avec d\'autres enfants "),
+                                      CheckboxGroup(
+                                        orientation: GroupedButtonsOrientation
+                                            .HORIZONTAL,
+                                        labels: categories,
+                                        checked: question_40,
+                                        itemBuilder:
+                                            (Checkbox cb, Text txt, int i) {
+                                          return Flexible(
+                                            child: SizedBox(
+                                              height: 120,
+                                              child: Column(
+                                                children: <Widget>[
+                                                  Container(
+                                                    child: Center(
+                                                      child: cb,
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    child: Text(
+                                                      txt.data,
+                                                      maxLines: 4,
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style: black13Normal,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                        onChange: (bool isChecked, String label,
+                                            int index_40) {
+                                          print(
+                                              "isChecked: $isChecked   label: $label  index: $index_40");
+                                          this.index_40 = index_40;
+                                          if (isChecked == false) {
+                                            this.index_40 = 0;
+                                          }
+                                        },
+                                        onSelected: (List selected) =>
+                                            setState(() {
+                                          if (selected.length > 1) {
+                                            selected.removeAt(0);
+                                            // print('selected length  ${selected.length}');
+                                          }
+                                          print(selected);
+                                          // else {print("only one");}
+                                          question_40 = selected;
+                                        }),
+                                      ),
+                                      questionChaq(
+                                          "41. A eu des difficultés à se concentrer ou rester attentif"),
+                                      CheckboxGroup(
+                                        orientation: GroupedButtonsOrientation
+                                            .HORIZONTAL,
+                                        labels: categories,
+                                        checked: question_41,
+                                        itemBuilder:
+                                            (Checkbox cb, Text txt, int i) {
+                                          return Flexible(
+                                            child: SizedBox(
+                                              height: 120,
+                                              child: Column(
+                                                children: <Widget>[
+                                                  Container(
+                                                    child: Center(
+                                                      child: cb,
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    child: Text(
+                                                      txt.data,
+                                                      maxLines: 4,
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style: black13Normal,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                        onChange: (bool isChecked, String label,
+                                            int index_41) {
+                                          print(
+                                              "isChecked: $isChecked   label: $label  index: $index_41");
+                                          this.index_41 = index_41;
+                                          if (isChecked == false) {
+                                            this.index_41 = 0;
+                                          }
+                                        },
+                                        onSelected: (List selected) =>
+                                            setState(() {
+                                          if (selected.length > 1) {
+                                            selected.removeAt(0);
+                                            // print('selected length  ${selected.length}');
+                                          }
+                                          print(selected);
+                                          // else {print("only one");}
+                                          question_41 = selected;
+                                        }),
+                                      ),
+                                      questionChaq(
+                                          "42. Estapparu insatisfait de son apparence physique ou de ses capacités physiques "),
+                                      CheckboxGroup(
+                                        orientation: GroupedButtonsOrientation
+                                            .HORIZONTAL,
+                                        labels: categories,
+                                        checked: question_42,
+                                        itemBuilder:
+                                            (Checkbox cb, Text txt, int i) {
+                                          return Flexible(
+                                            child: SizedBox(
+                                              height: 120,
+                                              child: Column(
+                                                children: <Widget>[
+                                                  Container(
+                                                    child: Center(
+                                                      child: cb,
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    child: Text(
+                                                      txt.data,
+                                                      maxLines: 4,
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style: black13Normal,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                        onChange: (bool isChecked, String label,
+                                            int index_42) {
+                                          print(
+                                              "isChecked: $isChecked   label: $label  index: $index_42");
+                                          this.index_42 = index_42;
+                                          if (isChecked == false) {
+                                            this.index_42 = 0;
+                                          }
+                                        },
+                                        onSelected: (List selected) =>
+                                            setState(() {
+                                          if (selected.length > 1) {
+                                            selected.removeAt(0);
+                                            // print('selected length  ${selected.length}');
+                                          }
+                                          print(selected);
+                                          // else {print("only one");}
+                                          question_42 = selected;
+                                        }),
+                                      ),
+                                      questionChaq(
+                                          "43. En prenant en compte tous les aspects de la maladie qui affectent votre enfant, jugez comment il se sent en ce moment précis (choisissez le score le plus précis)"),
+                                      SizedBox(
+                                        height: 12,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: <Widget>[
+                                          sliderLimit(0.0),
+                                          Container(
+                                            width: 250,
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(
+                                                  bottom: 5.0),
+                                              child: SliderTheme(
+                                                data: SliderTheme.of(context)
+                                                    .copyWith(
+                                                  activeTrackColor: cyan3,
+                                                  inactiveTrackColor: cyan2,
+                                                  showValueIndicator:
+                                                      ShowValueIndicator.always,
+                                                  thumbColor: Colors.blueAccent,
+                                                  overlayColor: Colors.purple
+                                                      .withAlpha(32),
+                                                  overlayShape:
+                                                      RoundSliderOverlayShape(
+                                                          overlayRadius: 16.0),
+                                                  activeTickMarkColor: cyan2,
+                                                  inactiveTickMarkColor: cyan2,
+                                                  valueIndicatorShape:
+                                                      PaddleSliderValueIndicatorShape(),
+                                                  valueIndicatorColor:
+                                                      Colors.blueAccent,
+                                                  valueIndicatorTextStyle:
+                                                      white16Bold,
+                                                ),
+                                                child: Slider(
+                                                  value: commentSeSentEnfant,
+                                                  min: 0.0,
+                                                  max: 10.0,
+                                                  divisions: 20,
+                                                  label: '$commentSeSentEnfant',
+                                                  onChanged: (value) {
+                                                    if (mounted == true) {
+                                                      setState(
+                                                        () {
+                                                          commentSeSentEnfant =
+                                                              value;
+                                                        },
+                                                      );
+                                                    }
+                                                  },
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          sliderLimit(10.0),
+                                        ],
+                                      ),
+                                      SizedBox(height: 15),
+                                      questionChaq(
+                                          "44. En prenant compte de toutes les façons dont la maladie influence la vie de votre enfant, seriez vous satisfaits si sa condition restait stable / inchangée pour les prochains mois ?"),
+                                      flatButtonMultipleChoice(
+                                        title: 'Non',
+                                        initValue:
+                                            !accordSituationEnfantResteStable,
+                                        onChanged: (newValue) {
+                                          if (this.mounted) {
+                                            setState(() {
+                                              accordSituationEnfantResteStable =
+                                                  !newValue;
+                                            });
+                                          }
+                                        },
+                                      ),
+                                      flatButtonMultipleChoice(
+                                        title: 'Oui',
+                                        initValue:
+                                            accordSituationEnfantResteStable,
+                                        onChanged: (newValue) {
+                                          if (this.mounted) {
+                                            setState(() {
+                                              accordSituationEnfantResteStable =
+                                                  newValue;
+                                            });
+                                          }
+                                        },
                                       ),
                                       Align(
                                         alignment: Alignment.bottomRight,
@@ -543,10 +753,11 @@ class _Page1JamarState extends State<Page1Jamar> {
                                             onPressed: () {
                                               calculEtEnvoiSomme();
                                               Navigator.of(context).pushNamed(
-                                                  Page2Jamar.routeName,
-                                                  arguments: Jamar1Arguments(
-                                                      nbrOfItems: nbrOfItems,
-                                                      sommeScore: sommeScore));
+                                                HomeUser.routeName,
+                                                // arguments: Chaq3Arguments(
+                                                //     nbrOfItems: nbrOfItems,
+                                                //     sommeScore: sommeScore)
+                                              );
                                             },
                                             focusColor: cyan2,
                                             hoverColor: cyan2,
@@ -576,62 +787,6 @@ class _Page1JamarState extends State<Page1Jamar> {
                                           ),
                                         ),
                                       ),
-                                      // Padding(
-                                      //   padding: const EdgeInsets.only(
-                                      //       bottom: 10.0, top: 10.0),
-                                      //   child: Text(
-                                      //     "Combien de fois text test test?",
-                                      //     style: cyan20Bold,
-                                      //   ),
-                                      // ),
-                                      // flatButtonMultipleChoice(
-                                      //     title: 'test',
-                                      //     initValue: isChecked1,
-                                      //     onChanged: (newValue) {
-                                      //       if (this.mounted) {
-                                      //         setState(() {
-                                      //           isChecked1 = newValue;
-                                      //         });
-                                      //       }
-                                      //     }),
-                                      // flatButtonMultipleChoice(
-                                      //     title: 'test',
-                                      //     initValue: isChecked2,
-                                      //     onChanged: (newValue) {
-                                      //       if (this.mounted) {
-                                      //         setState(() {
-                                      //           isChecked2 = newValue;
-                                      //         });
-                                      //       }
-                                      //     }),
-                                      // Padding(
-                                      //   padding: const EdgeInsets.only(
-                                      //       bottom: 10.0, top: 10.0),
-                                      //   child: Text(
-                                      //     "Combien de fois text test test?",
-                                      //     style: cyan20Bold,
-                                      //   ),
-                                      // ),
-                                      // Container(
-                                      //   margin: EdgeInsets.only(
-                                      //       bottom: 10.0,
-                                      //       top: 15.0,
-                                      //       right: 20.0,
-                                      //       left: 20.0),
-                                      //   padding: EdgeInsets.only(
-                                      //       right: 10.0, left: 10.0),
-                                      //   decoration: BoxDecoration(
-                                      //     border: Border.all(
-                                      //         color: cyan2, width: 2.0),
-                                      //     borderRadius: BorderRadius.all(
-                                      //         Radius.circular(8)),
-                                      //   ),
-                                      //   child: TextFormField(
-                                      //       cursorColor: cyan2,
-                                      //       decoration: InputDecoration(
-                                      //           border: InputBorder.none),
-                                      //       style: black18Normal),
-                                      // ),
                                     ],
                                   )
                                 : RichText(

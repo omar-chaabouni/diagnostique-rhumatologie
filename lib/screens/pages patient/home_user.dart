@@ -9,6 +9,7 @@ import 'package:rhumatologie/shared/constants.dart';
 
 // Diagnostic PAGE
 class HomeUser extends StatefulWidget {
+  static const routeName = '/home_user';
   HomeUser({Key key}) : super(key: key);
   // final AuthService _auth = AuthService();
   @override
@@ -36,7 +37,8 @@ class _HomeUserState extends State<HomeUser> {
 
   void _onItemTapped(int selectedIndex) {
     // print("selected  " + selectedIndex.toString());
-    _pageController.jumpToPage(selectedIndex);
+    _pageController.animateToPage(selectedIndex,
+        duration: Duration(milliseconds: 300), curve: Curves.linear);
   }
 
   @override

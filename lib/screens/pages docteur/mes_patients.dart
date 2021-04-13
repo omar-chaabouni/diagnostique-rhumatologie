@@ -38,7 +38,7 @@ class _MyPatientsState extends State<MyPatients> {
   }
 
   _getDoctorsAllPatients() async {
-    String operationsURL = 'http://192.168.1.16:4000/patients';
+    String operationsURL = 'http://192.168.1.107:4000/patients';
     try {
       var operationResponse = await http.get("$operationsURL");
       if (operationResponse.statusCode == 200) {

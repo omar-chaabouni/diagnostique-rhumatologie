@@ -4,36 +4,36 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:grouped_buttons/grouped_buttons.dart';
 import 'package:rhumatologie/models/chaq_arguments.dart';
-import 'package:rhumatologie/screens/scores_pages/score%20de%20chaq/page_2_chaq.dart';
+import 'package:rhumatologie/screens/scores_pages/score%20de%20chaq/page_4_chaq.dart';
 import 'package:rhumatologie/shared/constants.dart';
 import 'package:rhumatologie/shared/utils.dart';
 
-class Page1Chaq extends StatefulWidget {
-  static const routeName = '/chaq_1';
+class Page3Chaq extends StatefulWidget {
+  static const routeName = '/chaq_3';
   @override
-  _Page1ChaqState createState() => _Page1ChaqState();
+  _Page3ChaqState createState() => _Page3ChaqState();
 }
 
-class _Page1ChaqState extends State<Page1Chaq> {
+class _Page3ChaqState extends State<Page3Chaq> {
   bool testDemanded = true;
-  List<String> question_1 = [];
-  List<String> question_2 = [];
-  List<String> question_3 = [];
-  List<String> question_4 = [];
-  List<String> question_5 = [];
-  List<String> question_6 = [];
-  List<String> question_7 = [];
-  List<String> question_8 = [];
-  List<String> question_9 = [];
-  int index_1 = 0;
-  int index_2 = 0;
-  int index_3 = 0;
-  int index_4 = 0;
-  int index_5 = 0;
-  int index_6 = 0;
-  int index_7 = 0;
-  int index_8 = 0;
-  int index_9 = 0;
+  List<String> question_19 = [];
+  List<String> question_20 = [];
+  List<String> question_21 = [];
+  List<String> question_22 = [];
+  List<String> question_23 = [];
+  List<String> question_24 = [];
+  List<String> question_25 = [];
+  List<String> question_26 = [];
+  List<String> question_27 = [];
+  int index_19 = 0;
+  int index_20 = 0;
+  int index_21 = 0;
+  int index_22 = 0;
+  int index_23 = 0;
+  int index_24 = 0;
+  int index_25 = 0;
+  int index_26 = 0;
+  int index_27 = 0;
   List categories = <String>[
     "Sans difficulté",
     "Avec quelque difficulté",
@@ -43,23 +43,17 @@ class _Page1ChaqState extends State<Page1Chaq> {
   ];
   double sommeScore = 0;
   double nbrOfItems = 0;
-  List<int> allQuestionsHabillerSepreparer = [];
-  List<int> allQuestionsManger = [];
-  List<int> allQuestionsSeLever = [];
-
+  List<int> allQuestionsAtteindre = [];
+  List<int> allQuestionsSaisirTenir = [];
   void calculEtEnvoiSomme() {
-    allQuestionsHabillerSepreparer.addAll([index_1, index_2, index_3, index_4]);
-    allQuestionsSeLever.addAll([index_5, index_6]);
-    allQuestionsManger.addAll([index_7, index_8, index_9]);
-    allQuestionsHabillerSepreparer.removeWhere((item) => item == 4);
-    allQuestionsSeLever.removeWhere((item) => item == 4);
-    allQuestionsManger.removeWhere((item) => item == 4);
-    nbrOfItems += allQuestionsHabillerSepreparer.length +
-        allQuestionsSeLever.length +
-        allQuestionsManger.length;
-    sommeScore += allQuestionsHabillerSepreparer.reduce(max);
-    sommeScore += allQuestionsSeLever.reduce(max);
-    sommeScore += allQuestionsManger.reduce(max);
+    allQuestionsAtteindre.addAll([index_19, index_20, index_21, index_22]);
+    allQuestionsSaisirTenir
+        .addAll([index_23, index_24, index_25, index_26, index_27]);
+    allQuestionsAtteindre.removeWhere((item) => item == 4);
+    allQuestionsSaisirTenir.removeWhere((item) => item == 4);
+    nbrOfItems += allQuestionsAtteindre.length + allQuestionsSaisirTenir.length;
+    sommeScore += allQuestionsAtteindre.reduce(max);
+    sommeScore += allQuestionsSaisirTenir.reduce(max);
     print("nbrOfItems " + nbrOfItems.toString());
     print("sommeScore " + sommeScore.toString());
   }
@@ -74,7 +68,7 @@ class _Page1ChaqState extends State<Page1Chaq> {
           onPressed: (null),
           icon: Icon(FontAwesomeIcons.fileAlt, color: Colors.white),
           label: Text(
-            "Score CHAQ      Page 1/4",
+            "Score CHAQ      Page 3/4",
             style: white22Bold,
           ),
         ),
@@ -112,18 +106,18 @@ class _Page1ChaqState extends State<Page1Chaq> {
                                   padding: const EdgeInsets.only(
                                       bottom: 10.0, top: 10.0),
                                   child: Text(
-                                    "S\'habiller et se préparer ".toUpperCase(),
+                                    "Atteindre".toUpperCase(),
                                     style: cyan20Bold,
                                   ),
                                 ),
                                 questionChaq("Votre enfant est-il capable de"),
                                 questionChaq(
-                                    "1. S\'habiller, y compris nouer ces lacets et boutonner ses vêtements ?"),
+                                    "1. Attraper un objet lourd comme une grande boite de jeu ou des livres placés juste au dessus de sa tête ?"),
                                 CheckboxGroup(
                                   orientation:
                                       GroupedButtonsOrientation.HORIZONTAL,
                                   labels: categories,
-                                  checked: question_1,
+                                  checked: question_19,
                                   itemBuilder: (Checkbox cb, Text txt, int i) {
                                     return Flexible(
                                       child: SizedBox(
@@ -147,12 +141,12 @@ class _Page1ChaqState extends State<Page1Chaq> {
                                     );
                                   },
                                   onChange: (bool isChecked, String label,
-                                      int index_1) {
+                                      int index_19) {
                                     print(
-                                        "isChecked: $isChecked   label: $label  index: $index_1");
-                                    this.index_1 = index_1;
+                                        "isChecked: $isChecked   label: $label  index: $index_19");
+                                    this.index_19 = index_19;
                                     if (isChecked == false) {
-                                      this.index_1 = 0;
+                                      this.index_19 = 0;
                                     }
                                   },
                                   onSelected: (List selected) => setState(() {
@@ -162,15 +156,16 @@ class _Page1ChaqState extends State<Page1Chaq> {
                                     }
                                     print(selected);
                                     // else {print("only one");}
-                                    question_1 = selected;
+                                    question_19 = selected;
                                   }),
                                 ),
-                                questionChaq("2. Se laver les chevaux ?"),
+                                questionChaq(
+                                    "2. Se baisser pour ramasser un vêtement ou une feuille de papier par terre ?"),
                                 CheckboxGroup(
                                   orientation:
                                       GroupedButtonsOrientation.HORIZONTAL,
                                   labels: categories,
-                                  checked: question_2,
+                                  checked: question_20,
                                   itemBuilder: (Checkbox cb, Text txt, int i) {
                                     return Flexible(
                                       child: SizedBox(
@@ -194,12 +189,12 @@ class _Page1ChaqState extends State<Page1Chaq> {
                                     );
                                   },
                                   onChange: (bool isChecked, String label,
-                                      int index_2) {
+                                      int index_20) {
                                     print(
-                                        "isChecked: $isChecked   label: $label  index: $index_2");
-                                    this.index_2 = index_2;
+                                        "isChecked: $isChecked   label: $label  index: $index_20");
+                                    this.index_20 = index_20;
                                     if (isChecked == false) {
-                                      this.index_2 = 0;
+                                      this.index_20 = 0;
                                     }
                                   },
                                   onSelected: (List selected) => setState(() {
@@ -209,15 +204,15 @@ class _Page1ChaqState extends State<Page1Chaq> {
                                     }
                                     print(selected);
                                     // else {print("only one");}
-                                    question_2 = selected;
+                                    question_20 = selected;
                                   }),
                                 ),
-                                questionChaq("3. Enlever ses chaussettes ?"),
+                                questionChaq("3. Enfiler un pull ?"),
                                 CheckboxGroup(
                                   orientation:
                                       GroupedButtonsOrientation.HORIZONTAL,
                                   labels: categories,
-                                  checked: question_3,
+                                  checked: question_21,
                                   itemBuilder: (Checkbox cb, Text txt, int i) {
                                     return Flexible(
                                       child: SizedBox(
@@ -241,12 +236,12 @@ class _Page1ChaqState extends State<Page1Chaq> {
                                     );
                                   },
                                   onChange: (bool isChecked, String label,
-                                      int index_3) {
+                                      int index_21) {
                                     print(
-                                        "isChecked: $isChecked   label: $label  index: $index_3");
-                                    this.index_3 = index_3;
+                                        "isChecked: $isChecked   label: $label  index: $index_21");
+                                    this.index_21 = index_21;
                                     if (isChecked == false) {
-                                      this.index_3 = 0;
+                                      this.index_21 = 0;
                                     }
                                   },
                                   onSelected: (List selected) => setState(() {
@@ -256,15 +251,16 @@ class _Page1ChaqState extends State<Page1Chaq> {
                                     }
                                     print(selected);
                                     // else {print("only one");}
-                                    question_3 = selected;
+                                    question_21 = selected;
                                   }),
                                 ),
-                                questionChaq("4. Se couper les ongles ?"),
+                                questionChaq(
+                                    "4. Tourner la tête pour regarder par dessus son épaule ?"),
                                 CheckboxGroup(
                                   orientation:
                                       GroupedButtonsOrientation.HORIZONTAL,
                                   labels: categories,
-                                  checked: question_4,
+                                  checked: question_22,
                                   itemBuilder: (Checkbox cb, Text txt, int i) {
                                     return Flexible(
                                       child: SizedBox(
@@ -288,12 +284,12 @@ class _Page1ChaqState extends State<Page1Chaq> {
                                     );
                                   },
                                   onChange: (bool isChecked, String label,
-                                      int index_4) {
+                                      int index_22) {
                                     print(
-                                        "isChecked: $isChecked   label: $label  index: $index_4");
-                                    this.index_4 = index_4;
+                                        "isChecked: $isChecked   label: $label  index: $index_22");
+                                    this.index_22 = index_22;
                                     if (isChecked == false) {
-                                      this.index_4 = 0;
+                                      this.index_22 = 0;
                                     }
                                   },
                                   onSelected: (List selected) => setState(() {
@@ -303,25 +299,25 @@ class _Page1ChaqState extends State<Page1Chaq> {
                                     }
                                     print(selected);
                                     // else {print("only one");}
-                                    question_4 = selected;
+                                    question_22 = selected;
                                   }),
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(
                                       bottom: 10.0, top: 10.0),
                                   child: Text(
-                                    "Se lever ".toUpperCase(),
+                                    "Saisir, Tenir".toUpperCase(),
                                     style: cyan20Bold,
                                   ),
                                 ),
                                 questionChaq("Votre enfant est-il capable de"),
                                 questionChaq(
-                                    "1. Se lever d\'une chaise basse ou du sol ?"),
+                                    "1. Ecrire ou gribouiller avec un crayon ?"),
                                 CheckboxGroup(
                                   orientation:
                                       GroupedButtonsOrientation.HORIZONTAL,
                                   labels: categories,
-                                  checked: question_5,
+                                  checked: question_23,
                                   itemBuilder: (Checkbox cb, Text txt, int i) {
                                     return Flexible(
                                       child: SizedBox(
@@ -345,12 +341,12 @@ class _Page1ChaqState extends State<Page1Chaq> {
                                     );
                                   },
                                   onChange: (bool isChecked, String label,
-                                      int index_5) {
+                                      int index_23) {
                                     print(
-                                        "isChecked: $isChecked   label: $label  index: $index_5");
-                                    this.index_5 = index_5;
+                                        "isChecked: $isChecked   label: $label  index: $index_23");
+                                    this.index_23 = index_23;
                                     if (isChecked == false) {
-                                      this.index_5 = 0;
+                                      this.index_23 = 0;
                                     }
                                   },
                                   onSelected: (List selected) => setState(() {
@@ -360,16 +356,16 @@ class _Page1ChaqState extends State<Page1Chaq> {
                                     }
                                     print(selected);
                                     // else {print("only one");}
-                                    question_5 = selected;
+                                    question_23 = selected;
                                   }),
                                 ),
                                 questionChaq(
-                                    "2. Se mettre au lit et en sortir ou se mettre debout dans son lit ?"),
+                                    "2. Ouvrir une porte de voiture ?"),
                                 CheckboxGroup(
                                   orientation:
                                       GroupedButtonsOrientation.HORIZONTAL,
                                   labels: categories,
-                                  checked: question_6,
+                                  checked: question_24,
                                   itemBuilder: (Checkbox cb, Text txt, int i) {
                                     return Flexible(
                                       child: SizedBox(
@@ -393,12 +389,12 @@ class _Page1ChaqState extends State<Page1Chaq> {
                                     );
                                   },
                                   onChange: (bool isChecked, String label,
-                                      int index_6) {
+                                      int index_24) {
                                     print(
-                                        "isChecked: $isChecked   label: $label  index: $index_6");
-                                    this.index_6 = index_6;
+                                        "isChecked: $isChecked   label: $label  index: $index_24");
+                                    this.index_24 = index_24;
                                     if (isChecked == false) {
-                                      this.index_6 = 0;
+                                      this.index_24 = 0;
                                     }
                                   },
                                   onSelected: (List selected) => setState(() {
@@ -408,72 +404,16 @@ class _Page1ChaqState extends State<Page1Chaq> {
                                     }
                                     print(selected);
                                     // else {print("only one");}
-                                    question_6 = selected;
-                                  }),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      bottom: 10.0, top: 10.0),
-                                  child: Text(
-                                    "Manger ".toUpperCase(),
-                                    style: cyan20Bold,
-                                  ),
-                                ),
-                                questionChaq("Votre enfant est-il capable de"),
-                                questionChaq("1. Couper sa viande ?"),
-                                CheckboxGroup(
-                                  orientation:
-                                      GroupedButtonsOrientation.HORIZONTAL,
-                                  labels: categories,
-                                  checked: question_7,
-                                  itemBuilder: (Checkbox cb, Text txt, int i) {
-                                    return Flexible(
-                                      child: SizedBox(
-                                        height: 120,
-                                        child: Column(
-                                          children: <Widget>[
-                                            Container(
-                                              child: Center(
-                                                child: cb,
-                                              ),
-                                            ),
-                                            Container(
-                                              child: Text(txt.data,
-                                                  maxLines: 4,
-                                                  textAlign: TextAlign.center,
-                                                  style: black13Normal),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                  onChange: (bool isChecked, String label,
-                                      int index_7) {
-                                    print(
-                                        "isChecked: $isChecked   label: $label  index: $index_7");
-                                    this.index_7 = index_7;
-                                    if (isChecked == false) {
-                                      this.index_7 = 0;
-                                    }
-                                  },
-                                  onSelected: (List selected) => setState(() {
-                                    if (selected.length > 1) {
-                                      selected.removeAt(0);
-                                      // print('selected length  ${selected.length}');
-                                    }
-                                    print(selected);
-                                    // else {print("only one");}
-                                    question_7 = selected;
+                                    question_24 = selected;
                                   }),
                                 ),
                                 questionChaq(
-                                    "2. Porter une tasse ou un verre à la bouche ?"),
+                                    "3. Dévisser le couvercle d'un pot de confiture (qui a déja été ouvert) ?"),
                                 CheckboxGroup(
                                   orientation:
                                       GroupedButtonsOrientation.HORIZONTAL,
                                   labels: categories,
-                                  checked: question_8,
+                                  checked: question_25,
                                   itemBuilder: (Checkbox cb, Text txt, int i) {
                                     return Flexible(
                                       child: SizedBox(
@@ -497,12 +437,12 @@ class _Page1ChaqState extends State<Page1Chaq> {
                                     );
                                   },
                                   onChange: (bool isChecked, String label,
-                                      int index_8) {
+                                      int index_25) {
                                     print(
-                                        "isChecked: $isChecked   label: $label  index: $index_8");
-                                    this.index_8 = index_8;
+                                        "isChecked: $isChecked   label: $label  index: $index_25");
+                                    this.index_25 = index_25;
                                     if (isChecked == false) {
-                                      this.index_8 = 0;
+                                      this.index_25 = 0;
                                     }
                                   },
                                   onSelected: (List selected) => setState(() {
@@ -512,15 +452,16 @@ class _Page1ChaqState extends State<Page1Chaq> {
                                     }
                                     print(selected);
                                     // else {print("only one");}
-                                    question_8 = selected;
+                                    question_25 = selected;
                                   }),
                                 ),
-                                questionChaq("3. Ouvrir un pot de yaourt ?"),
+                                questionChaq(
+                                    "4. Ouvrir et fermer un robinet ?"),
                                 CheckboxGroup(
                                   orientation:
                                       GroupedButtonsOrientation.HORIZONTAL,
                                   labels: categories,
-                                  checked: question_9,
+                                  checked: question_26,
                                   itemBuilder: (Checkbox cb, Text txt, int i) {
                                     return Flexible(
                                       child: SizedBox(
@@ -544,12 +485,12 @@ class _Page1ChaqState extends State<Page1Chaq> {
                                     );
                                   },
                                   onChange: (bool isChecked, String label,
-                                      int index_9) {
+                                      int index_26) {
                                     print(
-                                        "isChecked: $isChecked   label: $label  index: $index_9");
-                                    this.index_9 = index_9;
+                                        "isChecked: $isChecked   label: $label  index: $index_26");
+                                    this.index_26 = index_26;
                                     if (isChecked == false) {
-                                      this.index_9 = 0;
+                                      this.index_26 = 0;
                                     }
                                   },
                                   onSelected: (List selected) => setState(() {
@@ -559,7 +500,55 @@ class _Page1ChaqState extends State<Page1Chaq> {
                                     }
                                     print(selected);
                                     // else {print("only one");}
-                                    question_9 = selected;
+                                    question_26 = selected;
+                                  }),
+                                ),
+                                questionChaq(
+                                    "5. Ouvrir une porte en tournant la poignée ?"),
+                                CheckboxGroup(
+                                  orientation:
+                                      GroupedButtonsOrientation.HORIZONTAL,
+                                  labels: categories,
+                                  checked: question_27,
+                                  itemBuilder: (Checkbox cb, Text txt, int i) {
+                                    return Flexible(
+                                      child: SizedBox(
+                                        height: 120,
+                                        child: Column(
+                                          children: <Widget>[
+                                            Container(
+                                              child: Center(
+                                                child: cb,
+                                              ),
+                                            ),
+                                            Container(
+                                              child: Text(txt.data,
+                                                  maxLines: 4,
+                                                  textAlign: TextAlign.center,
+                                                  style: black13Normal),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  onChange: (bool isChecked, String label,
+                                      int index_27) {
+                                    print(
+                                        "isChecked: $isChecked   label: $label  index: $index_27");
+                                    this.index_27 = index_27;
+                                    if (isChecked == false) {
+                                      this.index_27 = 0;
+                                    }
+                                  },
+                                  onSelected: (List selected) => setState(() {
+                                    if (selected.length > 1) {
+                                      selected.removeAt(0);
+                                      // print('selected length  ${selected.length}');
+                                    }
+                                    print(selected);
+                                    // else {print("only one");}
+                                    question_27 = selected;
                                   }),
                                 ),
                                 Align(
@@ -571,8 +560,8 @@ class _Page1ChaqState extends State<Page1Chaq> {
                                       onPressed: () {
                                         calculEtEnvoiSomme();
                                         Navigator.of(context).pushNamed(
-                                            Page2Chaq.routeName,
-                                            arguments: Chaq1Arguments(
+                                            Page4Chaq.routeName,
+                                            arguments: Chaq3Arguments(
                                                 nbrOfItems: nbrOfItems,
                                                 sommeScore: sommeScore));
                                       },
@@ -603,34 +592,6 @@ class _Page1ChaqState extends State<Page1Chaq> {
                                     ),
                                   ),
                                 ),
-                                // Padding(
-                                //   padding: const EdgeInsets.only(
-                                //       bottom: 10.0, top: 10.0),
-                                //   child: Text(
-                                //     "Combien de fois text test test?",
-                                //     style: cyan20Bold,
-                                //   ),
-                                // ),
-                                // Container(
-                                //   margin: EdgeInsets.only(
-                                //       bottom: 10.0,
-                                //       top: 15.0,
-                                //       right: 20.0,
-                                //       left: 20.0),
-                                //   padding:
-                                //       EdgeInsets.only(right: 10.0, left: 10.0),
-                                //   decoration: BoxDecoration(
-                                //     border:
-                                //         Border.all(color: cyan2, width: 2.0),
-                                //     borderRadius:
-                                //         BorderRadius.all(Radius.circular(8)),
-                                //   ),
-                                //   child: TextFormField(
-                                //       cursorColor: cyan2,
-                                //       decoration: InputDecoration(
-                                //           border: InputBorder.none),
-                                //       style: black18Normal),
-                                // ),
                               ],
                             )
                           : RichText(

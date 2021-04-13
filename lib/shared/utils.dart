@@ -4,35 +4,39 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:rhumatologie/screens/scores_pages/score%20de%20chaq/page_1_chaq.dart';
 import 'package:rhumatologie/screens/scores_pages/score%20de%20jadas/page_1_jadas.dart';
 import 'package:rhumatologie/screens/scores_pages/score%20de%20jamar/page_1_jamar.dart';
-import 'package:rhumatologie/screens/scores_pages/score%20de%20jsrada/page_1_jsrada.dart';
+import 'package:rhumatologie/screens/scores_pages/score%20de%20jspada/page_1_jspada.dart';
 import 'package:rhumatologie/shared/constants.dart';
 
 FlatButton flatButtonMultipleChoice(
     {String title, bool initValue, Function(bool boolValue) onChanged}) {
   return FlatButton(
     autofocus: true,
-    color: Colors.white,
     splashColor: Colors.white,
     highlightColor: Colors.white,
-    onPressed: () => () {},
+    onPressed: () {
+      onChanged(!initValue);
+    },
     child: Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         SizedBox(
           height: 24.0,
           width: 24.0,
-          child: Checkbox(
-              value: initValue,
-              onChanged: (b) {
-                onChanged(b);
-                print(b.toString());
-              }),
+          child: Padding(
+            padding: const EdgeInsets.only(top: 4.0),
+            child: Checkbox(
+                value: initValue,
+                onChanged: (b) {
+                  onChanged(b);
+                  // print(b.toString());
+                }),
+          ),
         ),
         SizedBox(width: 20.0),
         Expanded(
             child: Padding(
           padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
-          child: Text(title, style: black18Bold),
+          child: Text(title, style: black18Normal),
         )),
       ],
     ),
@@ -75,6 +79,41 @@ Card createBilanPatientCard(String insideText) {
                         TextSpan(
                           text: insideText,
                           style: black18Normal,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    ),
+  );
+}
+
+Card questionCardTitle(String cardTitle) {
+  return Card(
+    color: cyan2,
+    elevation: 0.0,
+    margin: EdgeInsets.all(0.0),
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
+    child: Padding(
+      padding: EdgeInsets.all(10.0),
+      child: Container(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Flexible(
+                  child: Text.rich(
+                    TextSpan(
+                      children: [
+                        TextSpan(
+                          text: cardTitle,
+                          style: white19Bold,
                         ),
                       ],
                     ),
@@ -230,6 +269,17 @@ Container textFormFieldNumber(
   );
 }
 
+Padding questionChaq(String text) {
+  return Padding(
+    padding: const EdgeInsets.only(bottom: 4.0, top: 4.0),
+    child: Text(
+      text,
+      style: TextStyle(
+          color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),
+    ),
+  );
+}
+
 Card createRequestedScoreCard(
     String scoreType, BuildContext context, String nomPatient) {
   return Card(
@@ -290,9 +340,9 @@ Card createRequestedScoreCard(
                               Page1Jadas.routeName,
                               arguments: nomPatient);
                           break;
-                        case "JSRADA":
+                        case "JSPADA":
                           return Navigator.of(context).pushNamed(
-                              Page1Jsrada.routeName,
+                              Page1Jspada.routeName,
                               arguments: nomPatient);
                           break;
                         case "CHAQ":
@@ -449,6 +499,33 @@ Text sliderLimit(double value) {
   return Text(
     "$value",
     style: black18Bold,
+  );
+}
+
+Padding sliderLimitWithText(double value, String textDouleur) {
+  return Padding(
+    padding: const EdgeInsets.only(top: 20.0, bottom: 10.0),
+    child: Container(
+      width: 50,
+      child: Column(
+        children: [
+          Text(
+            "$value",
+            style: GoogleFonts.oxygen(
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+                fontSize: 13.0),
+          ),
+          Text(
+            "$textDouleur",
+            style: GoogleFonts.oxygen(
+                color: Colors.black,
+                fontWeight: FontWeight.normal,
+                fontSize: 11.0),
+          ),
+        ],
+      ),
+    ),
   );
 }
 

@@ -16,13 +16,13 @@ class _ChooseScoreState extends State<ChooseScore> {
 
   List<String> listOfTiltlesOfScores = [
     "Test de score JADAS",
-    "Test de score JSRADA",
+    "Test de score JSPADA",
     "Test de score CHAQ",
     "Test de score JAMAR",
   ];
   List<String> listOfScores = [
     "JADAS",
-    "JSRADA",
+    "JSPADA",
     "CHAQ",
     "JAMAR",
   ];

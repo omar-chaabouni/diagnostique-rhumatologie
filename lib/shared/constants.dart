@@ -22,11 +22,26 @@ final black16Normal = GoogleFonts.oxygen(
     fontSize: 16.0,
     height: 1.4);
 
+final black13Normal = GoogleFonts.oxygen(
+    color: Colors.black, fontWeight: FontWeight.normal, fontSize: 13.0);
+
+final cyan13Normal = GoogleFonts.oxygen(
+    color: cyan2, fontWeight: FontWeight.normal, fontSize: 13.0);
+
 final black18Normal = GoogleFonts.oxygen(
     color: Colors.black,
     fontWeight: FontWeight.normal,
     fontSize: 18.0,
     height: 1.4);
+
+final green18Bold = GoogleFonts.oxygen(
+    fontWeight: FontWeight.w600, color: Colors.green, fontSize: 18.0);
+
+final white16Bold = GoogleFonts.oxygen(
+    fontWeight: FontWeight.bold, color: Colors.white, fontSize: 16);
+
+final white19Bold = GoogleFonts.oxygen(
+    fontWeight: FontWeight.bold, color: Colors.white, fontSize: 19);
 
 final white22Normal = GoogleFonts.oxygen(color: Colors.white, fontSize: 22.0);
 

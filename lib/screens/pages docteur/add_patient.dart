@@ -3,6 +3,7 @@ import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:rhumatologie/screens/pages%20docteur/home_doctor.dart';
 import 'package:rhumatologie/shared/constants.dart';
 import 'package:rhumatologie/shared/utils.dart';
 import 'dart:async';
@@ -287,7 +288,7 @@ class _AddPatientState extends State<AddPatient> {
                                 );
                                 Future.delayed(Duration(seconds: 2), () {
                                   Navigator.pushNamedAndRemoveUntil(context,
-                                      "/back_home_doctor", (_) => false);
+                                      HomeDoctor.routeName, (_) => false);
                                 });
                               }
                             },
