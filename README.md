@@ -1,4 +1,4 @@
-Application mobile de diagnostique et aide au diagnostique concernant les maladies rhumatologique au faveur de l’institut Kassab Manouba.
+Application mobile de diagnostique et aide à la gestion des patients atteints de la spondyloartrite au faveur de l’institut Kassab Manouba.
 
 
 
