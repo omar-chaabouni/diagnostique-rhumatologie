@@ -38,12 +38,12 @@ class _MyPatientsState extends State<MyPatients> {
   }
 
   _getDoctorsAllPatients() async {
-    String operationsURL = 'http://192.168.1.107:4000/patients';
+    String operationsURL = 'http://192.168.1.16:4000/doctors/myPatients';
     try {
       var operationResponse = await http.get("$operationsURL");
       if (operationResponse.statusCode == 200) {
         patientList = Patient.patientFromJson(operationResponse.body);
-        print(patientList);
+        // print(patientList);
         if (mounted == true) {
           setState(() {
             filteredPatients = patientList;
@@ -151,10 +151,9 @@ class _MyPatientsState extends State<MyPatients> {
                                 Row(
                                   children: [
                                     Text(
-                                        filteredPatients[index].nom +
+                                        filteredPatients[index].prenom +
                                                 ' ' +
-                                                filteredPatients[index]
-                                                    .prenom ??
+                                                filteredPatients[index].nom ??
                                             'null',
                                         style: black18Bold),
                                     Spacer(),

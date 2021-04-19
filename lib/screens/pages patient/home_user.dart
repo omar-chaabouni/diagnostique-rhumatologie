@@ -4,7 +4,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:rhumatologie/screens/pages%20patient/profile.dart';
 import 'package:rhumatologie/screens/pages%20patient/user_drugs.dart';
 import 'package:rhumatologie/screens/scores_pages/choose_score.dart';
-import 'package:rhumatologie/screens/scores_pages/page_1.dart';
 import 'package:rhumatologie/shared/constants.dart';
 
 // Diagnostic PAGE

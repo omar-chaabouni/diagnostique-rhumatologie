@@ -15,6 +15,7 @@ class Patient {
     this.diagnostic,
     this.ordonnance,
     this.jadas,
+    this.createdAt,
     this.v,
     this.bilan,
   });
@@ -27,6 +28,7 @@ class Patient {
   String diagnostic;
   String ordonnance;
   List<Jadas> jadas;
+  String createdAt;
   int v;
   List<Bilan> bilan;
 
@@ -38,6 +40,7 @@ class Patient {
         numDossier: json["num_dossier"],
         diagnostic: json["diagnostic"],
         ordonnance: json["ordonnance"],
+        createdAt: json["createdAt"],
         jadas: List<Jadas>.from(json["JADAS"].map((x) => Jadas.fromJson(x))),
         v: json["__v"],
         bilan: List<Bilan>.from(json["Bilan"].map((x) => Bilan.fromJson(x))),
@@ -51,6 +54,7 @@ class Patient {
         "num_dossier": numDossier,
         "diagnostic": diagnostic,
         "ordonnance": ordonnance,
+        "createdAt": createdAt,
         "JADAS": List<dynamic>.from(jadas.map((x) => x.toJson())),
         "__v": v,
         "Bilan": List<dynamic>.from(bilan.map((x) => x.toJson())),
