@@ -9,7 +9,7 @@ class RequestResult {
 }
 
 const PROTOCOL = "http";
-const DOMAIN = "192.168.1.107:4000";
+const DOMAIN = "192.168.1.16:4000";
 
 Future<RequestResult> httpGet(String route, [dynamic data]) async {
   var dataStr = jsonEncode(data);

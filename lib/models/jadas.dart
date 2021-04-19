@@ -4,12 +4,14 @@ class Jadas {
     this.dateDemande,
     this.state,
     this.dateValidation,
+    this.dateRempli,
   });
 
   String id;
   DateTime dateDemande;
   int state;
   DateTime dateValidation;
+  DateTime dateRempli;
 
   factory Jadas.fromJson(Map<String, dynamic> json) => Jadas(
         id: json["_id"],
@@ -20,6 +22,9 @@ class Jadas {
         dateValidation: json["dateValidation"] == null
             ? null
             : DateTime.parse(json["dateValidation"]),
+        dateRempli: json["dateRempli"] == null
+            ? null
+            : DateTime.parse(json["dateRempli"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -29,5 +34,6 @@ class Jadas {
         "state": state,
         "dateValidation":
             dateValidation == null ? null : dateValidation.toIso8601String(),
+        "dateRempli": dateRempli == null ? null : dateRempli.toIso8601String(),
       };
 }

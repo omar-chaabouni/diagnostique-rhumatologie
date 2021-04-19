@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:rhumatologie/screens/pages%20docteur/details_jamar.dart';
 // import 'package:flutter/services.dart';
 // import 'package:provider/provider.dart';
 import 'package:rhumatologie/screens/pages%20docteur/details_score.dart';
 import 'package:rhumatologie/screens/pages%20docteur/edit_user_prescription.dart';
 import 'package:rhumatologie/screens/pages%20docteur/historique_score.dart';
 import 'package:rhumatologie/screens/pages%20docteur/home_doctor.dart';
+import 'package:rhumatologie/screens/pages%20docteur/valider_bilans.dart';
 import 'package:rhumatologie/screens/pages%20patient/home_user.dart';
 import 'package:rhumatologie/screens/pages%20patient/user_drugs.dart';
 import 'package:rhumatologie/screens/scores_pages/score%20de%20chaq/page_1_chaq.dart';
@@ -49,7 +51,9 @@ class MyApp extends StatelessWidget {
         HomeUser.routeName: (_) => new HomeUser(),
         UserDrugs.routeName: (context) => UserDrugs(),
         DetailsScore.routeName: (context) => DetailsScore(),
+        DetailsJamar.routeName: (context) => DetailsJamar(),
         HistoriqueScore.routeName: (context) => HistoriqueScore(),
+        ValiderBilans.routeName: (context) => ValiderBilans(),
         Page1Chaq.routeName: (context) => Page1Chaq(),
         Page2Chaq.routeName: (context) => Page2Chaq(),
         Page3Chaq.routeName: (context) => Page3Chaq(),

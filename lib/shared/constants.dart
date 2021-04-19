@@ -28,6 +28,15 @@ final black13Normal = GoogleFonts.oxygen(
 final cyan13Normal = GoogleFonts.oxygen(
     color: cyan2, fontWeight: FontWeight.normal, fontSize: 13.0);
 
+final red18Normal = GoogleFonts.oxygen(
+    color: Colors.red,
+    fontWeight: FontWeight.normal,
+    fontSize: 18.0,
+    height: 1.4);
+
+final resultNotFound = GoogleFonts.oxygen(
+    color: Colors.black, fontWeight: FontWeight.normal, fontSize: 14.0);
+
 final black18Normal = GoogleFonts.oxygen(
     color: Colors.black,
     fontWeight: FontWeight.normal,
@@ -53,8 +62,26 @@ final cyan16Bold = GoogleFonts.oxygen(
 final cyan18Bold = GoogleFonts.oxygen(
     fontWeight: FontWeight.w600, color: cyan2, fontSize: 18.0);
 
+final white14Bold = GoogleFonts.oxygen(
+  fontWeight: FontWeight.bold,
+  color: Colors.white,
+  fontSize: 14.0,
+);
+
+final white15Bold = GoogleFonts.oxygen(
+  fontWeight: FontWeight.bold,
+  color: Colors.white,
+  fontSize: 15.0,
+);
+
+final darkGreen18Bold = GoogleFonts.oxygen(
+    fontWeight: FontWeight.w600, color: Colors.lightGreen[800], fontSize: 18.0);
+
 final cyan20Bold = GoogleFonts.oxygen(
     fontWeight: FontWeight.w600, color: cyan2, fontSize: 20.0);
+
+final cyan22Bold = GoogleFonts.oxygen(
+    fontWeight: FontWeight.w600, color: cyan2, fontSize: 22.0);
 
 final titrePage = GoogleFonts.oxygen(color: Colors.white, fontSize: 22.0);
 
@@ -90,6 +117,6 @@ final Color gris2 = Color(0xff939691);
 // final Color green5 = Color(0xff406151);
 // final Color yellow2= Color(0xffffc044).withOpacity(0.5);
 // final Color yellow1 =  Color(0xFFffa62b);
-// final Color blue1 = Color(0xff1958a1);
+final Color blue1 = Color(0xff1958a1);
 // final Color blue2 = Color(0xff087f8c);
 // final Color orange1=Color(0xffa5402d);

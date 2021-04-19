@@ -25,6 +25,7 @@ FlatButton flatButtonMultipleChoice(
           child: Padding(
             padding: const EdgeInsets.only(top: 4.0),
             child: Checkbox(
+                activeColor: cyan2,
                 value: initValue,
                 onChanged: (b) {
                   onChanged(b);
@@ -398,7 +399,8 @@ Card createRequestedScoreCard(
   );
 }
 
-Card historiqueCard(BuildContext context, String date, String resultat) {
+Card historiqueCard(BuildContext context, String dateDemande,
+    String dateValidation, String dateRempli, String state, String resultat) {
   return Card(
     elevation: 0,
     child: Column(
@@ -421,22 +423,63 @@ Card historiqueCard(BuildContext context, String date, String resultat) {
                   children: [
                     RichText(
                       text: TextSpan(
-                        text: "Date :  ",
+                        text: "Date demandé :  ",
                         style: black18Bold,
                         children: <TextSpan>[
-                          TextSpan(text: date, style: black18Normal),
+                          (dateDemande == "Pas encore demandé")
+                              ? TextSpan(text: dateDemande, style: red18Normal)
+                              : TextSpan(
+                                  text: dateDemande, style: black18Normal),
                         ],
                       ),
                     ),
                     RichText(
                       text: TextSpan(
-                        text: "Résultat : ",
+                        text: "Date rempli :  ",
                         style: black18Bold,
                         children: <TextSpan>[
-                          TextSpan(text: resultat, style: black18Normal),
+                          (dateRempli == "Pas encore rempli")
+                              ? TextSpan(text: dateRempli, style: red18Normal)
+                              : TextSpan(
+                                  text: dateRempli, style: black18Normal),
                         ],
                       ),
                     ),
+                    RichText(
+                      text: TextSpan(
+                        text: "Date validation :  ",
+                        style: black18Bold,
+                        children: <TextSpan>[
+                          (dateValidation == "Pas encore validé")
+                              ? TextSpan(
+                                  text: dateValidation, style: red18Normal)
+                              : TextSpan(
+                                  text: dateValidation, style: black18Normal),
+                        ],
+                      ),
+                    ),
+                    RichText(
+                      text: TextSpan(
+                        text: "Etat :  ",
+                        style: black18Bold,
+                        children: <TextSpan>[
+                          TextSpan(text: state, style: black18Normal),
+                        ],
+                      ),
+                    ),
+                    (state != "Demandé")
+                        ? RichText(
+                            text: TextSpan(
+                              text: "Résultat : ",
+                              style: black18Bold,
+                              children: <TextSpan>[
+                                TextSpan(text: resultat, style: black18Normal),
+                              ],
+                            ),
+                          )
+                        : SizedBox(
+                            height: 0,
+                          ),
                   ],
                 ),
               ),
@@ -444,6 +487,25 @@ Card historiqueCard(BuildContext context, String date, String resultat) {
           ),
         ),
       ],
+    ),
+  );
+}
+
+Card historiqueNExistePas() {
+  return Card(
+    elevation: 0,
+    child: Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        children: [
+          RichText(
+            text: TextSpan(
+              text: "Aucun test n\'a été effectué ! ",
+              style: black18Bold,
+            ),
+          ),
+        ],
+      ),
     ),
   );
 }
