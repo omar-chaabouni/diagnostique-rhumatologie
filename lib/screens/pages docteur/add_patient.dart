@@ -27,7 +27,7 @@ class _AddPatientState extends State<AddPatient> {
   var controllerOrdonnance5 = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   String birthday = '';
-
+  double evaluationGlobaleFaiteParMedecin = 0.0;
   void _onDone() {
     // List<PersonEntry> entries = [];
     var contenucontrollerNomPrenom = controllerNomPrenom.text;
@@ -202,6 +202,77 @@ class _AddPatientState extends State<AddPatient> {
                         'Entrez son diagnostic ',
                         Icon(FontAwesomeIcons.stethoscope,
                             color: gris2, size: 19),
+                      ),
+                      Container(
+                        margin: const EdgeInsets.only(top: 5.0),
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 10, bottom: 8.0),
+                          child: Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 16.0),
+                                child: Text(
+                                  "Evaluation globale faite par le médecin?",
+                                  style: cyan20Bold,
+                                ),
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  sliderLimit(0.0),
+                                  Container(
+                                    width: 250,
+                                    child: Padding(
+                                      padding:
+                                          const EdgeInsets.only(bottom: 5.0),
+                                      child: SliderTheme(
+                                        data: SliderTheme.of(context).copyWith(
+                                          activeTrackColor: cyan3,
+                                          inactiveTrackColor: cyan2,
+                                          showValueIndicator:
+                                              ShowValueIndicator.always,
+                                          thumbColor: Colors.blueAccent,
+                                          overlayColor:
+                                              Colors.purple.withAlpha(32),
+                                          overlayShape: RoundSliderOverlayShape(
+                                              overlayRadius: 16.0),
+                                          activeTickMarkColor: cyan2,
+                                          inactiveTickMarkColor: cyan2,
+                                          valueIndicatorShape:
+                                              PaddleSliderValueIndicatorShape(),
+                                          valueIndicatorColor:
+                                              Colors.blueAccent,
+                                          valueIndicatorTextStyle: white16Bold,
+                                        ),
+                                        child: Slider(
+                                          value:
+                                              evaluationGlobaleFaiteParMedecin,
+                                          min: 0.0,
+                                          max: 10.0,
+                                          divisions: 10,
+                                          label:
+                                              '$evaluationGlobaleFaiteParMedecin',
+                                          onChanged: (value) {
+                                            if (mounted == true) {
+                                              setState(
+                                                () {
+                                                  evaluationGlobaleFaiteParMedecin =
+                                                      value;
+                                                },
+                                              );
+                                            }
+                                          },
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  sliderLimit(10.0),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                       addPatientTitle("Ordonnance : "),
                       textFormFieldTextWithoutValidator(

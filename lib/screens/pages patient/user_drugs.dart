@@ -71,7 +71,7 @@ class _UserDrugsState extends State<UserDrugs> {
           onPressed: null,
           icon: Icon(FontAwesomeIcons.userMd, color: Colors.white),
           label: Text(
-            " Antécédent médical",
+            " Acceuil",
             style: white22Bold,
           ),
         ),

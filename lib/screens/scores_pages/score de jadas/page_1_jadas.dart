@@ -35,7 +35,10 @@ class _Page1JadasState extends State<Page1Jadas> {
   }
 
   void calculEtEnvoiSomme() {
-    sommeScore = _evaluationGlobaleParParent + _nbrArticulationsTumefiees + d;
+    sommeScore = _evaluationGlobaleParParent +
+        _evaluationGlobaleParParent +
+        _nbrArticulationsTumefiees +
+        d;
     print(sommeScore / 71);
   }
 
@@ -221,8 +224,8 @@ class _Page1JadasState extends State<Page1Jadas> {
                               child: Slider(
                                 value: _vitesseSedimentation,
                                 min: 0.0,
-                                max: 150.0,
-                                divisions: 15,
+                                max: 180.0,
+                                divisions: 18,
                                 label: '${_vitesseSedimentation.round()}',
                                 onChanged: (value) {
                                   if (mounted == true) {
@@ -237,7 +240,7 @@ class _Page1JadasState extends State<Page1Jadas> {
                             ),
                           ),
                         ),
-                        sliderLimit(150.0),
+                        sliderLimit(180.0),
                       ],
                     ),
                     Align(

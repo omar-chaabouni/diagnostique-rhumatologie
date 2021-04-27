@@ -582,7 +582,7 @@ class _Page4ChaqState extends State<Page4Chaq> {
                                             value: severiteDouleur,
                                             min: 0.0,
                                             max: 100.0,
-                                            divisions: 100,
+                                            divisions: 10,
                                             label: '${severiteDouleur.round()}',
                                             onChanged: (value) {
                                               if (mounted == true) {
@@ -647,7 +647,7 @@ class _Page4ChaqState extends State<Page4Chaq> {
                                             value: evaluationGlobale,
                                             min: 0.0,
                                             max: 100.0,
-                                            divisions: 100,
+                                            divisions: 10,
                                             label:
                                                 '${evaluationGlobale.round()}',
                                             onChanged: (value) {

@@ -54,7 +54,7 @@ class _ChooseScoreState extends State<ChooseScore> {
           onPressed: (null),
           icon: Icon(FontAwesomeIcons.stethoscope, color: Colors.white),
           label: Text(
-            " Diagnostic",
+            " Suivi",
             style: white22Bold,
           ),
         ),
