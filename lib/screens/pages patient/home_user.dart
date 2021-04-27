@@ -64,7 +64,7 @@ class _HomeUserState extends State<HomeUser> {
                 ),
                 // ignore: deprecated_member_use
                 title: Text(
-                  'Antécédent',
+                  'Acceuil',
                   style: GoogleFonts.oxygen(
                     fontSize: 17,
                     color: (_currentIndex == 0) ? cyan2 : gris2,
@@ -76,7 +76,7 @@ class _HomeUserState extends State<HomeUser> {
                 color: (_currentIndex == 1) ? cyan2 : gris2,
               ),
               // ignore: deprecated_member_use
-              title: Text('Diagnostic',
+              title: Text('Suivi',
                   style: GoogleFonts.oxygen(
                     fontSize: 20,
                     color: (_currentIndex == 1) ? cyan2 : gris2,

@@ -44,6 +44,7 @@ class _ConsultationEnAttenteState extends State<ConsultationEnAttente> {
     String operationsURL = 'http://192.168.1.16:4000/doctors/myPatients';
     try {
       var operationResponse = await http.get("$operationsURL");
+      // print(operationsURL);
       if (operationResponse.statusCode == 200) {
         patientList = Patient.patientFromJson(operationResponse.body);
         // print(patientList);

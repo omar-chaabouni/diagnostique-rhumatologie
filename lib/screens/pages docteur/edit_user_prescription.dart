@@ -41,6 +41,8 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
   bool isChecked2 = false;
   bool jamarDemanded = true;
   bool jamarDemandedNotRempli = true;
+  double evaluationGlobaleFaiteParMedecin = 0;
+  bool existeBilanNonValide = true;
   List<String> scoreNames = [
     'JADAS',
     'JSPADA',
@@ -1075,37 +1077,6 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
                             style: cyan22Bold,
                           ),
                         ),
-                        Spacer(),
-                        new FlatButton(
-                          onPressed: () {
-                            Navigator.of(context).pushNamed(
-                              ValiderBilans.routeName,
-                              arguments: patient,
-                            );
-                          },
-                          focusColor: cyan2,
-                          hoverColor: cyan2,
-                          splashColor: cyan2,
-                          color: cyan2,
-                          child: Container(
-                            child: Row(
-                              children: <Widget>[
-                                Text(
-                                  'Voir les bilans demandés',
-                                  style: white16Bold,
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 6.0),
-                                  child: Icon(
-                                    FontAwesomeIcons.fileAlt,
-                                    size: 14.0,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
                       ],
                     ),
                     Padding(
@@ -1208,6 +1179,74 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
                           )
                         : SizedBox(height: 0.0),
                     // createScore('JADAS','40/60'),
+                    Container(
+                      margin: const EdgeInsets.only(top: 5.0),
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 10, bottom: 8.0),
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 16.0),
+                              child: Text(
+                                "Evaluation globale faite par le médecin?",
+                                style: cyan20Bold,
+                              ),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                sliderLimit(0.0),
+                                Container(
+                                  width: 250,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(bottom: 5.0),
+                                    child: SliderTheme(
+                                      data: SliderTheme.of(context).copyWith(
+                                        activeTrackColor: cyan3,
+                                        inactiveTrackColor: cyan2,
+                                        showValueIndicator:
+                                            ShowValueIndicator.always,
+                                        thumbColor: Colors.blueAccent,
+                                        overlayColor:
+                                            Colors.purple.withAlpha(32),
+                                        overlayShape: RoundSliderOverlayShape(
+                                            overlayRadius: 16.0),
+                                        activeTickMarkColor: cyan2,
+                                        inactiveTickMarkColor: cyan2,
+                                        valueIndicatorShape:
+                                            PaddleSliderValueIndicatorShape(),
+                                        valueIndicatorColor: Colors.blueAccent,
+                                        valueIndicatorTextStyle: white16Bold,
+                                      ),
+                                      child: Slider(
+                                        value: evaluationGlobaleFaiteParMedecin,
+                                        min: 0.0,
+                                        max: 10.0,
+                                        divisions: 10,
+                                        label:
+                                            '$evaluationGlobaleFaiteParMedecin',
+                                        onChanged: (value) {
+                                          if (mounted == true) {
+                                            setState(
+                                              () {
+                                                evaluationGlobaleFaiteParMedecin =
+                                                    value;
+                                              },
+                                            );
+                                          }
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                sliderLimit(10.0),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                     Padding(
                       padding: const EdgeInsets.only(left: 10),
                       child: Row(
@@ -1271,7 +1310,7 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
                     Column(
                       children: cardsOrdonnance,
                     ),
-                    Column(
+                    Row(
                       children: [
                         Align(
                           alignment: Alignment.centerLeft,
@@ -1284,253 +1323,305 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
                             ),
                           ),
                         ),
-                        flatButtonMultipleChoice(
-                            title: 'Hémoglobine',
-                            initValue: isChecked1,
-                            onChanged: (newValue) {
-                              if (this.mounted) {
-                                setState(() {
-                                  isChecked1 = newValue;
-                                });
-                              }
-                            }),
-                        flatButtonMultipleChoice(
-                            title: 'VGM',
-                            initValue: isChecked2,
-                            onChanged: (newValue) {
-                              if (this.mounted) {
-                                setState(() {
-                                  isChecked2 = newValue;
-                                });
-                              }
-                            }),
-                        flatButtonMultipleChoice(
-                            title: 'TCMH',
-                            initValue: isChecked1,
-                            onChanged: (newValue) {
-                              if (this.mounted) {
-                                setState(() {
-                                  isChecked1 = newValue;
-                                });
-                              }
-                            }),
-                        flatButtonMultipleChoice(
-                            title: 'Globules blancs',
-                            initValue: isChecked1,
-                            onChanged: (newValue) {
-                              if (this.mounted) {
-                                setState(() {
-                                  isChecked1 = newValue;
-                                });
-                              }
-                            }),
-                        flatButtonMultipleChoice(
-                            title: 'Polynucléaires neutrophiles',
-                            initValue: isChecked1,
-                            onChanged: (newValue) {
-                              if (this.mounted) {
-                                setState(() {
-                                  isChecked1 = newValue;
-                                });
-                              }
-                            }),
-                        flatButtonMultipleChoice(
-                            title: 'Lymphocyte',
-                            initValue: isChecked1,
-                            onChanged: (newValue) {
-                              if (this.mounted) {
-                                setState(() {
-                                  isChecked1 = newValue;
-                                });
-                              }
-                            }),
-                        flatButtonMultipleChoice(
-                            title: 'Plaquettes',
-                            initValue: isChecked1,
-                            onChanged: (newValue) {
-                              if (this.mounted) {
-                                setState(() {
-                                  isChecked1 = newValue;
-                                });
-                              }
-                            }),
-                        flatButtonMultipleChoice(
-                            title: 'Vitesse de sédimentation',
-                            initValue: isChecked1,
-                            onChanged: (newValue) {
-                              if (this.mounted) {
-                                setState(() {
-                                  isChecked1 = newValue;
-                                });
-                              }
-                            }),
-                        flatButtonMultipleChoice(
-                            title: 'Protéine C réactive',
-                            initValue: isChecked1,
-                            onChanged: (newValue) {
-                              if (this.mounted) {
-                                setState(() {
-                                  isChecked1 = newValue;
-                                });
-                              }
-                            }),
-                        flatButtonMultipleChoice(
-                            title: 'ASAT',
-                            initValue: isChecked1,
-                            onChanged: (newValue) {
-                              if (this.mounted) {
-                                setState(() {
-                                  isChecked1 = newValue;
-                                });
-                              }
-                            }),
-                        flatButtonMultipleChoice(
-                            title: 'ALAT',
-                            initValue: isChecked1,
-                            onChanged: (newValue) {
-                              if (this.mounted) {
-                                setState(() {
-                                  isChecked1 = newValue;
-                                });
-                              }
-                            }),
-                        flatButtonMultipleChoice(
-                            title: 'GGT',
-                            initValue: isChecked1,
-                            onChanged: (newValue) {
-                              if (this.mounted) {
-                                setState(() {
-                                  isChecked1 = newValue;
-                                });
-                              }
-                            }),
-                        flatButtonMultipleChoice(
-                            title: 'PAL',
-                            initValue: isChecked1,
-                            onChanged: (newValue) {
-                              if (this.mounted) {
-                                setState(() {
-                                  isChecked1 = newValue;
-                                });
-                              }
-                            }),
-                        flatButtonMultipleChoice(
-                            title: 'Créatinine',
-                            initValue: isChecked1,
-                            onChanged: (newValue) {
-                              if (this.mounted) {
-                                setState(() {
-                                  isChecked1 = newValue;
-                                });
-                              }
-                            }),
-                        flatButtonMultipleChoice(
-                            title: 'Ferritinémie',
-                            initValue: isChecked1,
-                            onChanged: (newValue) {
-                              if (this.mounted) {
-                                setState(() {
-                                  isChecked1 = newValue;
-                                });
-                              }
-                            }),
-                        flatButtonMultipleChoice(
-                            title: 'ECBU',
-                            initValue: isChecked1,
-                            onChanged: (newValue) {
-                              if (this.mounted) {
-                                setState(() {
-                                  isChecked1 = newValue;
-                                });
-                              }
-                            }),
-                        flatButtonMultipleChoice(
-                            title: 'Sérologie hépatite C',
-                            initValue: isChecked1,
-                            onChanged: (newValue) {
-                              if (this.mounted) {
-                                setState(() {
-                                  isChecked1 = newValue;
-                                });
-                              }
-                            }),
-                        flatButtonMultipleChoice(
-                            title: 'Sérologie hépatite B',
-                            initValue: isChecked1,
-                            onChanged: (newValue) {
-                              if (this.mounted) {
-                                setState(() {
-                                  isChecked1 = newValue;
-                                });
-                              }
-                            }),
-                      ],
-                    ),
-                    Align(
-                      alignment: Alignment.bottomRight,
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 10.0),
-                        child: new FlatButton(
-                          minWidth: 60.0,
-                          onPressed: () {
-                            _onDone();
-                            showDialog(
-                              context: context,
-                              builder: (context) {
-                                return AlertDialog(
-                                    // content: Text(myController.text),
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(10.0))),
-                                    content: Container(
-                                      height: 60,
-                                      child: Column(
-                                        children: [
-                                          Text(
-                                            "Enregistré avec succès",
-                                            style: GoogleFonts.oxygen(
-                                                fontWeight: FontWeight.w600,
-                                                color: Colors.green,
-                                                fontSize: 18.0),
+                        Spacer(),
+                        existeBilanNonValide
+                            ? Align(
+                                alignment: Alignment.centerRight,
+                                child: FlatButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pushNamed(
+                                      ValiderBilans.routeName,
+                                      arguments: patient,
+                                    );
+                                  },
+                                  focusColor: cyan2,
+                                  hoverColor: cyan2,
+                                  splashColor: cyan2,
+                                  color: cyan2,
+                                  child: Container(
+                                    width: 210,
+                                    child: Row(
+                                      children: <Widget>[
+                                        Text(
+                                          'Voir les bilans demandés',
+                                          style: white16Bold,
+                                        ),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(left: 6.0),
+                                          child: Icon(
+                                            FontAwesomeIcons.fileAlt,
+                                            size: 14.0,
+                                            color: Colors.white,
                                           ),
-                                          Icon(
-                                            FontAwesomeIcons.checkCircle,
-                                            color: Colors.green,
-                                          )
-                                        ],
-                                      ),
-                                    ));
-                              },
-                            );
-                            Future.delayed(Duration(seconds: 2), () {
-                              Navigator.pushNamedAndRemoveUntil(
-                                  context, HomeDoctor.routeName, (_) => false);
-                            });
-                          },
-                          focusColor: cyan2,
-                          hoverColor: cyan2,
-                          splashColor: cyan2,
-                          color: cyan2,
-                          child: Container(
-                            // width: 126,
-                            child: Row(
-                              children: <Widget>[
-                                Text(
-                                  'Enregistrer l\'ordonnance et les bilans',
-                                  style: white16Bold,
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 12.0),
-                                  child: Icon(
-                                    Icons.save,
-                                    color: Colors.white,
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
-                              ],
+                              )
+                            : Container(),
+                      ],
+                    ),
+                    !existeBilanNonValide
+                        ? Column(
+                            children: [
+                              flatButtonMultipleChoice(
+                                  title: 'Hémoglobine',
+                                  initValue: isChecked1,
+                                  onChanged: (newValue) {
+                                    if (this.mounted) {
+                                      setState(() {
+                                        isChecked1 = newValue;
+                                      });
+                                    }
+                                  }),
+                              flatButtonMultipleChoice(
+                                  title: 'VGM',
+                                  initValue: isChecked2,
+                                  onChanged: (newValue) {
+                                    if (this.mounted) {
+                                      setState(() {
+                                        isChecked2 = newValue;
+                                      });
+                                    }
+                                  }),
+                              flatButtonMultipleChoice(
+                                  title: 'TCMH',
+                                  initValue: isChecked1,
+                                  onChanged: (newValue) {
+                                    if (this.mounted) {
+                                      setState(() {
+                                        isChecked1 = newValue;
+                                      });
+                                    }
+                                  }),
+                              flatButtonMultipleChoice(
+                                  title: 'Globules blancs',
+                                  initValue: isChecked1,
+                                  onChanged: (newValue) {
+                                    if (this.mounted) {
+                                      setState(() {
+                                        isChecked1 = newValue;
+                                      });
+                                    }
+                                  }),
+                              flatButtonMultipleChoice(
+                                  title: 'Polynucléaires neutrophiles',
+                                  initValue: isChecked1,
+                                  onChanged: (newValue) {
+                                    if (this.mounted) {
+                                      setState(() {
+                                        isChecked1 = newValue;
+                                      });
+                                    }
+                                  }),
+                              flatButtonMultipleChoice(
+                                  title: 'Lymphocyte',
+                                  initValue: isChecked1,
+                                  onChanged: (newValue) {
+                                    if (this.mounted) {
+                                      setState(() {
+                                        isChecked1 = newValue;
+                                      });
+                                    }
+                                  }),
+                              flatButtonMultipleChoice(
+                                  title: 'Plaquettes',
+                                  initValue: isChecked1,
+                                  onChanged: (newValue) {
+                                    if (this.mounted) {
+                                      setState(() {
+                                        isChecked1 = newValue;
+                                      });
+                                    }
+                                  }),
+                              flatButtonMultipleChoice(
+                                  title: 'Vitesse de sédimentation',
+                                  initValue: isChecked1,
+                                  onChanged: (newValue) {
+                                    if (this.mounted) {
+                                      setState(() {
+                                        isChecked1 = newValue;
+                                      });
+                                    }
+                                  }),
+                              flatButtonMultipleChoice(
+                                  title: 'Protéine C réactive',
+                                  initValue: isChecked1,
+                                  onChanged: (newValue) {
+                                    if (this.mounted) {
+                                      setState(() {
+                                        isChecked1 = newValue;
+                                      });
+                                    }
+                                  }),
+                              flatButtonMultipleChoice(
+                                  title: 'ASAT',
+                                  initValue: isChecked1,
+                                  onChanged: (newValue) {
+                                    if (this.mounted) {
+                                      setState(() {
+                                        isChecked1 = newValue;
+                                      });
+                                    }
+                                  }),
+                              flatButtonMultipleChoice(
+                                  title: 'ALAT',
+                                  initValue: isChecked1,
+                                  onChanged: (newValue) {
+                                    if (this.mounted) {
+                                      setState(() {
+                                        isChecked1 = newValue;
+                                      });
+                                    }
+                                  }),
+                              flatButtonMultipleChoice(
+                                  title: 'GGT',
+                                  initValue: isChecked1,
+                                  onChanged: (newValue) {
+                                    if (this.mounted) {
+                                      setState(() {
+                                        isChecked1 = newValue;
+                                      });
+                                    }
+                                  }),
+                              flatButtonMultipleChoice(
+                                  title: 'PAL',
+                                  initValue: isChecked1,
+                                  onChanged: (newValue) {
+                                    if (this.mounted) {
+                                      setState(() {
+                                        isChecked1 = newValue;
+                                      });
+                                    }
+                                  }),
+                              flatButtonMultipleChoice(
+                                  title: 'Créatinine',
+                                  initValue: isChecked1,
+                                  onChanged: (newValue) {
+                                    if (this.mounted) {
+                                      setState(() {
+                                        isChecked1 = newValue;
+                                      });
+                                    }
+                                  }),
+                              flatButtonMultipleChoice(
+                                  title: 'Ferritinémie',
+                                  initValue: isChecked1,
+                                  onChanged: (newValue) {
+                                    if (this.mounted) {
+                                      setState(() {
+                                        isChecked1 = newValue;
+                                      });
+                                    }
+                                  }),
+                              flatButtonMultipleChoice(
+                                  title: 'ECBU',
+                                  initValue: isChecked1,
+                                  onChanged: (newValue) {
+                                    if (this.mounted) {
+                                      setState(() {
+                                        isChecked1 = newValue;
+                                      });
+                                    }
+                                  }),
+                              flatButtonMultipleChoice(
+                                  title: 'Sérologie hépatite C',
+                                  initValue: isChecked1,
+                                  onChanged: (newValue) {
+                                    if (this.mounted) {
+                                      setState(() {
+                                        isChecked1 = newValue;
+                                      });
+                                    }
+                                  }),
+                              flatButtonMultipleChoice(
+                                  title: 'Sérologie hépatite B',
+                                  initValue: isChecked1,
+                                  onChanged: (newValue) {
+                                    if (this.mounted) {
+                                      setState(() {
+                                        isChecked1 = newValue;
+                                      });
+                                    }
+                                  }),
+                            ],
+                          )
+                        : Container(),
+                    Row(
+                      children: [
+                        Spacer(),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 10.0),
+                          child: new FlatButton(
+                            minWidth: 60.0,
+                            onPressed: () {
+                              _onDone();
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                      // content: Text(myController.text),
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(10.0))),
+                                      content: Container(
+                                        height: 60,
+                                        child: Column(
+                                          children: [
+                                            Text(
+                                              "Enregistré avec succès",
+                                              style: GoogleFonts.oxygen(
+                                                  fontWeight: FontWeight.w600,
+                                                  color: Colors.green,
+                                                  fontSize: 18.0),
+                                            ),
+                                            Icon(
+                                              FontAwesomeIcons.checkCircle,
+                                              color: Colors.green,
+                                            )
+                                          ],
+                                        ),
+                                      ));
+                                },
+                              );
+                              Future.delayed(Duration(seconds: 2), () {
+                                Navigator.pushNamedAndRemoveUntil(context,
+                                    HomeDoctor.routeName, (_) => false);
+                              });
+                            },
+                            focusColor: cyan2,
+                            hoverColor: cyan2,
+                            splashColor: cyan2,
+                            color: cyan2,
+                            child: Container(
+                              // width: 126,
+                              child: Row(
+                                children: <Widget>[
+                                  existeBilanNonValide
+                                      ? Text(
+                                          'Enregistrer l\'ordonnance',
+                                          style: white16Bold,
+                                        )
+                                      : Text(
+                                          'Enregistrer l\'ordonnance et les bilans',
+                                          style: white16Bold,
+                                        ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 12.0),
+                                    child: Icon(
+                                      Icons.save,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
-                      ),
+                        Spacer()
+                      ],
                     ),
                   ],
                 ),

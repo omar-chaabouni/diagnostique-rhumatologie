@@ -18,14 +18,16 @@ class _Page1JspadaState extends State<Page1Jspada> {
   double _nbrArticulationsTumefiees = 0.0;
   double _nbrEnthesesAtteintes = 0.0;
   double _evaluationDouleurPatient = 0.0;
-  double _vsOUcrp = 0.0;
   bool raideurMatinale = false;
   bool douleurSacroiliaqueOuTestPatrickPositif = false;
   bool rachialgiesInflammatoires = false;
   bool uveite = false;
   double _mobiliteShober = 0.0;
   double sommeScore = 0.0;
-
+// NB NB NB :
+// score yete7seb /7 mouch 8
+// calcul somme elemnts n
+// na7ina VSou...
   void calculEtEnvoiSomme() {
     if (_nbrArticulationsTumefiees > 2) {
       sommeScore += 1;
@@ -44,11 +46,6 @@ class _Page1JspadaState extends State<Page1Jspada> {
         (_evaluationDouleurPatient <= 4)) {
       sommeScore += 0.5;
     }
-    if (_vsOUcrp > 2) {
-      sommeScore += 1;
-    } else if ((_vsOUcrp >= 1) && (_vsOUcrp <= 2)) {
-      sommeScore += 0.5;
-    }
     if (raideurMatinale == true) {
       sommeScore += 1;
     }
@@ -58,7 +55,7 @@ class _Page1JspadaState extends State<Page1Jspada> {
     if (uveite) {
       sommeScore += 1;
     }
-    if (_mobiliteShober < 2) {
+    if (_mobiliteShober <= 2) {
       sommeScore += 1;
     }
     print(sommeScore);
@@ -314,70 +311,7 @@ class _Page1JspadaState extends State<Page1Jspada> {
                                           sliderLimit(10.0),
                                         ],
                                       ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                            bottom: 12.0, top: 4.0),
-                                        child: Text(
-                                          "VS ou CRP ? (fois à la normale)",
-                                          style: cyan20Bold,
-                                        ),
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: <Widget>[
-                                          sliderLimit(0.0),
-                                          Container(
-                                            width: 250,
-                                            child: Padding(
-                                              padding: const EdgeInsets.only(
-                                                  bottom: 5.0),
-                                              child: SliderTheme(
-                                                data: SliderTheme.of(context)
-                                                    .copyWith(
-                                                  activeTrackColor: cyan3,
-                                                  inactiveTrackColor: cyan2,
-                                                  showValueIndicator:
-                                                      ShowValueIndicator.always,
-                                                  thumbColor: Colors.blueAccent,
-                                                  overlayColor: Colors.purple
-                                                      .withAlpha(32),
-                                                  overlayShape:
-                                                      RoundSliderOverlayShape(
-                                                          overlayRadius: 16.0),
-                                                  activeTickMarkColor: cyan2,
-                                                  inactiveTickMarkColor: cyan2,
-                                                  valueIndicatorShape:
-                                                      PaddleSliderValueIndicatorShape(),
-                                                  valueIndicatorColor:
-                                                      Colors.blueAccent,
-                                                  valueIndicatorTextStyle:
-                                                      white16Bold,
-                                                ),
-                                                child: Slider(
-                                                  value: _vsOUcrp,
-                                                  min: 0.0,
-                                                  max: 3.0,
-                                                  divisions: 3,
-                                                  label: '$_vsOUcrp',
-                                                  onChanged: (value) {
-                                                    if (mounted == true) {
-                                                      setState(
-                                                        () {
-                                                          _vsOUcrp = value;
-                                                        },
-                                                      );
-                                                    }
-                                                  },
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          sliderLimit(3.0),
-                                        ],
-                                      ),
+
                                       Padding(
                                         padding: const EdgeInsets.only(
                                             bottom: 16.0, top: 4.0),
