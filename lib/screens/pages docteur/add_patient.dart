@@ -3,12 +3,16 @@ import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:rhumatologie/models/doctor.dart';
 import 'package:rhumatologie/screens/pages%20docteur/home_doctor.dart';
 import 'package:rhumatologie/shared/constants.dart';
 import 'package:rhumatologie/shared/utils.dart';
 import 'dart:async';
 
 class AddPatient extends StatefulWidget {
+  Doctor doctor;
+  String token;
+  AddPatient({this.doctor, this.token});
   @override
   _AddPatientState createState() => _AddPatientState();
 }
@@ -54,6 +58,12 @@ class _AddPatientState extends State<AddPatient> {
     print("11 :  " + contenucontrollerOrdonnance5);
     //save les données
     // entries.add(PersonEntry(name, age, job));
+
+    @override
+    void initState() {
+      super.initState();
+      print("AddPatient " + widget.doctor.toString());
+    }
   }
 
   @override

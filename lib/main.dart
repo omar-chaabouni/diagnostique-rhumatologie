@@ -7,7 +7,7 @@ import 'package:rhumatologie/screens/pages%20docteur/edit_user_prescription.dart
 import 'package:rhumatologie/screens/pages%20docteur/historique_score.dart';
 import 'package:rhumatologie/screens/pages%20docteur/home_doctor.dart';
 import 'package:rhumatologie/screens/pages%20docteur/valider_bilans.dart';
-import 'package:rhumatologie/screens/pages%20patient/home_user.dart';
+import 'package:rhumatologie/screens/pages%20patient/home_patient.dart';
 import 'package:rhumatologie/screens/pages%20patient/user_drugs.dart';
 import 'package:rhumatologie/screens/scores_pages/score%20de%20chaq/page_1_chaq.dart';
 import 'package:rhumatologie/screens/scores_pages/score%20de%20chaq/page_2_chaq.dart';
@@ -48,7 +48,7 @@ class MyApp extends StatelessWidget {
       routes: {
         EditUserPrescription.routeName: (ctx) => EditUserPrescription(),
         HomeDoctor.routeName: (_) => new HomeDoctor(),
-        HomeUser.routeName: (_) => new HomeUser(),
+        HomePatient.routeName: (_) => new HomePatient(),
         UserDrugs.routeName: (context) => UserDrugs(),
         DetailsScore.routeName: (context) => DetailsScore(),
         DetailsJamar.routeName: (context) => DetailsJamar(),

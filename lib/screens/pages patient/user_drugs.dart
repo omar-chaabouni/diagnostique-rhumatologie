@@ -34,7 +34,7 @@ class _UserDrugsState extends State<UserDrugs> {
   //   try {
   //     var operationResponse = await http.get("$operationsURL");
   //     if (operationResponse.statusCode == 200) {
-  //       patientList = Patient.patientFromJson(operationResponse.body);
+  //       patientList = Patient.patientsFromJson(operationResponse.body);
   //       print('test');
   //       print(patientList[0].nom);
   //     }
@@ -45,8 +45,8 @@ class _UserDrugsState extends State<UserDrugs> {
 
   @override
   void initState() {
-    // _getUserApi();
     super.initState();
+    // _getUserApi();
   }
 
   @override
@@ -221,7 +221,7 @@ class _UserDrugsState extends State<UserDrugs> {
 }
 
 // class Patient {
-//   static List<Patient> patientFromJson(String operationsJson) =>
+//   static List<Patient> patientsFromJson(String operationsJson) =>
 //       List<Patient>.from(
 //           json.decode(operationsJson).map((x) => Patient.fromJson(x)));
 

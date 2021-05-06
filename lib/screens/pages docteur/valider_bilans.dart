@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
 import 'package:rhumatologie/models/patient.dart';
 import 'package:rhumatologie/shared/constants.dart';
 
@@ -14,6 +16,7 @@ class ValiderBilans extends StatefulWidget {
 
 class _ValiderBilansState extends State<ValiderBilans> {
   var bilanCards = <Padding>[];
+  DateFormat formatter;
 
   @override
   void initState() {
@@ -25,11 +28,13 @@ class _ValiderBilansState extends State<ValiderBilans> {
     super.didChangeDependencies();
     widget.patient = ModalRoute.of(context).settings.arguments;
     createBilanCards();
+    initializeDateFormatting('fr');
+    formatter = DateFormat('d MMMM yyyy', 'fr');
   }
 
   createBilanCards() {
     // widget.patient.bilan[0].length
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < widget.patient.bilan[0].typeBilan.length; i++) {
       Padding nomBilan = Padding(
           padding: const EdgeInsets.only(left: 10.0, top: 5),
           child: Row(
@@ -42,7 +47,7 @@ class _ValiderBilansState extends State<ValiderBilans> {
               Flexible(
                 child: RichText(
                   text: TextSpan(
-                    text: "Polynucléaires neutrophiles",
+                    text: "${widget.patient.bilan[0].typeBilan[i]}",
                     style: black18Normal,
                   ),
                 ),
@@ -129,7 +134,8 @@ class _ValiderBilansState extends State<ValiderBilans> {
                               children: <TextSpan>[
                                 TextSpan(
                                     // text: patient.bilan[0].dateDemande.toString(),
-                                    text: "A remplir !",
+                                    text:
+                                        "${formatter.format(patient.bilan[0].dateDemande)}",
                                     style: black18Normal),
                               ],
                             ),

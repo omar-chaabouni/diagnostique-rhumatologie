@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:grouped_buttons/grouped_buttons.dart';
-import 'package:rhumatologie/screens/pages%20patient/home_user.dart';
+import 'package:rhumatologie/screens/pages%20patient/home_patient.dart';
 import 'package:rhumatologie/shared/constants.dart';
 import 'package:rhumatologie/shared/utils.dart';
 
@@ -705,7 +705,7 @@ class _Page4ChaqState extends State<Page4Chaq> {
                                             () {
                                           Navigator.pushNamedAndRemoveUntil(
                                               context,
-                                              HomeUser.routeName,
+                                              HomePatient.routeName,
                                               (_) => false);
                                         });
 

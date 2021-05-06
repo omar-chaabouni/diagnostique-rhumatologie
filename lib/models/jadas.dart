@@ -4,17 +4,20 @@ class Jadas {
     this.dateDemande,
     this.state,
     this.dateValidation,
-    this.dateRempli,
+    this.dateCalcul,
+    this.score,
   });
 
   String id;
   DateTime dateDemande;
   int state;
   DateTime dateValidation;
-  DateTime dateRempli;
+  DateTime dateCalcul;
+  String score;
 
   factory Jadas.fromJson(Map<String, dynamic> json) => Jadas(
         id: json["_id"],
+        score: json["score"],
         dateDemande: json["dateDemande"] == null
             ? null
             : DateTime.parse(json["dateDemande"]),
@@ -22,18 +25,19 @@ class Jadas {
         dateValidation: json["dateValidation"] == null
             ? null
             : DateTime.parse(json["dateValidation"]),
-        dateRempli: json["dateRempli"] == null
+        dateCalcul: json["dateCalcul"] == null
             ? null
-            : DateTime.parse(json["dateRempli"]),
+            : DateTime.parse(json["dateCalcul"]),
       );
 
   Map<String, dynamic> toJson() => {
         "_id": id,
+        "score": score,
         "dateDemande":
             dateDemande == null ? null : dateDemande.toIso8601String(),
         "state": state,
         "dateValidation":
             dateValidation == null ? null : dateValidation.toIso8601String(),
-        "dateRempli": dateRempli == null ? null : dateRempli.toIso8601String(),
+        "dateCalcul": dateCalcul == null ? null : dateCalcul.toIso8601String(),
       };
 }

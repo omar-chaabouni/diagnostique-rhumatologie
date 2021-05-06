@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:rhumatologie/models/test_model.dart';
 import 'package:rhumatologie/shared/constants.dart';
 import 'package:rhumatologie/shared/utils.dart';
 
@@ -14,7 +13,7 @@ class DetailsScore extends StatefulWidget {
 class _DetailsScoreState extends State<DetailsScore> {
   @override
   Widget build(BuildContext context) {
-    final TestModel score = ModalRoute.of(context).settings.arguments;
+    // final TestModel score = ModalRoute.of(context).settings.arguments;
     // final String score="test";
 
     return Scaffold(
@@ -30,7 +29,7 @@ class _DetailsScoreState extends State<DetailsScore> {
               child: Icon(FontAwesomeIcons.infoCircle, size: 20),
             ),
             Text(
-              "Détails du score " + score.title,
+              "Détails du score " + "6000",
               style: white19Normal,
             ),
           ],

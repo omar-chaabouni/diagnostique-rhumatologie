@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:rhumatologie/screens/pages%20patient/home_user.dart';
+import 'package:rhumatologie/screens/pages%20patient/home_patient.dart';
 import 'package:rhumatologie/shared/constants.dart';
 import 'package:rhumatologie/shared/utils.dart';
 
@@ -539,7 +539,7 @@ class _Page1JspadaState extends State<Page1Jspada> {
                                                 Navigator
                                                     .pushNamedAndRemoveUntil(
                                                         context,
-                                                        HomeUser.routeName,
+                                                        HomePatient.routeName,
                                                         (_) => false);
                                               });
                                             },
