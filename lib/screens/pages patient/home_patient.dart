@@ -1,21 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:rhumatologie/screens/pages%20patient/profile.dart';
+import 'package:rhumatologie/models/patient.dart';
+import 'package:rhumatologie/screens/pages%20patient/profile_patient.dart';
 import 'package:rhumatologie/screens/pages%20patient/user_drugs.dart';
 import 'package:rhumatologie/screens/scores_pages/choose_score.dart';
 import 'package:rhumatologie/shared/constants.dart';
 
 // Diagnostic PAGE
-class HomeUser extends StatefulWidget {
-  static const routeName = '/home_user';
-  HomeUser({Key key}) : super(key: key);
-  // final AuthService _auth = AuthService();
+class HomePatient extends StatefulWidget {
+  static const routeName = '/home_patient';
+  HomePatient({Key key}) : super(key: key);
+  static Patient patient;
   @override
-  _HomeUserState createState() => _HomeUserState();
+  _HomePatientState createState() => _HomePatientState();
 }
 
-class _HomeUserState extends State<HomeUser> {
+class _HomePatientState extends State<HomePatient> {
   int selectedIndex = 0;
   List<Widget> _screens = <Widget>[
     UserDrugs(),

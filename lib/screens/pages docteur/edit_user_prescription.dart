@@ -49,7 +49,12 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
     'CHAQ',
     'JAMAR'
   ]; // ordre à spécifier
-  List scoreResults = <String>['40/60', '20/30', '26.2/30', '40/20']; // mel BD
+  List<String> scoreResults = <String>[
+    '  --  ',
+    '  --  ',
+    '  --  ',
+    '  --  '
+  ]; // mel BD
   bool haveScores = true; // change it false !!!!!!
   // if true on demande test
   List<bool> testDemanded = [false, true, true, false];
@@ -63,27 +68,56 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
     super.initState();
   }
 
+  void fillCardsOrdonnance() {
+    for (int i = 0; i < 5; i++) {
+      cardsOrdonnance.add(createOrdonnance(i));
+    }
+  }
+
+  void fillScoreResults(Patient patient) {
+    if (patient.jadas.isNotEmpty) {
+      if (patient.jadas[0].dateCalcul != null) {
+        scoreResults[0] = patient.jadas[0].score;
+      }
+    }
+    if (patient.jspada.isNotEmpty) {
+      if (patient.jspada[0].dateCalcul != null) {
+        scoreResults[1] = patient.jadas[0].score;
+      }
+    }
+    if (patient.chaq.isNotEmpty) {
+      if (patient.chaq[0].dateCalcul != null) {
+        scoreResults[2] = patient.jadas[0].score;
+      }
+    }
+    if (patient.jamar.isNotEmpty) {
+      if (patient.jamar[0].dateCalcul != null) {
+        scoreResults[3] = patient.jadas[0].score;
+      }
+    }
+  }
+
   void fillTestRempli(Patient patient) {
     if (patient.jadas.isNotEmpty) {
-      if (patient.jadas[0].dateRempli != null) {
+      if (patient.jadas[0].dateCalcul != null) {
         testRempli[0] = true;
       }
     }
-    // if (patient.jspada.isNotEmpty) {
-    //   if (patient.jspada[0].dateRempli != null) {
-    //     testRempli[1] = true;
-    //   }
-    // }
-    // if (patient.chaq.isNotEmpty) {
-    //   if (patient.chaq[0].dateRempli != null) {
-    //     testRempli[2] = true;
-    //   }
-    // }
-    // if (patient.jamar.isNotEmpty) {
-    //   if (patient.jamar[0].dateRempli != null) {
-    //     testRempli[3] = true;
-    //   }
-    // }
+    if (patient.jspada.isNotEmpty) {
+      if (patient.jspada[0].dateCalcul != null) {
+        testRempli[1] = true;
+      }
+    }
+    if (patient.chaq.isNotEmpty) {
+      if (patient.chaq[0].dateCalcul != null) {
+        testRempli[2] = true;
+      }
+    }
+    if (patient.jamar.isNotEmpty) {
+      if (patient.jamar[0].dateCalcul != null) {
+        testRempli[3] = true;
+      }
+    }
   }
 
 // remplir l array , savoir si chaque test est validé ou pas
@@ -93,21 +127,21 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
         testValidated[0] = true;
       }
     }
-    // if (patient.jspada.isNotEmpty) {
-    //   if (patient.jspada[0].dateValidation != null) {
-    //     testValidated[1] = true;
-    //   }
-    // }
-    // if (patient.chaq.isNotEmpty) {
-    //   if (patient.chaq[0].dateValidation != null) {
-    //     testValidated[2] = true;
-    //   }
-    // }
-    // if (patient.jamar.isNotEmpty) {
-    //   if (patient.jamar[0].dateValidation != null) {
-    //     testValidated[3] = true;
-    //   }
-    // }
+    if (patient.jspada.isNotEmpty) {
+      if (patient.jspada[0].dateValidation != null) {
+        testValidated[1] = true;
+      }
+    }
+    if (patient.chaq.isNotEmpty) {
+      if (patient.chaq[0].dateValidation != null) {
+        testValidated[2] = true;
+      }
+    }
+    if (patient.jamar.isNotEmpty) {
+      if (patient.jamar[0].dateValidation != null) {
+        testValidated[3] = true;
+      }
+    }
   }
 
   void filltestDemanded(Patient patient) {
@@ -116,36 +150,38 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
         testDemanded[0] = true;
       }
     }
-    // if (patient.jspada.isNotEmpty) {
-    //   if (patient.jspada[0].dateDemande != null) {
-    //     testDemanded[1] = true;
-    //   }
-    // }
-    // if (patient.chaq.isNotEmpty) {
-    //   if (patient.chaq[0].dateDemande != null) {
-    //     testDemanded[2] = true;
-    //   }
-    // }
-    // if (patient.jamar.isNotEmpty) {
-    //   if (patient.jamar[0].dateDemande != null) {
-    //     testDemanded[3] = true;
-    //   }
-    // }
+    if (patient.jspada.isNotEmpty) {
+      if (patient.jspada[0].dateDemande != null) {
+        testDemanded[1] = true;
+      }
+    }
+    if (patient.chaq.isNotEmpty) {
+      if (patient.chaq[0].dateDemande != null) {
+        testDemanded[2] = true;
+      }
+    }
+    if (patient.jamar.isNotEmpty) {
+      if (patient.jamar[0].dateDemande != null) {
+        testDemanded[3] = true;
+      }
+    }
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     widget?.patient = ModalRoute.of(context).settings.arguments;
+    fillScoreResults(widget.patient);
+    fillCardsOrdonnance();
     fillTestRempli(widget.patient);
     fillTestValidated(widget.patient);
     filltestDemanded(widget.patient);
-    // if (widget.patient.jadas.isNotEmpty ||
-    //     widget.patient.jspada.isNotEmpty ||
-    //     widget.patient.chaq.isNotEmpty ||
-    //     widget.patient.jamar.isNotEmpty) {
-    //   haveScores = true;
-    // }
+    if (widget.patient.jadas.isNotEmpty ||
+        widget.patient.jspada.isNotEmpty ||
+        widget.patient.chaq.isNotEmpty ||
+        widget.patient.jamar.isNotEmpty) {
+      haveScores = true;
+    }
   }
 
   void _onDone() {
@@ -191,19 +227,19 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
       createScore(scoreNames[0], scoreResults[0], 0, widget.patient),
       createScore(scoreNames[1], scoreResults[1], 1, widget.patient),
       createScore(scoreNames[2], scoreResults[2], 2, widget.patient),
-      createScoreJamar(scoreNames[3], scoreResults[3], 3, widget.patient),
+      // createScoreJamar(scoreNames[3], scoreResults[3], 3, widget.patient),
     ]);
   }
 
   Card createScoreJamar(
       String typeScore, String score, int index, Patient patient) {
-    String dateRempli;
+    String dateCalcul;
     String dateValidation;
     String dateDemande;
     List<String> allDates = getDates(patient, typeScore);
     print(allDates);
     dateDemande = allDates[0];
-    dateRempli = allDates[1];
+    dateCalcul = allDates[1];
     dateValidation = allDates[2];
     return Card(
       shadowColor: null,
@@ -245,7 +281,7 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
                       text: "Date rempli :  ",
                       style: black18Bold,
                       children: <TextSpan>[
-                        TextSpan(text: "$dateRempli", style: black16Normal),
+                        TextSpan(text: "$dateCalcul", style: black16Normal),
                       ],
                     ),
                   ),
@@ -517,8 +553,8 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
   List<String> getDates(Patient patient, String typeScore) {
     DateTime dateDemandee;
     DateTime dateValidationn;
-    DateTime dateRemplii;
-    String dateRempli = "";
+    DateTime dateCalcull;
+    String dateCalcul = "";
     String dateValidation = "";
     String dateDemande = "";
     List<String> allDates = [];
@@ -541,16 +577,16 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
           dateDemande = "Pas encore demandé";
         }
         if (testsJadas.isNotEmpty) {
-          if (patient.jadas[0]?.dateRempli != null) {
-            dateRemplii = patient.jadas[0]?.dateRempli;
-            dateRempli = formatter.format(
-              dateRemplii,
+          if (patient.jadas[0]?.dateCalcul != null) {
+            dateCalcull = patient.jadas[0]?.dateCalcul;
+            dateCalcul = formatter.format(
+              dateCalcull,
             );
           } else {
-            dateRempli = "Pas encore rempli";
+            dateCalcul = "Pas encore rempli";
           }
         } else {
-          dateRempli = "Pas encore rempli";
+          dateCalcul = "Pas encore rempli";
         }
         if (testsJadas.isNotEmpty) {
           if (patient.jadas[0]?.dateValidation != null) {
@@ -564,7 +600,7 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
         } else {
           dateValidation = "Pas encore validé";
         }
-        allDates.addAll([dateDemande, dateRempli, dateValidation]);
+        allDates.addAll([dateDemande, dateCalcul, dateValidation]);
         break;
       case "JSPADA":
         List<Jadas> testsJadas = patient.jadas;
@@ -584,16 +620,16 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
           dateDemande = "Pas encore demandé";
         }
         if (patient.jadas.isNotEmpty) {
-          if (patient.jadas[0]?.dateRempli != null) {
-            dateRemplii = patient.jadas[0]?.dateRempli;
-            dateRempli = formatter.format(
-              dateRemplii,
+          if (patient.jadas[0]?.dateCalcul != null) {
+            dateCalcull = patient.jadas[0]?.dateCalcul;
+            dateCalcul = formatter.format(
+              dateCalcull,
             );
           } else {
-            dateRempli = "Pas encore rempli";
+            dateCalcul = "Pas encore rempli";
           }
         } else {
-          dateRempli = "Pas encore rempli";
+          dateCalcul = "Pas encore rempli";
         }
         if (patient.jadas.isNotEmpty) {
           if (patient.jadas[0]?.dateValidation != null) {
@@ -607,7 +643,7 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
         } else {
           dateValidation = "Pas encore validé";
         }
-        allDates.addAll([dateDemande, dateRempli, dateValidation]);
+        allDates.addAll([dateDemande, dateCalcul, dateValidation]);
         return allDates;
         break;
 
@@ -629,16 +665,16 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
           dateDemande = "Pas encore demandé";
         }
         if (patient.jadas.isNotEmpty) {
-          if (patient.jadas[0]?.dateRempli != null) {
-            dateRemplii = patient.jadas[0]?.dateRempli;
-            dateRempli = formatter.format(
-              dateRemplii,
+          if (patient.jadas[0]?.dateCalcul != null) {
+            dateCalcull = patient.jadas[0]?.dateCalcul;
+            dateCalcul = formatter.format(
+              dateCalcull,
             );
           } else {
-            dateRempli = "Pas encore rempli";
+            dateCalcul = "Pas encore rempli";
           }
         } else {
-          dateRempli = "Pas encore rempli";
+          dateCalcul = "Pas encore rempli";
         }
         if (patient.jadas.isNotEmpty) {
           if (patient.jadas[0]?.dateValidation != null) {
@@ -652,7 +688,7 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
         } else {
           dateValidation = "Pas encore validé";
         }
-        allDates.addAll([dateDemande, dateRempli, dateValidation]);
+        allDates.addAll([dateDemande, dateCalcul, dateValidation]);
         return allDates;
         break;
       case "JAMAR":
@@ -673,16 +709,16 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
           dateDemande = "Pas encore demandé";
         }
         if (patient.jadas.isNotEmpty) {
-          if (patient.jadas[0]?.dateRempli != null) {
-            dateRemplii = patient.jadas[0]?.dateRempli;
-            dateRempli = formatter.format(
-              dateRemplii,
+          if (patient.jadas[0]?.dateCalcul != null) {
+            dateCalcull = patient.jadas[0]?.dateCalcul;
+            dateCalcul = formatter.format(
+              dateCalcull,
             );
           } else {
-            dateRempli = "Pas encore rempli";
+            dateCalcul = "Pas encore rempli";
           }
         } else {
-          dateRempli = "Pas encore rempli";
+          dateCalcul = "Pas encore rempli";
         }
         if (patient.jadas.isNotEmpty) {
           if (patient.jadas[0]?.dateValidation != null) {
@@ -696,7 +732,7 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
         } else {
           dateValidation = "Pas encore validé";
         }
-        allDates.addAll([dateDemande, dateRempli, dateValidation]);
+        allDates.addAll([dateDemande, dateCalcul, dateValidation]);
         return allDates;
         break;
     }
@@ -704,12 +740,12 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
   }
 
   Card createScore(String typeScore, String score, int index, Patient patient) {
-    String dateRempli;
+    String dateCalcul;
     String dateValidation;
     String dateDemande;
     List<String> allDates = getDates(patient, typeScore);
     dateDemande = allDates[0];
-    dateRempli = allDates[1];
+    dateCalcul = allDates[1];
     dateValidation = allDates[2];
     return Card(
       shadowColor: null,
@@ -751,7 +787,7 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
                       text: "Date rempli :  ",
                       style: black18Bold,
                       children: <TextSpan>[
-                        TextSpan(text: "$dateRempli", style: black16Normal),
+                        TextSpan(text: "$dateCalcul", style: black16Normal),
                       ],
                     ),
                   ),
@@ -980,7 +1016,7 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
   }
 
   Card createOrdonnance(index) {
-    print("index " + index.toString());
+    // print("index " + index.toString());
     textfield1.add(controller1);
     textfield2.add(controller2);
     textfield3.add(controller3);
@@ -1251,117 +1287,123 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
                       padding: const EdgeInsets.only(left: 10),
                       child: Row(
                         children: [
-                          Text(
-                            "Ordonnance",
-                            style: cyan22Bold,
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 8.0),
+                            child: Text(
+                              "Ordonnance",
+                              style: cyan22Bold,
+                            ),
                           ),
                           Spacer(),
-                          Container(
-                            margin: EdgeInsets.only(right: 15.0),
-                            child: FlatButton(
-                                autofocus: true,
-                                focusColor: Colors.green,
-                                splashColor: Colors.green,
-                                highlightColor: Colors.green,
-                                color: Colors.green,
-                                child: Row(
-                                  children: [
-                                    Text(
-                                      'Ajouter',
-                                      style: white16Bold,
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 6.0),
-                                      child: Icon(
-                                        FontAwesomeIcons.plusCircle,
-                                        size: 16.0,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                onPressed: _isAddOrdonnanceButtonDisabled
-                                    ? null
-                                    : () {
-                                        print(nbrCards);
-                                        if (nbrCards == 4) {
-                                          if (mounted == true) {
-                                            setState(() {
-                                              _isAddOrdonnanceButtonDisabled =
-                                                  true;
-                                            });
-                                          }
-                                        }
-                                        if (nbrCards < 5) {
-                                          if (this.mounted) {
-                                            setState(() {
-                                              nbrCards++;
-                                              cardsOrdonnance.add(
-                                                  createOrdonnance(
-                                                      nbrCards - 1));
-                                            });
-                                          }
-                                        }
-                                      }),
-                          ),
+                          // Container(
+                          //   margin: EdgeInsets.only(right: 15.0),
+                          //   child: FlatButton(
+                          //       autofocus: true,
+                          //       focusColor: Colors.green,
+                          //       splashColor: Colors.green,
+                          //       highlightColor: Colors.green,
+                          //       color: Colors.green,
+                          //       child: Row(
+                          //         children: [
+                          //           Text(
+                          //             'Ajouter',
+                          //             style: white16Bold,
+                          //           ),
+                          //           Padding(
+                          //             padding: const EdgeInsets.only(left: 6.0),
+                          //             child: Icon(
+                          //               FontAwesomeIcons.plusCircle,
+                          //               size: 16.0,
+                          //               color: Colors.white,
+                          //             ),
+                          //           ),
+                          //         ],
+                          //       ),
+                          //       onPressed: _isAddOrdonnanceButtonDisabled
+                          //           ? null
+                          //           : () {
+                          //               print(nbrCards);
+                          //               if (nbrCards == 4) {
+                          //                 if (mounted == true) {
+                          //                   setState(() {
+                          //                     _isAddOrdonnanceButtonDisabled =
+                          //                         true;
+                          //                   });
+                          //                 }
+                          //               }
+                          //               if (nbrCards < 5) {
+                          //                 if (this.mounted) {
+                          //                   setState(() {
+                          //                     nbrCards++;
+                          //                     cardsOrdonnance.add(
+                          //                         createOrdonnance(
+                          //                             nbrCards - 1));
+                          //                   });
+                          //                 }
+                          //               }
+                          //             }),
+                          // ),
                         ],
                       ),
                     ),
                     Column(
                       children: cardsOrdonnance,
                     ),
-                    Row(
-                      children: [
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                                left: 10, bottom: 8.0, top: 15.0),
-                            child: Text(
-                              "Biologie",
-                              style: cyan22Bold,
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8.0),
+                      child: Row(
+                        children: [
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 10, bottom: 8.0, top: 5.0),
+                              child: Text(
+                                "Biologie",
+                                style: cyan22Bold,
+                              ),
                             ),
                           ),
-                        ),
-                        Spacer(),
-                        existeBilanNonValide
-                            ? Align(
-                                alignment: Alignment.centerRight,
-                                child: FlatButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pushNamed(
-                                      ValiderBilans.routeName,
-                                      arguments: patient,
-                                    );
-                                  },
-                                  focusColor: cyan2,
-                                  hoverColor: cyan2,
-                                  splashColor: cyan2,
-                                  color: cyan2,
-                                  child: Container(
-                                    width: 210,
-                                    child: Row(
-                                      children: <Widget>[
-                                        Text(
-                                          'Voir les bilans demandés',
-                                          style: white16Bold,
-                                        ),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(left: 6.0),
-                                          child: Icon(
-                                            FontAwesomeIcons.fileAlt,
-                                            size: 14.0,
-                                            color: Colors.white,
+                          Spacer(),
+                          existeBilanNonValide
+                              ? Align(
+                                  alignment: Alignment.centerRight,
+                                  child: FlatButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pushNamed(
+                                        ValiderBilans.routeName,
+                                        arguments: patient,
+                                      );
+                                    },
+                                    focusColor: cyan2,
+                                    hoverColor: cyan2,
+                                    splashColor: cyan2,
+                                    color: cyan2,
+                                    child: Container(
+                                      width: 210,
+                                      child: Row(
+                                        children: <Widget>[
+                                          Text(
+                                            'Voir les bilans demandés',
+                                            style: white16Bold,
                                           ),
-                                        ),
-                                      ],
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 6.0),
+                                            child: Icon(
+                                              FontAwesomeIcons.fileAlt,
+                                              size: 14.0,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                ),
-                              )
-                            : Container(),
-                      ],
+                                )
+                              : Container(),
+                        ],
+                      ),
                     ),
                     !existeBilanNonValide
                         ? Column(

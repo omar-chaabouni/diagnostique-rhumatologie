@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:grouped_buttons/grouped_buttons.dart';
-import 'package:rhumatologie/screens/pages%20patient/home_user.dart';
+import 'package:rhumatologie/screens/pages%20patient/home_patient.dart';
 import 'package:rhumatologie/shared/constants.dart';
 import 'package:rhumatologie/shared/utils.dart';
 
@@ -753,7 +753,7 @@ class _Page6JamarState extends State<Page6Jamar> {
                                             onPressed: () {
                                               calculEtEnvoiSomme();
                                               Navigator.of(context).pushNamed(
-                                                HomeUser.routeName,
+                                                HomePatient.routeName,
                                                 // arguments: Chaq3Arguments(
                                                 //     nbrOfItems: nbrOfItems,
                                                 //     sommeScore: sommeScore)

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:rhumatologie/screens/pages%20patient/home_user.dart';
+import 'package:rhumatologie/screens/pages%20patient/home_patient.dart';
 import 'package:rhumatologie/shared/constants.dart';
 import 'package:rhumatologie/shared/utils.dart';
 
@@ -277,7 +277,7 @@ class _Page1JadasState extends State<Page1Jadas> {
                             );
                             Future.delayed(Duration(seconds: 1), () {
                               Navigator.pushNamedAndRemoveUntil(
-                                  context, HomeUser.routeName, (_) => false);
+                                  context, HomePatient.routeName, (_) => false);
                             });
                           },
                           focusColor: cyan2,

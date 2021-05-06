@@ -11,7 +11,6 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   int selectedIndex = 0;
-  // final AuthService _auth = AuthService();
 
   @override
   Widget build(BuildContext context) {

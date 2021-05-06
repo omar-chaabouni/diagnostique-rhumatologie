@@ -60,8 +60,8 @@ class _HistoriqueScoreState extends State<HistoriqueScore> {
       for (int i = 0; i < testsJadas.length; i++) {
         DateTime dateDemandee;
         DateTime dateValidationn;
-        DateTime dateRemplii;
-        String dateRempli = "";
+        DateTime dateCalcull;
+        String dateCalcul = "";
         String dateValidation = "";
         String dateDemande = "";
         final DateFormat formatter = DateFormat('d MMMM yyyy', 'fr');
@@ -74,11 +74,11 @@ class _HistoriqueScoreState extends State<HistoriqueScore> {
         } else {
           dateDemande = "Pas encore demandé";
         }
-        if (testsJadas[i].dateRempli != null) {
-          dateRemplii = testsJadas[i].dateRempli;
-          dateRempli = formatter.format(dateRemplii);
+        if (testsJadas[i].dateCalcul != null) {
+          dateCalcull = testsJadas[i].dateCalcul;
+          dateCalcul = formatter.format(dateCalcull);
         } else {
-          dateRempli = "Pas encore rempli";
+          dateCalcul = "Pas encore rempli";
         }
         if (testsJadas[i].dateValidation != null) {
           dateValidationn = testsJadas[i].dateValidation;
@@ -90,17 +90,17 @@ class _HistoriqueScoreState extends State<HistoriqueScore> {
             context,
             dateDemande.toString(),
             dateValidation.toString(),
-            dateRempli.toString(),
+            dateCalcul.toString(),
             state,
-            "40/60")); // testJadas[i].score
+            testsJadas[i].score)); // testJadas[i].score
       }
     }
     if (testsChaq.isNotEmpty) {
       for (int i = 0; i < testsChaq.length; i++) {
         DateTime dateDemandee;
         DateTime dateValidationn;
-        DateTime dateRemplii;
-        String dateRempli = "";
+        DateTime dateCalcull;
+        String dateCalcul = "";
         String dateValidation = "";
         String dateDemande = "";
         DateFormat formatter;
@@ -113,11 +113,11 @@ class _HistoriqueScoreState extends State<HistoriqueScore> {
         } else {
           dateDemande = "Pas encore demandé";
         }
-        if (testsChaq[i].dateRempli != null) {
-          dateRemplii = testsChaq[i].dateRempli;
-          dateRempli = formatter.format(dateRemplii);
+        if (testsChaq[i].dateCalcul != null) {
+          dateCalcull = testsChaq[i].dateCalcul;
+          dateCalcul = formatter.format(dateCalcull);
         } else {
-          dateRempli = "Pas encore rempli";
+          dateCalcul = "Pas encore rempli";
         }
         if (testsChaq[i].dateValidation != null) {
           dateValidationn = testsChaq[i].dateValidation;
@@ -129,7 +129,7 @@ class _HistoriqueScoreState extends State<HistoriqueScore> {
             context,
             dateDemande.toString(),
             dateValidation.toString(),
-            dateRempli.toString(),
+            dateCalcul.toString(),
             state,
             "40/60")); // testChaq[i].score
       }
@@ -138,8 +138,8 @@ class _HistoriqueScoreState extends State<HistoriqueScore> {
       for (int i = 0; i < testsJspada.length; i++) {
         DateTime dateDemandee;
         DateTime dateValidationn;
-        DateTime dateRemplii;
-        String dateRempli = "";
+        DateTime dateCalcull;
+        String dateCalcul = "";
         String dateValidation = "";
         String dateDemande = "";
         DateFormat formatter;
@@ -152,11 +152,11 @@ class _HistoriqueScoreState extends State<HistoriqueScore> {
         } else {
           dateDemande = "Pas encore demandé";
         }
-        if (testsJspada[i].dateRempli != null) {
-          dateRemplii = testsJspada[i].dateRempli;
-          dateRempli = formatter.format(dateRemplii);
+        if (testsJspada[i].dateCalcul != null) {
+          dateCalcull = testsJspada[i].dateCalcul;
+          dateCalcul = formatter.format(dateCalcull);
         } else {
-          dateRempli = "Pas encore rempli";
+          dateCalcul = "Pas encore rempli";
         }
         if (testsJspada[i].dateValidation != null) {
           dateValidationn = testsJspada[i].dateValidation;
@@ -168,7 +168,7 @@ class _HistoriqueScoreState extends State<HistoriqueScore> {
             context,
             dateDemande.toString(),
             dateValidation.toString(),
-            dateRempli.toString(),
+            dateCalcul.toString(),
             state,
             "40/60")); // testJspada[i].score
       }
@@ -177,8 +177,8 @@ class _HistoriqueScoreState extends State<HistoriqueScore> {
       for (int i = 0; i < testsJamar.length; i++) {
         DateTime dateDemandee;
         DateTime dateValidationn;
-        DateTime dateRemplii;
-        String dateRempli = "";
+        DateTime dateCalcull;
+        String dateCalcul = "";
         String dateValidation = "";
         String dateDemande = "";
         DateFormat formatter;
@@ -191,11 +191,11 @@ class _HistoriqueScoreState extends State<HistoriqueScore> {
         } else {
           dateDemande = "Pas encore demandé";
         }
-        if (testsJamar[i].dateRempli != null) {
-          dateRemplii = testsJamar[i].dateRempli;
-          dateRempli = formatter.format(dateRemplii);
+        if (testsJamar[i].dateCalcul != null) {
+          dateCalcull = testsJamar[i].dateCalcul;
+          dateCalcul = formatter.format(dateCalcull);
         } else {
-          dateRempli = "Pas encore rempli";
+          dateCalcul = "Pas encore rempli";
         }
         if (testsJamar[i].dateValidation != null) {
           dateValidationn = testsJamar[i].dateValidation;
@@ -207,7 +207,7 @@ class _HistoriqueScoreState extends State<HistoriqueScore> {
             context,
             dateDemande.toString(),
             dateValidation.toString(),
-            dateRempli.toString(),
+            dateCalcul.toString(),
             state,
             "40/60")); // testJamar[i].score
       }
@@ -223,16 +223,13 @@ class _HistoriqueScoreState extends State<HistoriqueScore> {
       testsJadas = widget.historiqueArguments.patient.jadas;
     }
     if (widget.historiqueArguments.typeScore == 'JSPADA') {
-      print('ahla');
-      // testsJadas = widget.historiqueArguments.patient.jspada;
+      testsJspada = widget.historiqueArguments.patient.jspada;
     }
     if (widget.historiqueArguments.typeScore == 'JAMAR') {
-      print('ahla');
-      // testsJadas = widget.historiqueArguments.patient.jamar;
+      testsJamar = widget.historiqueArguments.patient.jamar;
     }
     if (widget.historiqueArguments.typeScore == 'CHAQ') {
-      print('ahla');
-      // testsJadas = widget.historiqueArguments.patient.chaq;
+      testsChaq = widget.historiqueArguments.patient.chaq;
     }
   }
 

@@ -1,27 +1,46 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:rhumatologie/models/doctor.dart';
 import 'package:rhumatologie/screens/pages%20docteur/add_patient.dart';
 import 'package:rhumatologie/screens/pages%20docteur/consulations_en_attente.dart';
 import 'package:rhumatologie/screens/pages%20docteur/mes_patients.dart';
 import 'package:rhumatologie/shared/constants.dart';
 
-// Diagnostic PAGE
 class HomeDoctor extends StatefulWidget {
-  HomeDoctor({Key key}) : super(key: key);
+  HomeDoctor({Key key, doctor, token}) : super(key: key);
   static const routeName = '/home_doctor';
-  // final AuthService _auth = AuthService();
+  Doctor doctor;
+  String token;
   @override
   _HomeDoctorState createState() => _HomeDoctorState();
 }
 
 class _HomeDoctorState extends State<HomeDoctor> {
+  void initState() {
+    super.initState();
+  }
+
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    DoctorLoginArguments arguments = ModalRoute.of(context).settings.arguments;
+    widget.doctor = arguments.doctor;
+    widget.token = arguments.token;
+    doctor = widget.doctor;
+    token = widget.token;
+
+    _screens = <Widget>[
+      ConsultationEnAttente(doctor: doctor, token: token),
+      MyPatients(doctor: doctor, token: token),
+      AddPatient(doctor: doctor, token: token),
+    ];
+  }
+
+  List<Widget> _screens;
+  Doctor doctor;
+  String token;
   int selectedIndex = 0;
-  List<Widget> _screens = <Widget>[
-    ConsultationEnAttente(),
-    MyPatients(),
-    AddPatient(),
-  ];
+
   int _currentIndex = 0;
 
   final PageController _pageController = PageController();
