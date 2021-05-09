@@ -3,45 +3,46 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rhumatologie/models/doctor.dart';
 import 'package:rhumatologie/screens/pages%20docteur/add_patient.dart';
-import 'package:rhumatologie/screens/pages%20docteur/consulations_en_attente.dart';
-import 'package:rhumatologie/screens/pages%20docteur/mes_patients.dart';
+import 'package:rhumatologie/screens/pages%20docteur/patients_en_attente.dart';
+import 'package:rhumatologie/screens/pages%20docteur/tous_mes_patients.dart';
 import 'package:rhumatologie/shared/constants.dart';
 
+// ignore: must_be_immutable
 class HomeDoctor extends StatefulWidget {
-  HomeDoctor({Key key, doctor, token}) : super(key: key);
   static const routeName = '/home_doctor';
   Doctor doctor;
   String token;
+  HomeDoctor({Key key, this.doctor, this.token}) : super(key: key);
+
   @override
   _HomeDoctorState createState() => _HomeDoctorState();
 }
 
 class _HomeDoctorState extends State<HomeDoctor> {
-  void initState() {
-    super.initState();
-  }
-
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    DoctorLoginArguments arguments = ModalRoute.of(context).settings.arguments;
-    widget.doctor = arguments.doctor;
-    widget.token = arguments.token;
-    doctor = widget.doctor;
-    token = widget.token;
-
-    _screens = <Widget>[
-      ConsultationEnAttente(doctor: doctor, token: token),
-      MyPatients(doctor: doctor, token: token),
-      AddPatient(doctor: doctor, token: token),
-    ];
-  }
-
   List<Widget> _screens;
   Doctor doctor;
   String token;
   int selectedIndex = 0;
-
   int _currentIndex = 0;
+
+  void initState() {
+    super.initState();
+    doctor = widget.doctor;
+    print("aaa " + widget.doctor.id.toString());
+    token = widget.token;
+    _screens = <Widget>[
+      PatientsEnAttente(doctor: doctor, token: token),
+      AllMyPatients(doctor: doctor, token: token),
+      AddPatient(doctor: doctor, token: token),
+    ];
+  }
+
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // DoctorLoginArguments arguments = ModalRoute.of(context).settings.arguments;
+    // widget.doctor = arguments.doctor;
+    // widget.token = arguments.token;
+  }
 
   final PageController _pageController = PageController();
   Future<void> _onPageChanged(int index) async {
@@ -82,7 +83,7 @@ class _HomeDoctorState extends State<HomeDoctor> {
                 padding: const EdgeInsets.only(bottom: 3.0),
                 child: Icon(
                   FontAwesomeIcons.userClock,
-                  size: 18,
+                  size: 14,
                   color: (_currentIndex == 0) ? cyan2 : gris2,
                 ),
               ),
@@ -97,7 +98,7 @@ class _HomeDoctorState extends State<HomeDoctor> {
                       'Patients en attente',
                       maxLines: 2,
                       style: GoogleFonts.oxygen(
-                        fontSize: 14,
+                        fontSize: 12,
                         color: (_currentIndex == 0) ? cyan2 : gris2,
                       ),
                     ),
@@ -108,7 +109,7 @@ class _HomeDoctorState extends State<HomeDoctor> {
             BottomNavigationBarItem(
               icon: Icon(
                 FontAwesomeIcons.users,
-                size: 18,
+                size: 14,
                 color: (_currentIndex == 1) ? cyan2 : gris2,
               ),
               // ignore: deprecated_member_use
@@ -122,7 +123,7 @@ class _HomeDoctorState extends State<HomeDoctor> {
                       'Mes patients',
                       maxLines: 2,
                       style: GoogleFonts.oxygen(
-                        fontSize: 18,
+                        fontSize: 14,
                         color: (_currentIndex == 1) ? cyan2 : gris2,
                       ),
                     ),
@@ -133,7 +134,7 @@ class _HomeDoctorState extends State<HomeDoctor> {
             BottomNavigationBarItem(
               icon: Icon(
                 FontAwesomeIcons.userPlus,
-                size: 18,
+                size: 14,
                 color: (_currentIndex == 2) ? cyan2 : gris2,
               ),
               // ignore: deprecated_member_use
@@ -147,7 +148,7 @@ class _HomeDoctorState extends State<HomeDoctor> {
                       'Ajouter patient',
                       maxLines: 2,
                       style: GoogleFonts.oxygen(
-                        fontSize: 18,
+                        fontSize: 14,
                         color: (_currentIndex == 2) ? cyan2 : gris2,
                       ),
                     ),

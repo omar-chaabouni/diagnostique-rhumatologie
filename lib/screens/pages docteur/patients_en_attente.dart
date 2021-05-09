@@ -9,22 +9,22 @@ import 'package:http/http.dart' as http;
 import 'package:rhumatologie/shared/constants.dart';
 
 // ignore: must_be_immutable
-class ConsultationEnAttente extends StatefulWidget {
+class PatientsEnAttente extends StatefulWidget {
   Doctor doctor;
   String token;
-  ConsultationEnAttente({this.doctor, this.token});
+  PatientsEnAttente({this.doctor, this.token});
   @override
-  _ConsultationEnAttenteState createState() => _ConsultationEnAttenteState();
+  _PatientsEnAttenteState createState() => _PatientsEnAttenteState();
 }
 
-class _ConsultationEnAttenteState extends State<ConsultationEnAttente> {
+class _PatientsEnAttenteState extends State<PatientsEnAttente> {
   int selectedIndex = 1;
   bool isChecked = false;
   List waitingPatients = [];
   List filteredWaitingPatients = [];
   bool isSearching = false;
-  List<dynamic> filteredPatients = [];
-  List<dynamic> patientList = [];
+  List<Patient> filteredPatients = [];
+  List<Patient> patientList = [];
 
   @override
   void initState() {
@@ -53,11 +53,14 @@ class _ConsultationEnAttenteState extends State<ConsultationEnAttente> {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ${widget.token}'
       });
+      // print(operationResponse.body);
       if (operationResponse.statusCode == 200) {
         if (json.decode(operationResponse.body)["patients"].isEmpty) {
           patientList = [];
         } else {
-          patientList = Patient.patientsFromJson(operationResponse.body);
+          // print(json.encode(json.decode(operationResponse.body)["patients"]));
+          patientList = Patient.patientsFromJson(
+              json.encode(json.decode(operationResponse.body)["patients"]));
         }
         if (mounted == true) {
           setState(() {
@@ -76,18 +79,24 @@ class _ConsultationEnAttenteState extends State<ConsultationEnAttente> {
       // resizeToAvoidBottomInset: false,
       backgroundColor: gris1,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
+        iconTheme: IconThemeData(
+          color: Colors.white,
+          size: 14,
+        ),
         backgroundColor: cyan2,
         title: !isSearching
             ? FlatButton.icon(
+                color: Colors.red,
                 onPressed: null,
                 icon: Padding(
                   padding: const EdgeInsets.only(right: 8.0),
                   child: Icon(FontAwesomeIcons.users,
-                      color: Colors.white, size: 22.0),
+                      color: Colors.white, size: 20.0),
                 ),
                 label: Text(
                   "Patients en attente",
-                  style: white19Normal,
+                  style: white18Bold,
                 ),
               )
             : TextField(
@@ -152,9 +161,11 @@ class _ConsultationEnAttenteState extends State<ConsultationEnAttente> {
                     itemBuilder: (BuildContext context, int index) {
                       return GestureDetector(
                         onTap: () {
-                          Navigator.of(context).pushNamed(
-                              EditUserPrescription.routeName,
-                              arguments: filteredPatients[index]);
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => EditUserPrescription(
+                                  doctor: widget.doctor,
+                                  token: widget.token,
+                                  patient: filteredPatients[index])));
                         },
                         child: Card(
                           shape: RoundedRectangleBorder(

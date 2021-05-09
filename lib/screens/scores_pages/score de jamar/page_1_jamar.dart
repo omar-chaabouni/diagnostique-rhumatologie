@@ -3,13 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:grouped_buttons/grouped_buttons.dart';
 import 'package:rhumatologie/models/jamar_arguments.dart';
+import 'package:rhumatologie/models/patient.dart';
 import 'package:rhumatologie/screens/scores_pages/score%20de%20jamar/page_2_jamar.dart';
 import 'package:rhumatologie/shared/constants.dart';
 import 'package:rhumatologie/shared/utils.dart';
 
 class Page1Jamar extends StatefulWidget {
   static const routeName = '/jamar_1';
-
+  Patient patient;
+  String token;
+  Page1Jamar({this.patient, this.token});
   @override
   _Page1JamarState createState() => _Page1JamarState();
 }

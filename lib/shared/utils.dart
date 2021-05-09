@@ -1,11 +1,70 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:rhumatologie/models/patient.dart';
 import 'package:rhumatologie/screens/scores_pages/score%20de%20chaq/page_1_chaq.dart';
 import 'package:rhumatologie/screens/scores_pages/score%20de%20jadas/page_1_jadas.dart';
 import 'package:rhumatologie/screens/scores_pages/score%20de%20jamar/page_1_jamar.dart';
 import 'package:rhumatologie/screens/scores_pages/score%20de%20jspada/page_1_jspada.dart';
 import 'package:rhumatologie/shared/constants.dart';
+
+enregistrerAvecSuccess(BuildContext context) {
+  return showDialog(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(10.0))),
+          content: Container(
+            height: 60,
+            child: Column(
+              children: [
+                Text(
+                  "Enregistré avec succès",
+                  style: GoogleFonts.oxygen(
+                      fontWeight: FontWeight.w600,
+                      color: Colors.green,
+                      fontSize: 18.0),
+                ),
+                Icon(
+                  FontAwesomeIcons.checkCircle,
+                  color: Colors.green,
+                )
+              ],
+            ),
+          ));
+    },
+  );
+}
+
+erreurEnregistrement(BuildContext context) {
+  return showDialog(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(10.0))),
+          content: Container(
+            height: 60,
+            child: Column(
+              children: [
+                Text(
+                  "L\'opération a échoué !",
+                  style: GoogleFonts.oxygen(
+                      fontWeight: FontWeight.w600,
+                      color: Colors.red,
+                      fontSize: 18.0),
+                ),
+                Icon(
+                  FontAwesomeIcons.checkCircle,
+                  color: Colors.red,
+                )
+              ],
+            ),
+          ));
+    },
+  );
+}
 
 FlatButton flatButtonMultipleChoice(
     {String title, bool initValue, Function(bool boolValue) onChanged}) {
@@ -20,8 +79,8 @@ FlatButton flatButtonMultipleChoice(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         SizedBox(
-          height: 24.0,
-          width: 24.0,
+          height: 20.0,
+          width: 20.0,
           child: Padding(
             padding: const EdgeInsets.only(top: 4.0),
             child: Checkbox(
@@ -33,11 +92,11 @@ FlatButton flatButtonMultipleChoice(
                 }),
           ),
         ),
-        SizedBox(width: 20.0),
+        SizedBox(width: 15.0),
         Expanded(
             child: Padding(
           padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
-          child: Text(title, style: black18Normal),
+          child: Text(title, style: black16Normal),
         )),
       ],
     ),
@@ -180,41 +239,42 @@ Container addPatientTitle(String title) {
       padding: const EdgeInsets.only(left: 10, bottom: 8.0),
       child: Text(
         title,
-        style: cyan20Bold,
+        style: cyan18Bold,
       ),
     ),
   );
 }
 
 Container textFormFieldTextWithoutValidator(
-    TextEditingController theController, String hint, Icon iconTFFI) {
+    TextEditingController theController, String hint, Padding iconTFFI) {
   return Container(
-    margin: EdgeInsets.only(bottom: 8.0, top: 8.0, right: 10.0, left: 10.0),
-    padding: EdgeInsets.only(right: 10.0, left: 10.0, bottom: 2.0),
+    margin: EdgeInsets.only(bottom: 6.0, top: 6.0, right: 10.0, left: 10.0),
+    padding: EdgeInsets.only(right: 10.0, left: 3.0),
     decoration: BoxDecoration(
       border: Border.all(color: cyan2, width: 2.0),
       borderRadius: BorderRadius.all(Radius.circular(8)),
     ),
     child: TextFormField(
         decoration: InputDecoration(
+          contentPadding: new EdgeInsets.symmetric(vertical: 8.0),
           enabledBorder: InputBorder.none,
           focusedBorder: InputBorder.none,
           prefixIcon: iconTFFI,
           hintText: hint,
-          hintStyle: TextStyle(color: gris2, fontSize: 16.0),
+          hintStyle: TextStyle(color: gris2, fontSize: 14.0),
         ),
         keyboardType: TextInputType.text,
         controller: theController,
         cursorColor: cyan2,
-        style: black18Normal),
+        style: black16Normal),
   );
 }
 
 Container textFormFieldText(
     TextEditingController theController, String hint, Icon iconTFFI) {
   return Container(
-    margin: EdgeInsets.only(bottom: 8.0, top: 8.0, right: 10.0, left: 10.0),
-    padding: EdgeInsets.only(right: 10.0, left: 10.0, bottom: 2.0),
+    margin: EdgeInsets.only(top: 6, bottom: 6, right: 10.0, left: 10.0),
+    padding: EdgeInsets.only(right: 10.0, left: 10.0),
     decoration: BoxDecoration(
       border: Border.all(color: cyan2, width: 2.0),
       borderRadius: BorderRadius.all(Radius.circular(8)),
@@ -227,16 +287,17 @@ Container textFormFieldText(
           return null;
         },
         decoration: InputDecoration(
+          contentPadding: new EdgeInsets.symmetric(vertical: 8.0),
           enabledBorder: InputBorder.none,
           focusedBorder: InputBorder.none,
           prefixIcon: iconTFFI,
           hintText: hint,
-          hintStyle: TextStyle(color: gris2, fontSize: 16.0),
+          hintStyle: TextStyle(color: gris2, fontSize: 14.0),
         ),
         keyboardType: TextInputType.text,
         controller: theController,
         cursorColor: cyan2,
-        style: black18Normal),
+        style: black16Normal),
   );
 }
 
@@ -282,7 +343,7 @@ Padding questionChaq(String text) {
 }
 
 Card createRequestedScoreCard(
-    String scoreType, BuildContext context, String nomPatient) {
+    String scoreType, BuildContext context, Patient patient, String token) {
   return Card(
     elevation: 0.0,
     margin: EdgeInsets.only(bottom: 0.0, top: 0.0),
@@ -333,28 +394,29 @@ Card createRequestedScoreCard(
                   padding:
                       const EdgeInsets.only(left: 10, top: 0.0, bottom: 0.0),
                   child: new FlatButton(
+                    padding: EdgeInsets.only(right: 10.0, left: 10),
                     // minWidth: 124.0,
                     onPressed: () {
                       switch (scoreType) {
                         case "JADAS":
-                          return Navigator.of(context).pushNamed(
-                              Page1Jadas.routeName,
-                              arguments: nomPatient);
+                          return Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) =>
+                                  Page1Jadas(token: token, patient: patient)));
                           break;
                         case "JSPADA":
-                          return Navigator.of(context).pushNamed(
-                              Page1Jspada.routeName,
-                              arguments: nomPatient);
+                          return Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) =>
+                                  Page1Jspada(token: token, patient: patient)));
                           break;
                         case "CHAQ":
-                          return Navigator.of(context).pushNamed(
-                              Page1Chaq.routeName,
-                              arguments: nomPatient);
+                          return Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) =>
+                                  Page1Chaq(token: token, patient: patient)));
                           break;
                         case "JAMAR":
-                          return Navigator.of(context).pushNamed(
-                              Page1Jamar.routeName,
-                              arguments: nomPatient);
+                          return Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) =>
+                                  Page1Jamar(token: token, patient: patient)));
                           break;
                         // default:
                         //   return Navigator.of(context).pushNamed(
@@ -367,7 +429,7 @@ Card createRequestedScoreCard(
                     splashColor: Colors.green,
                     color: Colors.green,
                     child: Container(
-                      width: 150,
+                      // width: 150,
                       child: Row(
                         children: <Widget>[
                           Text(
@@ -375,14 +437,15 @@ Card createRequestedScoreCard(
                             style: GoogleFonts.oxygen(
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
-                              fontSize: 16,
+                              fontSize: 13,
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(left: 12.0),
+                            padding: const EdgeInsets.only(left: 5.0),
                             child: Icon(
                               FontAwesomeIcons.arrowAltCircleRight,
                               color: Colors.white,
+                              size: 13,
                             ),
                           ),
                         ],
@@ -557,10 +620,13 @@ Column detailScoreCard(BuildContext context, String date, String resultat) {
   );
 }
 
-Text sliderLimit(double value) {
-  return Text(
-    "$value",
-    style: black18Bold,
+Padding sliderLimit(double value) {
+  return Padding(
+    padding: const EdgeInsets.only(bottom: 9.0),
+    child: Text(
+      "$value",
+      style: black16Bold,
+    ),
   );
 }
 
@@ -568,7 +634,6 @@ Padding sliderLimitWithText(double value, String textDouleur) {
   return Padding(
     padding: const EdgeInsets.only(top: 20.0, bottom: 10.0),
     child: Container(
-      width: 50,
       child: Column(
         children: [
           Text(
@@ -580,6 +645,7 @@ Padding sliderLimitWithText(double value, String textDouleur) {
           ),
           Text(
             "$textDouleur",
+            textAlign: TextAlign.center,
             style: GoogleFonts.oxygen(
                 color: Colors.black,
                 fontWeight: FontWeight.normal,

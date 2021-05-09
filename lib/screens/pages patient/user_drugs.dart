@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:rhumatologie/models/patient.dart';
 import 'package:rhumatologie/shared/constants.dart';
 import 'package:rhumatologie/shared/utils.dart';
 import 'package:http/http.dart' as http;
 
 class UserDrugs extends StatefulWidget {
   static const routeName = '/user_drugs';
+  Patient patient;
+  String token;
+  UserDrugs({this.patient, this.token});
   @override
   _UserDrugsState createState() => _UserDrugsState();
 }
@@ -13,21 +18,69 @@ class UserDrugs extends StatefulWidget {
 class _UserDrugsState extends State<UserDrugs> {
   int selectedIndex = 1;
   bool isChecked = false;
-  bool bilans = true;
-  bool medicaments = true;
+  bool bilans = false;
+  bool medicaments = false;
   var drugsCards = <Card>[];
   var bilansCards = <Card>[];
+  bool contact = false;
+  bool mail = false;
+  bool telephone = false;
+
   // List<Patient> patientList = [];
-  List<String> listOfDrugs = [
-    "test",
-    "doliprane 5fois par jour 4 jours par semaine 3 semaines",
-    "test médicament",
-  ];
-  List<String> listOfBilans = [
-    "Bilan test numero 1, bilan sur le dos spinal cord",
-    "bilan spinal cord",
-    "troisième bilan",
-  ];
+  List<dynamic> listOfDrugs = [];
+  // "test",
+  // "doliprane 5fois par jour 4 jours par semaine 3 semaines",
+  // "test médicament",
+
+  List<dynamic> listOfBilans = [];
+  @override
+  void initState() {
+    super.initState();
+    // print(" //////////////////////////////////////////////////////");
+    // print(widget.patient);
+    // print(widget.patient.docteur.toJson());
+    // print(" //////////////////////////////////////////////////////");
+
+    if (widget.patient.bilan != null) {
+      if (widget.patient.bilan.isNotEmpty) {
+        if (widget.patient.bilan[0].typeBilan.isNotEmpty) {
+          listOfBilans = widget.patient.bilan[0].typeBilan;
+          print(listOfBilans);
+        }
+        if (listOfBilans.length > 0) {
+          bilans = true;
+        }
+      }
+    }
+    if (widget.patient.ordonnance != null) {
+      if (widget.patient.ordonnance.isNotEmpty) {
+        for (int i = 0; i < widget.patient.ordonnance.length; i++) {
+          if (widget.patient.ordonnance[i] != "") {
+            listOfDrugs.add(widget.patient.ordonnance[i]);
+          }
+        }
+        if (listOfDrugs.length > 0) {
+          medicaments = true;
+        }
+      }
+    }
+    for (int i = 0; i < listOfDrugs.length; i++) {
+      drugsCards.add(createPatientDrugCard(listOfDrugs[i]));
+    }
+    for (int i = 0; i < listOfBilans.length; i++) {
+      bilansCards.add(createBilanPatientCard(listOfBilans[i]));
+    }
+    if ((widget.patient.docteur.mail != null) ||
+        widget.patient.docteur.telephone != null) {
+      contact = true;
+    }
+    if (widget.patient.docteur.telephone != null) {
+      telephone = true;
+    }
+    if (widget.patient.docteur.mail != null) {
+      mail = true;
+    }
+  }
 
   // _getUserApi() async {
   //   String operationsURL = 'http://192.168.1.16:4000/patients';
@@ -44,20 +97,8 @@ class _UserDrugsState extends State<UserDrugs> {
   // }
 
   @override
-  void initState() {
-    super.initState();
-    // _getUserApi();
-  }
-
-  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    for (int i = 0; i < listOfDrugs.length; i++) {
-      drugsCards.add(createPatientDrugCard(listOfDrugs[i]));
-    }
-    for (int i = 0; i < listOfBilans.length; i++) {
-      bilansCards.add(createBilanPatientCard(listOfBilans[i]));
-    }
   }
 
   @override
@@ -66,13 +107,14 @@ class _UserDrugsState extends State<UserDrugs> {
       // resizeToAvoidBottomInset: false,
       backgroundColor: gris1,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: cyan2,
         title: FlatButton.icon(
           onPressed: null,
-          icon: Icon(FontAwesomeIcons.userMd, color: Colors.white),
+          icon: Icon(FontAwesomeIcons.userMd, color: Colors.white, size: 19.0),
           label: Text(
             " Acceuil",
-            style: white22Bold,
+            style: white20Bold,
           ),
         ),
       ),
@@ -111,7 +153,8 @@ class _UserDrugsState extends State<UserDrugs> {
                               children: <TextSpan>[
                                 TextSpan(text: "Dr. ", style: cyan18Bold1_6),
                                 TextSpan(
-                                    text: "Hanene Lassoued Ferjani ",
+                                    text:
+                                        "${widget.patient.docteur.prenom} ${widget.patient.docteur.nom}",
                                     style: cyan18Bold1_6),
                                 bilans
                                     ? TextSpan(
@@ -168,47 +211,69 @@ class _UserDrugsState extends State<UserDrugs> {
                             children: drugsCards,
                           )
                         : SizedBox(height: 0),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 15.0, top: 10.0),
-                      child: Text(
-                        "Si vous voulez contacter votre médecin :",
-                        style: black18Normal,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 15.0),
-                      child: Row(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(right: 8.0),
-                            child: Icon(
-                              Icons.mail,
-                              color: cyan2,
-                              size: 18.0,
-                            ),
-                          ),
-                          Text(
-                            "docteurdocteurdocteur@gmail.com",
-                            style: cyan18Bold,
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      margin: const EdgeInsets.only(bottom: 24.0),
-                      child: Row(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(right: 8.0),
-                            child: Icon(Icons.phone, color: cyan2, size: 18.0),
-                          ),
-                          Text(
-                            "+216 58205495",
-                            style: cyan18Bold,
-                          ),
-                        ],
-                      ),
-                    ),
+                    contact
+                        ? Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    bottom: 15.0, top: 10.0),
+                                child: Text(
+                                  "Si vous voulez contacter votre médecin :",
+                                  style: black18Normal,
+                                ),
+                              ),
+                              mail
+                                  ? Padding(
+                                      padding:
+                                          const EdgeInsets.only(bottom: 15.0),
+                                      child: Row(
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                right: 8.0),
+                                            child: Icon(
+                                              Icons.mail,
+                                              color: cyan2,
+                                              size: 18.0,
+                                            ),
+                                          ),
+                                          Flexible(
+                                            child: RichText(
+                                              overflow: TextOverflow.visible,
+                                              text: TextSpan(
+                                                text:
+                                                    '${widget.patient.docteur.mail}',
+                                                style: cyan18Bold,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  : Container,
+                              telephone
+                                  ? Container(
+                                      margin:
+                                          const EdgeInsets.only(bottom: 24.0),
+                                      child: Row(
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                right: 8.0),
+                                            child: Icon(Icons.phone,
+                                                color: cyan2, size: 18.0),
+                                          ),
+                                          Text(
+                                            "${widget.patient.docteur.telephone}",
+                                            style: cyan18Bold,
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  : Container(),
+                            ],
+                          )
+                        : Container(),
                   ],
                 ),
               ),

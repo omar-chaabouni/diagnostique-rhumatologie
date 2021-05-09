@@ -14,7 +14,7 @@ import 'package:intl/date_symbol_data_local.dart';
 class HistoriqueScore extends StatefulWidget {
   static const routeName = '/historique_score';
   HistoriqueArguments historiqueArguments;
-
+  HistoriqueScore({this.historiqueArguments});
   @override
   _HistoriqueScoreState createState() => _HistoriqueScoreState();
 }
@@ -29,6 +29,8 @@ class _HistoriqueScoreState extends State<HistoriqueScore> {
   @override
   void initState() {
     super.initState();
+    getHistorique();
+    fillHistoriqueCards();
   }
 
   String getStateString(int state) {
@@ -47,13 +49,11 @@ class _HistoriqueScoreState extends State<HistoriqueScore> {
     }
   }
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    widget.historiqueArguments = ModalRoute.of(context).settings.arguments;
-    getHistorique();
-    fillHistoriqueCards();
-  }
+  // @override
+  // void didChangeDependencies() {
+  //   super.didChangeDependencies();
+  //   // widget.historiqueArguments = ModalRoute.of(context).settings.arguments;
+  // }
 
   fillHistoriqueCards() {
     if (testsJadas.isNotEmpty) {
@@ -235,8 +235,8 @@ class _HistoriqueScoreState extends State<HistoriqueScore> {
 
   @override
   Widget build(BuildContext context) {
-    final HistoriqueArguments historiqueArguments =
-        ModalRoute.of(context).settings.arguments;
+    // final HistoriqueArguments historiqueArguments =
+    //     ModalRoute.of(context).settings.arguments;
     return Scaffold(
         backgroundColor: gris1,
         resizeToAvoidBottomPadding: false,
@@ -247,11 +247,12 @@ class _HistoriqueScoreState extends State<HistoriqueScore> {
               Padding(
                 padding:
                     const EdgeInsets.only(bottom: 10.0, right: 14.0, top: 10.0),
-                child: Icon(FontAwesomeIcons.history, size: 20),
+                child: Icon(FontAwesomeIcons.history, size: 16),
               ),
               Text(
-                "Historique du score de " + historiqueArguments.typeScore,
-                style: white19Normal,
+                "Historique du score de " +
+                    widget.historiqueArguments.typeScore,
+                style: white16Bold,
               ),
             ],
           ),
@@ -280,6 +281,43 @@ class _HistoriqueScoreState extends State<HistoriqueScore> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.only(left: 10, bottom: 8.0),
+                          child: Text(
+                            "Patient",
+                            style: cyan20Bold,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 10, bottom: 8.0),
+                          child: RichText(
+                            text: TextSpan(
+                              text: "Patient :  ",
+                              style: black16Bold,
+                              children: <TextSpan>[
+                                TextSpan(
+                                    text:
+                                        "${widget.historiqueArguments.patient.prenom} ${widget.historiqueArguments.patient.nom}",
+                                    style: black16Normal),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 10, bottom: 8.0),
+                          child: RichText(
+                            text: TextSpan(
+                              text: "Diagnostic :  ",
+                              style: black16Bold,
+                              children: <TextSpan>[
+                                TextSpan(
+                                    text:
+                                        "${widget.historiqueArguments.patient.diagnostic}",
+                                    style: black16Normal),
+                              ],
+                            ),
+                          ),
+                        ),
                         Padding(
                           padding: const EdgeInsets.only(left: 10, bottom: 8.0),
                           child: Text(

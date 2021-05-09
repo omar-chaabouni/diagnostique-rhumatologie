@@ -8,36 +8,36 @@ import 'package:rhumatologie/screens/pages%20docteur/edit_user_prescription.dart
 import 'package:rhumatologie/shared/constants.dart';
 import 'package:http/http.dart' as http;
 
-class MyPatients extends StatefulWidget {
+class AllMyPatients extends StatefulWidget {
   final Doctor doctor;
   final String token;
-  MyPatients({this.doctor, this.token});
+  AllMyPatients({this.doctor, this.token});
   @override
-  _MyPatientsState createState() => _MyPatientsState();
+  _AllMyPatientsState createState() => _AllMyPatientsState();
 }
 
-class _MyPatientsState extends State<MyPatients> {
+class _AllMyPatientsState extends State<AllMyPatients> {
   int selectedIndex = 1;
   bool isChecked = false;
   // List waitingPatients = [];
-  List<dynamic> filteredPatients = [];
+  List<Patient> filteredPatients = [];
   bool isSearching = false;
-  List<dynamic> patientList = [];
+  List<Patient> patientList = [];
 
   @override
   void initState() {
     super.initState();
-    // print("MyPatients " + widget.doctor.toString());
+    print("AllMyPatients " + widget.doctor.toString());
+    _getDoctorsAllPatients(widget.doctor.id);
   }
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _getDoctorsAllPatients(widget.doctor.id);
-    // Patient p =
-    //     Patient(age: 10, nom: '', prenom: '', diagnostic: '', numDossier: 25);
-    // filteredPatients.add(p);
-  }
+  // @override
+  // void didChangeDependencies() {
+  //   super.didChangeDependencies();
+  //   // Patient p =
+  //   //     Patient(age: 10, nom: '', prenom: '', diagnostic: '', numDossier: 25);
+  //   // filteredPatients.add(p);
+  // }
 
   void _filterwaitingPatients(value) {
     if (this.mounted) {
@@ -67,6 +67,12 @@ class _MyPatientsState extends State<MyPatients> {
         } else {
           patientList = Patient.patientsFromJson(
               json.encode(json.decode(operationResponse.body)["patients"]));
+          // for (int i = 0; i < patientList.length; i++) {
+          //   if (patientList[i].jadas.isNotEmpty &&
+          //       patientList[i].jadas != null) {
+          //     print(patientList[i].jadas[0].id.toString());
+          //   }
+          // }
         }
         if (mounted == true) {
           setState(() {
@@ -85,18 +91,23 @@ class _MyPatientsState extends State<MyPatients> {
         // resizeToAvoidBottomInset: false,
         backgroundColor: gris1,
         appBar: AppBar(
+          automaticallyImplyLeading: false,
+          iconTheme: IconThemeData(
+            color: Colors.white,
+            size: 14,
+          ),
           backgroundColor: cyan2,
           title: !isSearching
               ? FlatButton.icon(
                   onPressed: null,
                   icon: Padding(
-                    padding: const EdgeInsets.only(right: 8.0),
+                    padding: const EdgeInsets.only(right: 8),
                     child: Icon(FontAwesomeIcons.users,
-                        color: Colors.white, size: 22.0),
+                        color: Colors.white, size: 20.0),
                   ),
                   label: Text(
-                    "Tout mes patients",
-                    style: white19Normal,
+                    "Tous mes patients",
+                    style: white18Bold,
                   ),
                 )
               : TextField(
@@ -161,9 +172,21 @@ class _MyPatientsState extends State<MyPatients> {
                       itemBuilder: (BuildContext context, int index) {
                         return GestureDetector(
                           onTap: () {
-                            Navigator.of(context).pushNamed(
-                                EditUserPrescription.routeName,
-                                arguments: filteredPatients[index]);
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => EditUserPrescription(
+                                    doctor: widget.doctor,
+                                    token: widget.token,
+                                    patient: filteredPatients[index])));
+                            //     .then((value) {
+                            //   if (value == 'refresh') {
+                            //     setState(() {});
+                            //   }
+                            // });
+                            // Navigator.of(context).pop("refresh");
+
+                            // Navigator.of(context).pushNamed(
+                            //     EditUserPrescription.routeName,
+                            //     arguments: filteredPatients[index]);
                           },
                           child: Card(
                             shape: RoundedRectangleBorder(
