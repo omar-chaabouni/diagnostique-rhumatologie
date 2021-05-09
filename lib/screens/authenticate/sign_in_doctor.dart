@@ -18,7 +18,7 @@ class SignInDoctor extends StatefulWidget {
 }
 
 class _SignInDoctorState extends State<SignInDoctor> {
-  final _formKey = GlobalKey<FormState>();
+  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   // text field state
   bool loading = false;
   // String email = '';
@@ -32,25 +32,31 @@ class _SignInDoctorState extends State<SignInDoctor> {
     String getDoctorURL = 'http://192.168.1.16:4000/doctors/me';
 
     try {
-      print(json.encode({"mail": email, "password": password}));
+      // print(json.encode({"mail": email, "password": password}));
       var loginResponse = await http.post("$loginURL",
           body: json.encode({"mail": email, "password": password}),
           headers: {
             'Content-Type': 'application/json',
           });
-      print(loginResponse.body.toString());
+      // print(loginResponse.body.toString());
       if (loginResponse.statusCode == 200) {
         var getDoctorResponse = await http.get("$getDoctorURL", headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ${json.decode(loginResponse.body)["token"]}'
         });
         if (getDoctorResponse.statusCode == 200) {
-          print(getDoctorResponse.body.toString());
+          // print(getDoctorResponse.body.toString());
           doctor = Doctor.fromRawJson(getDoctorResponse.body);
-          Navigator.of(context).pushNamed(HomeDoctor.routeName,
-              arguments: DoctorLoginArguments(
+          print(doctor.toJson());
+
+          // Navigator.of(context).pushNamed(HomeDoctor.routeName,
+          //     arguments: DoctorLoginArguments(
+          //         doctor: doctor,
+          //         token: json.decode(loginResponse.body)["token"]));
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => HomeDoctor(
                   doctor: doctor,
-                  token: json.decode(loginResponse.body)["token"]));
+                  token: json.decode(loginResponse.body)["token"])));
         }
 
         // if (mounted == true) {
@@ -303,18 +309,18 @@ class _SignInDoctorState extends State<SignInDoctor> {
         text: TextSpan(
           children: [
             TextSpan(
-              text: 'Vous êtes un de nos patient ?\n ',
+              text: 'Vous êtes un de nos patient ?\n',
               style: GoogleFonts.oxygen(
                 color: Colors.white,
-                fontSize: 16.0,
+                fontSize: 15.0,
                 fontWeight: FontWeight.w400,
               ),
             ),
             TextSpan(
-              text: 'S\'identifier en tant que patient',
+              text: 'S\' identifier en tant que patient',
               style: GoogleFonts.oxygen(
                 color: Colors.white,
-                fontSize: 20.0,
+                fontSize: 17.0,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -351,7 +357,7 @@ class _SignInDoctorState extends State<SignInDoctor> {
                               'BIENVENU DOCTEUR',
                               style: GoogleFonts.oxygen(
                                 color: Colors.white,
-                                fontSize: 30.0,
+                                fontSize: 26.0,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -360,7 +366,7 @@ class _SignInDoctorState extends State<SignInDoctor> {
                               'S\' IDENTIFIER',
                               style: GoogleFonts.oxygen(
                                 color: Colors.white,
-                                fontSize: 24.0,
+                                fontSize: 22.0,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -370,7 +376,9 @@ class _SignInDoctorState extends State<SignInDoctor> {
                               height: 30.0,
                             ),
                             _buildPasswordTF(),
+                            SizedBox(height: 15.0),
                             _buildLoginBtn(),
+                            SizedBox(height: 15.0),
                             _buildSignupBtn(),
                           ],
                         ),

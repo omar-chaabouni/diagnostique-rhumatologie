@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class Jadas {
   Jadas({
     this.id,
@@ -14,25 +16,26 @@ class Jadas {
   DateTime dateValidation;
   DateTime dateCalcul;
   String score;
-
-  factory Jadas.fromJson(Map<String, dynamic> json) => Jadas(
-        id: json["_id"],
-        score: json["score"],
-        dateDemande: json["dateDemande"] == null
-            ? null
-            : DateTime.parse(json["dateDemande"]),
-        state: json["state"],
-        dateValidation: json["dateValidation"] == null
-            ? null
-            : DateTime.parse(json["dateValidation"]),
-        dateCalcul: json["dateCalcul"] == null
-            ? null
-            : DateTime.parse(json["dateCalcul"]),
-      );
-
+  factory Jadas.fromRawJson(String str) => Jadas.fromJson(json.decode(str));
+  factory Jadas.fromJson(Map<String, dynamic> json) {
+    return Jadas(
+      id: json["_id"],
+      score: json["score"] == null ? null : json["score"],
+      dateDemande: json["dateDemande"] == null
+          ? null
+          : DateTime.parse(json["dateDemande"]),
+      state: json["state"] == null ? null : json["state"],
+      dateValidation: json["dateValidation"] == null
+          ? null
+          : DateTime.parse(json["dateValidation"]),
+      dateCalcul: json["dateCalcul"] == null
+          ? null
+          : DateTime.parse(json["dateCalcul"]),
+    );
+  }
   Map<String, dynamic> toJson() => {
         "_id": id,
-        "score": score,
+        "score": score == null ? null : score,
         "dateDemande":
             dateDemande == null ? null : dateDemande.toIso8601String(),
         "state": state,

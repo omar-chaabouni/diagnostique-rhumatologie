@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:rhumatologie/models/patient.dart';
 import 'package:rhumatologie/screens/pages%20patient/home_patient.dart';
 import 'package:rhumatologie/shared/constants.dart';
 import 'package:rhumatologie/shared/utils.dart';
 
 class Page1Jadas extends StatefulWidget {
   static const routeName = '/jadas_1';
-
+  Patient patient;
+  String token;
+  Page1Jadas({this.patient, this.token});
   @override
   _Page1JadasState createState() => _Page1JadasState();
 }
@@ -51,10 +54,10 @@ class _Page1JadasState extends State<Page1Jadas> {
         backgroundColor: cyan2,
         title: FlatButton.icon(
           onPressed: (null),
-          icon: Icon(FontAwesomeIcons.fileAlt, color: Colors.white),
+          icon: Icon(FontAwesomeIcons.fileAlt, color: Colors.white, size: 20.0),
           label: Text(
             "Score JADAS",
-            style: white22Bold,
+            style: white20Bold,
           ),
         ),
       ),
@@ -92,47 +95,50 @@ class _Page1JadasState extends State<Page1Jadas> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
-                        sliderLimit(0.0),
-                        Container(
-                          width: 250,
-                          child: Padding(
-                            padding: const EdgeInsets.only(bottom: 5.0),
-                            child: SliderTheme(
-                              data: SliderTheme.of(context).copyWith(
-                                activeTrackColor: cyan3,
-                                inactiveTrackColor: cyan2,
-                                showValueIndicator: ShowValueIndicator.always,
-                                thumbColor: Colors.blueAccent,
-                                overlayColor: Colors.purple.withAlpha(32),
-                                overlayShape: RoundSliderOverlayShape(
-                                    overlayRadius: 16.0),
-                                activeTickMarkColor: cyan2,
-                                inactiveTickMarkColor: cyan2,
-                                valueIndicatorShape:
-                                    PaddleSliderValueIndicatorShape(),
-                                valueIndicatorColor: Colors.blueAccent,
-                                valueIndicatorTextStyle: white16Bold,
-                              ),
-                              child: Slider(
-                                value: _evaluationGlobaleParParent,
-                                min: 0.0,
-                                max: 10.0,
-                                divisions: 10,
-                                label: '$_evaluationGlobaleParParent',
-                                onChanged: (value) {
-                                  if (mounted == true) {
-                                    setState(
-                                      () {
-                                        _evaluationGlobaleParParent = value;
-                                      },
-                                    );
-                                  }
-                                },
+                        Flexible(child: sliderLimit(0.0), flex: 1),
+                        Flexible(
+                          flex: 6,
+                          child: Container(
+                            // width: 250,
+                            child: Padding(
+                              padding: const EdgeInsets.only(bottom: 5.0),
+                              child: SliderTheme(
+                                data: SliderTheme.of(context).copyWith(
+                                  activeTrackColor: cyan3,
+                                  inactiveTrackColor: cyan2,
+                                  showValueIndicator: ShowValueIndicator.always,
+                                  thumbColor: Colors.blueAccent,
+                                  overlayColor: Colors.purple.withAlpha(32),
+                                  overlayShape: RoundSliderOverlayShape(
+                                      overlayRadius: 16.0),
+                                  activeTickMarkColor: cyan2,
+                                  inactiveTickMarkColor: cyan2,
+                                  valueIndicatorShape:
+                                      PaddleSliderValueIndicatorShape(),
+                                  valueIndicatorColor: Colors.blueAccent,
+                                  valueIndicatorTextStyle: white16Bold,
+                                ),
+                                child: Slider(
+                                  value: _evaluationGlobaleParParent,
+                                  min: 0.0,
+                                  max: 10.0,
+                                  divisions: 10,
+                                  label: '$_evaluationGlobaleParParent',
+                                  onChanged: (value) {
+                                    if (mounted == true) {
+                                      setState(
+                                        () {
+                                          _evaluationGlobaleParParent = value;
+                                        },
+                                      );
+                                    }
+                                  },
+                                ),
                               ),
                             ),
                           ),
                         ),
-                        sliderLimit(10.0),
+                        Flexible(child: sliderLimit(10.0), flex: 1),
                       ],
                     ),
                     Padding(
@@ -146,47 +152,50 @@ class _Page1JadasState extends State<Page1Jadas> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
-                        sliderLimit(0.0),
-                        Container(
-                          width: 250,
-                          child: Padding(
-                            padding: const EdgeInsets.only(bottom: 5.0),
-                            child: SliderTheme(
-                              data: SliderTheme.of(context).copyWith(
-                                activeTrackColor: cyan3,
-                                inactiveTrackColor: cyan2,
-                                showValueIndicator: ShowValueIndicator.always,
-                                thumbColor: Colors.blueAccent,
-                                overlayColor: Colors.purple.withAlpha(32),
-                                overlayShape: RoundSliderOverlayShape(
-                                    overlayRadius: 16.0),
-                                activeTickMarkColor: cyan2,
-                                inactiveTickMarkColor: cyan2,
-                                valueIndicatorShape:
-                                    PaddleSliderValueIndicatorShape(),
-                                valueIndicatorColor: Colors.blueAccent,
-                                valueIndicatorTextStyle: white16Bold,
-                              ),
-                              child: Slider(
-                                value: _nbrArticulationsTumefiees,
-                                min: 0.0,
-                                max: 10.0,
-                                divisions: 10,
-                                label: '$_nbrArticulationsTumefiees',
-                                onChanged: (value) {
-                                  if (mounted == true) {
-                                    setState(
-                                      () {
-                                        _nbrArticulationsTumefiees = value;
-                                      },
-                                    );
-                                  }
-                                },
+                        Flexible(child: sliderLimit(0.0), flex: 1),
+                        Flexible(
+                          flex: 6,
+                          child: Container(
+                            // width: 250,
+                            child: Padding(
+                              padding: const EdgeInsets.only(bottom: 5.0),
+                              child: SliderTheme(
+                                data: SliderTheme.of(context).copyWith(
+                                  activeTrackColor: cyan3,
+                                  inactiveTrackColor: cyan2,
+                                  showValueIndicator: ShowValueIndicator.always,
+                                  thumbColor: Colors.blueAccent,
+                                  overlayColor: Colors.purple.withAlpha(32),
+                                  overlayShape: RoundSliderOverlayShape(
+                                      overlayRadius: 16.0),
+                                  activeTickMarkColor: cyan2,
+                                  inactiveTickMarkColor: cyan2,
+                                  valueIndicatorShape:
+                                      PaddleSliderValueIndicatorShape(),
+                                  valueIndicatorColor: Colors.blueAccent,
+                                  valueIndicatorTextStyle: white16Bold,
+                                ),
+                                child: Slider(
+                                  value: _nbrArticulationsTumefiees,
+                                  min: 0.0,
+                                  max: 10.0,
+                                  divisions: 10,
+                                  label: '$_nbrArticulationsTumefiees',
+                                  onChanged: (value) {
+                                    if (mounted == true) {
+                                      setState(
+                                        () {
+                                          _nbrArticulationsTumefiees = value;
+                                        },
+                                      );
+                                    }
+                                  },
+                                ),
                               ),
                             ),
                           ),
                         ),
-                        sliderLimit(10.0),
+                        Flexible(child: sliderLimit(10.0), flex: 1),
                       ],
                     ),
                     Padding(
@@ -200,47 +209,50 @@ class _Page1JadasState extends State<Page1Jadas> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
-                        sliderLimit(0.0),
-                        Container(
-                          width: 250,
-                          child: Padding(
-                            padding: const EdgeInsets.only(bottom: 5.0),
-                            child: SliderTheme(
-                              data: SliderTheme.of(context).copyWith(
-                                activeTrackColor: cyan3,
-                                inactiveTrackColor: cyan2,
-                                showValueIndicator: ShowValueIndicator.always,
-                                thumbColor: Colors.blueAccent,
-                                overlayColor: Colors.purple.withAlpha(32),
-                                overlayShape: RoundSliderOverlayShape(
-                                    overlayRadius: 16.0),
-                                activeTickMarkColor: cyan2,
-                                inactiveTickMarkColor: cyan2,
-                                valueIndicatorShape:
-                                    PaddleSliderValueIndicatorShape(),
-                                valueIndicatorColor: Colors.blueAccent,
-                                valueIndicatorTextStyle: white16Bold,
-                              ),
-                              child: Slider(
-                                value: _vitesseSedimentation,
-                                min: 0.0,
-                                max: 180.0,
-                                divisions: 18,
-                                label: '${_vitesseSedimentation.round()}',
-                                onChanged: (value) {
-                                  if (mounted == true) {
-                                    setState(
-                                      () {
-                                        _vitesseSedimentation = value;
-                                      },
-                                    );
-                                  }
-                                },
+                        Flexible(child: sliderLimit(0.0), flex: 1),
+                        Flexible(
+                          flex: 5,
+                          child: Container(
+                            // width: 250,
+                            child: Padding(
+                              padding: const EdgeInsets.only(bottom: 5.0),
+                              child: SliderTheme(
+                                data: SliderTheme.of(context).copyWith(
+                                  activeTrackColor: cyan3,
+                                  inactiveTrackColor: cyan2,
+                                  showValueIndicator: ShowValueIndicator.always,
+                                  thumbColor: Colors.blueAccent,
+                                  overlayColor: Colors.purple.withAlpha(32),
+                                  overlayShape: RoundSliderOverlayShape(
+                                      overlayRadius: 16.0),
+                                  activeTickMarkColor: cyan2,
+                                  inactiveTickMarkColor: cyan2,
+                                  valueIndicatorShape:
+                                      PaddleSliderValueIndicatorShape(),
+                                  valueIndicatorColor: Colors.blueAccent,
+                                  valueIndicatorTextStyle: white16Bold,
+                                ),
+                                child: Slider(
+                                  value: _vitesseSedimentation,
+                                  min: 0.0,
+                                  max: 180.0,
+                                  divisions: 18,
+                                  label: '${_vitesseSedimentation.round()}',
+                                  onChanged: (value) {
+                                    if (mounted == true) {
+                                      setState(
+                                        () {
+                                          _vitesseSedimentation = value;
+                                        },
+                                      );
+                                    }
+                                  },
+                                ),
                               ),
                             ),
                           ),
                         ),
-                        sliderLimit(180.0),
+                        Flexible(child: sliderLimit(180.0), flex: 1),
                       ],
                     ),
                     Align(

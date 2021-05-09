@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class Jspada {
   Jspada({
     this.id,
@@ -14,25 +16,26 @@ class Jspada {
   DateTime dateValidation;
   DateTime dateCalcul;
   String score;
-
-  factory Jspada.fromJson(Map<String, dynamic> json) => Jspada(
-        id: json["_id"],
-        score: json["score"],
-        dateDemande: json["dateDemande"] == null
-            ? null
-            : DateTime.parse(json["dateDemande"]),
-        state: json["state"],
-        dateValidation: json["dateValidation"] == null
-            ? null
-            : DateTime.parse(json["dateValidation"]),
-        dateCalcul: json["dateCalcul"] == null
-            ? null
-            : DateTime.parse(json["dateCalcul"]),
-      );
-
+  factory Jspada.fromRawJson(String str) => Jspada.fromJson(json.decode(str));
+  factory Jspada.fromJson(Map<String, dynamic> json) {
+    return Jspada(
+      id: json["_id"],
+      score: json["score"] == null ? null : json["score"],
+      dateDemande: json["dateDemande"] == null
+          ? null
+          : DateTime.parse(json["dateDemande"]),
+      state: json["state"] == null ? null : json["state"],
+      dateValidation: json["dateValidation"] == null
+          ? null
+          : DateTime.parse(json["dateValidation"]),
+      dateCalcul: json["dateCalcul"] == null
+          ? null
+          : DateTime.parse(json["dateCalcul"]),
+    );
+  }
   Map<String, dynamic> toJson() => {
         "_id": id,
-        "score": score,
+        "score": score == null ? null : score,
         "dateDemande":
             dateDemande == null ? null : dateDemande.toIso8601String(),
         "state": state,

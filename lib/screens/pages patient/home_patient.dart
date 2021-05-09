@@ -10,20 +10,27 @@ import 'package:rhumatologie/shared/constants.dart';
 // Diagnostic PAGE
 class HomePatient extends StatefulWidget {
   static const routeName = '/home_patient';
-  HomePatient({Key key}) : super(key: key);
-  static Patient patient;
+  Patient patient;
+  String token;
+  HomePatient({Key key, this.patient, this.token}) : super(key: key);
   @override
   _HomePatientState createState() => _HomePatientState();
 }
 
 class _HomePatientState extends State<HomePatient> {
   int selectedIndex = 0;
-  List<Widget> _screens = <Widget>[
-    UserDrugs(),
-    ChooseScore(),
-    Profile(),
-  ];
+  List<Widget> _screens = <Widget>[];
   int _currentIndex = 0;
+  @override
+  void initState() {
+    super.initState();
+    // print("houniiiiii" + widget.patient.toString());
+    _screens = <Widget>[
+      UserDrugs(patient: widget.patient, token: widget.token),
+      ChooseScore(patient: widget.patient, token: widget.token),
+      Profile(patient: widget.patient, token: widget.token),
+    ];
+  }
 
   final PageController _pageController = PageController();
   void _onPageChanged(int index) {

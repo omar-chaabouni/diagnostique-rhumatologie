@@ -3,12 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:grouped_buttons/grouped_buttons.dart';
 import 'package:rhumatologie/models/chaq_arguments.dart';
+import 'package:rhumatologie/models/patient.dart';
 import 'package:rhumatologie/screens/scores_pages/score%20de%20chaq/page_2_chaq.dart';
 import 'package:rhumatologie/shared/constants.dart';
 import 'package:rhumatologie/shared/utils.dart';
 
 class Page1Chaq extends StatefulWidget {
   static const routeName = '/chaq_1';
+  Patient patient;
+  String token;
+  Page1Chaq({this.patient, this.token});
   @override
   _Page1ChaqState createState() => _Page1ChaqState();
 }
@@ -71,10 +75,10 @@ class _Page1ChaqState extends State<Page1Chaq> {
         backgroundColor: cyan2,
         title: FlatButton.icon(
           onPressed: (null),
-          icon: Icon(FontAwesomeIcons.fileAlt, color: Colors.white),
+          icon: Icon(FontAwesomeIcons.fileAlt, color: Colors.white, size: 20.0),
           label: Text(
-            "Score CHAQ      Page 1/4",
-            style: white22Bold,
+            "Score CHAQ   Page 1/4",
+            style: white20Bold,
           ),
         ),
       ),
@@ -138,7 +142,7 @@ class _Page1ChaqState extends State<Page1Chaq> {
                                               child: Text(txt.data,
                                                   maxLines: 4,
                                                   textAlign: TextAlign.center,
-                                                  style: black13Normal),
+                                                  style: black12Normal),
                                             ),
                                           ],
                                         ),
@@ -185,7 +189,7 @@ class _Page1ChaqState extends State<Page1Chaq> {
                                               child: Text(txt.data,
                                                   maxLines: 4,
                                                   textAlign: TextAlign.center,
-                                                  style: black13Normal),
+                                                  style: black12Normal),
                                             ),
                                           ],
                                         ),
@@ -232,7 +236,7 @@ class _Page1ChaqState extends State<Page1Chaq> {
                                               child: Text(txt.data,
                                                   maxLines: 4,
                                                   textAlign: TextAlign.center,
-                                                  style: black13Normal),
+                                                  style: black12Normal),
                                             ),
                                           ],
                                         ),
@@ -279,7 +283,7 @@ class _Page1ChaqState extends State<Page1Chaq> {
                                               child: Text(txt.data,
                                                   maxLines: 4,
                                                   textAlign: TextAlign.center,
-                                                  style: black13Normal),
+                                                  style: black12Normal),
                                             ),
                                           ],
                                         ),
@@ -336,7 +340,7 @@ class _Page1ChaqState extends State<Page1Chaq> {
                                               child: Text(txt.data,
                                                   maxLines: 4,
                                                   textAlign: TextAlign.center,
-                                                  style: black13Normal),
+                                                  style: black12Normal),
                                             ),
                                           ],
                                         ),
@@ -384,7 +388,7 @@ class _Page1ChaqState extends State<Page1Chaq> {
                                               child: Text(txt.data,
                                                   maxLines: 4,
                                                   textAlign: TextAlign.center,
-                                                  style: black13Normal),
+                                                  style: black12Normal),
                                             ),
                                           ],
                                         ),
@@ -440,7 +444,7 @@ class _Page1ChaqState extends State<Page1Chaq> {
                                               child: Text(txt.data,
                                                   maxLines: 4,
                                                   textAlign: TextAlign.center,
-                                                  style: black13Normal),
+                                                  style: black12Normal),
                                             ),
                                           ],
                                         ),
@@ -488,7 +492,7 @@ class _Page1ChaqState extends State<Page1Chaq> {
                                               child: Text(txt.data,
                                                   maxLines: 4,
                                                   textAlign: TextAlign.center,
-                                                  style: black13Normal),
+                                                  style: black12Normal),
                                             ),
                                           ],
                                         ),
@@ -535,7 +539,7 @@ class _Page1ChaqState extends State<Page1Chaq> {
                                               child: Text(txt.data,
                                                   maxLines: 4,
                                                   textAlign: TextAlign.center,
-                                                  style: black13Normal),
+                                                  style: black12Normal),
                                             ),
                                           ],
                                         ),

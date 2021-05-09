@@ -21,7 +21,7 @@ class Chaq {
 
   factory Chaq.fromJson(Map<String, dynamic> json) => Chaq(
         id: json["_id"],
-        score: json["score"],
+        score: json["score"] == null ? null : json["score"],
         evaluation: json["evaluation"],
         douleurs: json["douleurs"],
         dateDemande: json["dateDemande"] == null

@@ -25,6 +25,9 @@ final black16Normal = GoogleFonts.oxygen(
 final black13Normal = GoogleFonts.oxygen(
     color: Colors.black, fontWeight: FontWeight.normal, fontSize: 13.0);
 
+final black12Normal = GoogleFonts.oxygen(
+    color: Colors.black, fontWeight: FontWeight.normal, fontSize: 11.5);
+
 final cyan13Normal = GoogleFonts.oxygen(
     color: cyan2, fontWeight: FontWeight.normal, fontSize: 13.0);
 
@@ -42,7 +45,8 @@ final black18Normal = GoogleFonts.oxygen(
     fontWeight: FontWeight.normal,
     fontSize: 18.0,
     height: 1.4);
-
+final black14Normal = GoogleFonts.oxygen(
+    color: Colors.black, fontWeight: FontWeight.normal, fontSize: 14.0);
 final green18Bold = GoogleFonts.oxygen(
     fontWeight: FontWeight.w600, color: Colors.green, fontSize: 18.0);
 
@@ -51,10 +55,15 @@ final white16Bold = GoogleFonts.oxygen(
 
 final white19Bold = GoogleFonts.oxygen(
     fontWeight: FontWeight.bold, color: Colors.white, fontSize: 19);
-
+final white18Bold = GoogleFonts.oxygen(
+    fontWeight: FontWeight.bold, color: Colors.white, fontSize: 18);
 final white22Normal = GoogleFonts.oxygen(color: Colors.white, fontSize: 22.0);
 
 final white19Normal = GoogleFonts.oxygen(color: Colors.white, fontSize: 19.0);
+
+final white16Normal = GoogleFonts.oxygen(color: Colors.white, fontSize: 16.0);
+final white12Bold = GoogleFonts.oxygen(
+    color: Colors.white, fontSize: 12.0, fontWeight: FontWeight.bold);
 
 final cyan16Bold = GoogleFonts.oxygen(
     fontWeight: FontWeight.w600, color: cyan2, fontSize: 16.0);
@@ -62,10 +71,19 @@ final cyan16Bold = GoogleFonts.oxygen(
 final cyan18Bold = GoogleFonts.oxygen(
     fontWeight: FontWeight.w600, color: cyan2, fontSize: 18.0);
 
+final cyan19Bold = GoogleFonts.oxygen(
+    fontWeight: FontWeight.w600, color: cyan2, fontSize: 19.0);
+
 final white14Bold = GoogleFonts.oxygen(
   fontWeight: FontWeight.bold,
   color: Colors.white,
   fontSize: 14.0,
+);
+
+final white11Bold = GoogleFonts.oxygen(
+  fontWeight: FontWeight.bold,
+  color: Colors.white,
+  fontSize: 11.0,
 );
 
 final white15Bold = GoogleFonts.oxygen(
@@ -73,7 +91,16 @@ final white15Bold = GoogleFonts.oxygen(
   color: Colors.white,
   fontSize: 15.0,
 );
-
+final white15Normal = GoogleFonts.oxygen(
+  fontWeight: FontWeight.normal,
+  color: Colors.white,
+  fontSize: 15.0,
+);
+final white14Normal = GoogleFonts.oxygen(
+  fontWeight: FontWeight.normal,
+  color: Colors.white,
+  fontSize: 14.0,
+);
 final darkGreen18Bold = GoogleFonts.oxygen(
     fontWeight: FontWeight.w600, color: Colors.lightGreen[800], fontSize: 18.0);
 
@@ -85,7 +112,7 @@ final cyan22Bold = GoogleFonts.oxygen(
 
 final titrePage = GoogleFonts.oxygen(color: Colors.white, fontSize: 22.0);
 
-final disconnectStyle = GoogleFonts.oxygen(color: Colors.white, fontSize: 14.0);
+final disconnectStyle = GoogleFonts.oxygen(color: Colors.white, fontSize: 13.0);
 
 final kBoxDecorationStyle = BoxDecoration(
   color: cyan3,
@@ -101,7 +128,8 @@ final kBoxDecorationStyle = BoxDecoration(
 
 final white22Bold = GoogleFonts.oxygen(
     fontWeight: FontWeight.w600, color: Colors.white, fontSize: 22.0);
-
+final white20Bold = GoogleFonts.oxygen(
+    fontWeight: FontWeight.w600, color: Colors.white, fontSize: 20.0);
 final cyan18Bold1_6 = GoogleFonts.oxygen(
     fontWeight: FontWeight.w600, color: cyan2, height: 1.6, fontSize: 18.0);
 final Color cyan1 = Color(0xff40bcd8);

@@ -71,10 +71,10 @@ class _Page4ChaqState extends State<Page4Chaq> {
         backgroundColor: cyan2,
         title: FlatButton.icon(
           onPressed: (null),
-          icon: Icon(FontAwesomeIcons.fileAlt, color: Colors.white),
+          icon: Icon(FontAwesomeIcons.fileAlt, color: Colors.white, size: 20.0),
           label: Text(
-            "Score CHAQ      Page 4/4",
-            style: white22Bold,
+            "Score CHAQ   Page 4/4",
+            style: white20Bold,
           ),
         ),
       ),
@@ -138,7 +138,7 @@ class _Page4ChaqState extends State<Page4Chaq> {
                                               child: Text(txt.data,
                                                   maxLines: 4,
                                                   textAlign: TextAlign.center,
-                                                  style: black13Normal),
+                                                  style: black12Normal),
                                             ),
                                           ],
                                         ),
@@ -186,7 +186,7 @@ class _Page4ChaqState extends State<Page4Chaq> {
                                               child: Text(txt.data,
                                                   maxLines: 4,
                                                   textAlign: TextAlign.center,
-                                                  style: black13Normal),
+                                                  style: black12Normal),
                                             ),
                                           ],
                                         ),
@@ -234,7 +234,7 @@ class _Page4ChaqState extends State<Page4Chaq> {
                                               child: Text(txt.data,
                                                   maxLines: 4,
                                                   textAlign: TextAlign.center,
-                                                  style: black13Normal),
+                                                  style: black12Normal),
                                             ),
                                           ],
                                         ),
@@ -282,7 +282,7 @@ class _Page4ChaqState extends State<Page4Chaq> {
                                               child: Text(txt.data,
                                                   maxLines: 4,
                                                   textAlign: TextAlign.center,
-                                                  style: black13Normal),
+                                                  style: black12Normal),
                                             ),
                                           ],
                                         ),
@@ -329,7 +329,7 @@ class _Page4ChaqState extends State<Page4Chaq> {
                                               child: Text(txt.data,
                                                   maxLines: 4,
                                                   textAlign: TextAlign.center,
-                                                  style: black13Normal),
+                                                  style: black12Normal),
                                             ),
                                           ],
                                         ),
@@ -504,7 +504,7 @@ class _Page4ChaqState extends State<Page4Chaq> {
                                                 style: GoogleFonts.oxygen(
                                                   color: Colors.black,
                                                   fontWeight: FontWeight.normal,
-                                                  fontSize: 15.0,
+                                                  fontSize: 14.0,
                                                 ),
                                               ),
                                             ),
@@ -550,55 +550,65 @@ class _Page4ChaqState extends State<Page4Chaq> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: <Widget>[
-                                    sliderLimitWithText(0.0, "Aucune Douleur"),
-                                    Container(
-                                      width: 250,
-                                      child: Padding(
-                                        padding:
-                                            const EdgeInsets.only(bottom: 5.0),
-                                        child: SliderTheme(
-                                          data:
-                                              SliderTheme.of(context).copyWith(
-                                            activeTrackColor: cyan3,
-                                            inactiveTrackColor: cyan2,
-                                            showValueIndicator:
-                                                ShowValueIndicator.always,
-                                            thumbColor: Colors.blueAccent,
-                                            overlayColor:
-                                                Colors.purple.withAlpha(32),
-                                            overlayShape:
-                                                RoundSliderOverlayShape(
-                                                    overlayRadius: 16.0),
-                                            activeTickMarkColor: cyan2,
-                                            inactiveTickMarkColor: cyan2,
-                                            valueIndicatorShape:
-                                                PaddleSliderValueIndicatorShape(),
-                                            valueIndicatorColor:
-                                                Colors.blueAccent,
-                                            valueIndicatorTextStyle:
-                                                white16Bold,
-                                          ),
-                                          child: Slider(
-                                            value: severiteDouleur,
-                                            min: 0.0,
-                                            max: 100.0,
-                                            divisions: 10,
-                                            label: '${severiteDouleur.round()}',
-                                            onChanged: (value) {
-                                              if (mounted == true) {
-                                                setState(
-                                                  () {
-                                                    severiteDouleur = value;
-                                                  },
-                                                );
-                                              }
-                                            },
+                                    Flexible(
+                                        flex: 1,
+                                        child: sliderLimitWithText(
+                                            0.0, "Aucune Douleur")),
+                                    Flexible(
+                                      flex: 4,
+                                      child: Container(
+                                        width: 250,
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(
+                                              bottom: 5.0),
+                                          child: SliderTheme(
+                                            data: SliderTheme.of(context)
+                                                .copyWith(
+                                              activeTrackColor: cyan3,
+                                              inactiveTrackColor: cyan2,
+                                              showValueIndicator:
+                                                  ShowValueIndicator.always,
+                                              thumbColor: Colors.blueAccent,
+                                              overlayColor:
+                                                  Colors.purple.withAlpha(32),
+                                              overlayShape:
+                                                  RoundSliderOverlayShape(
+                                                      overlayRadius: 16.0),
+                                              activeTickMarkColor: cyan2,
+                                              inactiveTickMarkColor: cyan2,
+                                              valueIndicatorShape:
+                                                  PaddleSliderValueIndicatorShape(),
+                                              valueIndicatorColor:
+                                                  Colors.blueAccent,
+                                              valueIndicatorTextStyle:
+                                                  white16Bold,
+                                            ),
+                                            child: Slider(
+                                              value: severiteDouleur,
+                                              min: 0.0,
+                                              max: 100.0,
+                                              divisions: 10,
+                                              label:
+                                                  '${severiteDouleur.round()}',
+                                              onChanged: (value) {
+                                                if (mounted == true) {
+                                                  setState(
+                                                    () {
+                                                      severiteDouleur = value;
+                                                    },
+                                                  );
+                                                }
+                                              },
+                                            ),
                                           ),
                                         ),
                                       ),
                                     ),
-                                    sliderLimitWithText(
-                                        100.0, "Douleurs extrèmes"),
+                                    Flexible(
+                                      flex: 1,
+                                      child: sliderLimitWithText(
+                                          100.0, "Douleurs extrèmes"),
+                                    ),
                                   ],
                                 ),
                                 Padding(
@@ -615,55 +625,64 @@ class _Page4ChaqState extends State<Page4Chaq> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: <Widget>[
-                                    sliderLimitWithText(0.0, "Très bien"),
-                                    Container(
-                                      width: 250,
-                                      child: Padding(
-                                        padding:
-                                            const EdgeInsets.only(bottom: 5.0),
-                                        child: SliderTheme(
-                                          data:
-                                              SliderTheme.of(context).copyWith(
-                                            activeTrackColor: cyan3,
-                                            inactiveTrackColor: cyan2,
-                                            showValueIndicator:
-                                                ShowValueIndicator.always,
-                                            thumbColor: Colors.blueAccent,
-                                            overlayColor:
-                                                Colors.purple.withAlpha(32),
-                                            overlayShape:
-                                                RoundSliderOverlayShape(
-                                                    overlayRadius: 16.0),
-                                            activeTickMarkColor: cyan2,
-                                            inactiveTickMarkColor: cyan2,
-                                            valueIndicatorShape:
-                                                PaddleSliderValueIndicatorShape(),
-                                            valueIndicatorColor:
-                                                Colors.blueAccent,
-                                            valueIndicatorTextStyle:
-                                                white16Bold,
-                                          ),
-                                          child: Slider(
-                                            value: evaluationGlobale,
-                                            min: 0.0,
-                                            max: 100.0,
-                                            divisions: 10,
-                                            label:
-                                                '${evaluationGlobale.round()}',
-                                            onChanged: (value) {
-                                              if (mounted == true) {
-                                                setState(
-                                                  () {
-                                                    evaluationGlobale = value;
-                                                  },
-                                                );
-                                              }
-                                            },
+                                    Flexible(
+                                        flex: 1,
+                                        child: sliderLimitWithText(
+                                            0.0, "Très bien")),
+                                    Flexible(
+                                      flex: 5,
+                                      child: Container(
+                                        width: 250,
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(
+                                              bottom: 5.0),
+                                          child: SliderTheme(
+                                            data: SliderTheme.of(context)
+                                                .copyWith(
+                                              activeTrackColor: cyan3,
+                                              inactiveTrackColor: cyan2,
+                                              showValueIndicator:
+                                                  ShowValueIndicator.always,
+                                              thumbColor: Colors.blueAccent,
+                                              overlayColor:
+                                                  Colors.purple.withAlpha(32),
+                                              overlayShape:
+                                                  RoundSliderOverlayShape(
+                                                      overlayRadius: 16.0),
+                                              activeTickMarkColor: cyan2,
+                                              inactiveTickMarkColor: cyan2,
+                                              valueIndicatorShape:
+                                                  PaddleSliderValueIndicatorShape(),
+                                              valueIndicatorColor:
+                                                  Colors.blueAccent,
+                                              valueIndicatorTextStyle:
+                                                  white16Bold,
+                                            ),
+                                            child: Slider(
+                                              value: evaluationGlobale,
+                                              min: 0.0,
+                                              max: 100.0,
+                                              divisions: 10,
+                                              label:
+                                                  '${evaluationGlobale.round()}',
+                                              onChanged: (value) {
+                                                if (mounted == true) {
+                                                  setState(
+                                                    () {
+                                                      evaluationGlobale = value;
+                                                    },
+                                                  );
+                                                }
+                                              },
+                                            ),
                                           ),
                                         ),
                                       ),
                                     ),
-                                    sliderLimitWithText(100.0, "Très mal"),
+                                    Flexible(
+                                        flex: 1,
+                                        child: sliderLimitWithText(
+                                            100.0, "Très mal")),
                                   ],
                                 ),
                                 Align(

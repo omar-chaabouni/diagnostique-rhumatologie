@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:rhumatologie/models/patient.dart';
 import 'package:rhumatologie/screens/pages%20patient/home_patient.dart';
 import 'package:rhumatologie/shared/constants.dart';
 import 'package:rhumatologie/shared/utils.dart';
 
 class Page1Jspada extends StatefulWidget {
   static const routeName = '/jspada_1';
-
+  Patient patient;
+  String token;
+  Page1Jspada({this.patient, this.token});
   @override
   _Page1JspadaState createState() => _Page1JspadaState();
 }
@@ -69,10 +72,10 @@ class _Page1JspadaState extends State<Page1Jspada> {
         backgroundColor: cyan2,
         title: FlatButton.icon(
           onPressed: (null),
-          icon: Icon(FontAwesomeIcons.fileAlt, color: Colors.white),
+          icon: Icon(FontAwesomeIcons.fileAlt, color: Colors.white, size: 20.0),
           label: Text(
             "Score JSPADA",
-            style: white22Bold,
+            style: white20Bold,
           ),
         ),
       ),
@@ -125,57 +128,66 @@ class _Page1JspadaState extends State<Page1Jspada> {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.center,
                                         children: <Widget>[
-                                          sliderLimit(0.0),
-                                          Container(
-                                            width: 250,
-                                            child: Padding(
-                                              padding: const EdgeInsets.only(
-                                                  bottom: 5.0),
-                                              child: SliderTheme(
-                                                data: SliderTheme.of(context)
-                                                    .copyWith(
-                                                  activeTrackColor: cyan3,
-                                                  inactiveTrackColor: cyan2,
-                                                  showValueIndicator:
-                                                      ShowValueIndicator.always,
-                                                  thumbColor: Colors.blueAccent,
-                                                  overlayColor: Colors.purple
-                                                      .withAlpha(32),
-                                                  overlayShape:
-                                                      RoundSliderOverlayShape(
-                                                          overlayRadius: 16.0),
-                                                  activeTickMarkColor: cyan2,
-                                                  inactiveTickMarkColor: cyan2,
-                                                  valueIndicatorShape:
-                                                      PaddleSliderValueIndicatorShape(),
-                                                  valueIndicatorColor:
-                                                      Colors.blueAccent,
-                                                  valueIndicatorTextStyle:
-                                                      white16Bold,
-                                                ),
-                                                child: Slider(
-                                                  value:
-                                                      _nbrArticulationsTumefiees,
-                                                  min: 0.0,
-                                                  max: 4.0,
-                                                  divisions: 4,
-                                                  label:
-                                                      '$_nbrArticulationsTumefiees',
-                                                  onChanged: (value) {
-                                                    if (mounted == true) {
-                                                      setState(
-                                                        () {
-                                                          _nbrArticulationsTumefiees =
-                                                              value;
-                                                        },
-                                                      );
-                                                    }
-                                                  },
+                                          Flexible(
+                                              child: sliderLimit(0.0), flex: 1),
+                                          Flexible(
+                                            flex: 6,
+                                            child: Container(
+                                              // width: 250,
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    bottom: 5.0),
+                                                child: SliderTheme(
+                                                  data: SliderTheme.of(context)
+                                                      .copyWith(
+                                                    activeTrackColor: cyan3,
+                                                    inactiveTrackColor: cyan2,
+                                                    showValueIndicator:
+                                                        ShowValueIndicator
+                                                            .always,
+                                                    thumbColor:
+                                                        Colors.blueAccent,
+                                                    overlayColor: Colors.purple
+                                                        .withAlpha(32),
+                                                    overlayShape:
+                                                        RoundSliderOverlayShape(
+                                                            overlayRadius:
+                                                                16.0),
+                                                    activeTickMarkColor: cyan2,
+                                                    inactiveTickMarkColor:
+                                                        cyan2,
+                                                    valueIndicatorShape:
+                                                        PaddleSliderValueIndicatorShape(),
+                                                    valueIndicatorColor:
+                                                        Colors.blueAccent,
+                                                    valueIndicatorTextStyle:
+                                                        white16Bold,
+                                                  ),
+                                                  child: Slider(
+                                                    value:
+                                                        _nbrArticulationsTumefiees,
+                                                    min: 0.0,
+                                                    max: 4.0,
+                                                    divisions: 4,
+                                                    label:
+                                                        '$_nbrArticulationsTumefiees',
+                                                    onChanged: (value) {
+                                                      if (mounted == true) {
+                                                        setState(
+                                                          () {
+                                                            _nbrArticulationsTumefiees =
+                                                                value;
+                                                          },
+                                                        );
+                                                      }
+                                                    },
+                                                  ),
                                                 ),
                                               ),
                                             ),
                                           ),
-                                          sliderLimit(4.0),
+                                          Flexible(
+                                              child: sliderLimit(4.0), flex: 1),
                                         ],
                                       ),
                                       Padding(
@@ -192,56 +204,66 @@ class _Page1JspadaState extends State<Page1Jspada> {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.center,
                                         children: <Widget>[
-                                          sliderLimit(0.0),
-                                          Container(
-                                            width: 250,
-                                            child: Padding(
-                                              padding: const EdgeInsets.only(
-                                                  bottom: 5.0),
-                                              child: SliderTheme(
-                                                data: SliderTheme.of(context)
-                                                    .copyWith(
-                                                  activeTrackColor: cyan3,
-                                                  inactiveTrackColor: cyan2,
-                                                  showValueIndicator:
-                                                      ShowValueIndicator.always,
-                                                  thumbColor: Colors.blueAccent,
-                                                  overlayColor: Colors.purple
-                                                      .withAlpha(32),
-                                                  overlayShape:
-                                                      RoundSliderOverlayShape(
-                                                          overlayRadius: 16.0),
-                                                  activeTickMarkColor: cyan2,
-                                                  inactiveTickMarkColor: cyan2,
-                                                  valueIndicatorShape:
-                                                      PaddleSliderValueIndicatorShape(),
-                                                  valueIndicatorColor:
-                                                      Colors.blueAccent,
-                                                  valueIndicatorTextStyle:
-                                                      white16Bold,
-                                                ),
-                                                child: Slider(
-                                                  value: _nbrEnthesesAtteintes,
-                                                  min: 0.0,
-                                                  max: 4.0,
-                                                  divisions: 4,
-                                                  label:
-                                                      '$_nbrEnthesesAtteintes',
-                                                  onChanged: (value) {
-                                                    if (mounted == true) {
-                                                      setState(
-                                                        () {
-                                                          _nbrEnthesesAtteintes =
-                                                              value;
-                                                        },
-                                                      );
-                                                    }
-                                                  },
+                                          Flexible(
+                                              child: sliderLimit(0.0), flex: 1),
+                                          Flexible(
+                                            flex: 6,
+                                            child: Container(
+                                              // width: 250,
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    bottom: 5.0),
+                                                child: SliderTheme(
+                                                  data: SliderTheme.of(context)
+                                                      .copyWith(
+                                                    activeTrackColor: cyan3,
+                                                    inactiveTrackColor: cyan2,
+                                                    showValueIndicator:
+                                                        ShowValueIndicator
+                                                            .always,
+                                                    thumbColor:
+                                                        Colors.blueAccent,
+                                                    overlayColor: Colors.purple
+                                                        .withAlpha(32),
+                                                    overlayShape:
+                                                        RoundSliderOverlayShape(
+                                                            overlayRadius:
+                                                                16.0),
+                                                    activeTickMarkColor: cyan2,
+                                                    inactiveTickMarkColor:
+                                                        cyan2,
+                                                    valueIndicatorShape:
+                                                        PaddleSliderValueIndicatorShape(),
+                                                    valueIndicatorColor:
+                                                        Colors.blueAccent,
+                                                    valueIndicatorTextStyle:
+                                                        white16Bold,
+                                                  ),
+                                                  child: Slider(
+                                                    value:
+                                                        _nbrEnthesesAtteintes,
+                                                    min: 0.0,
+                                                    max: 4.0,
+                                                    divisions: 4,
+                                                    label:
+                                                        '$_nbrEnthesesAtteintes',
+                                                    onChanged: (value) {
+                                                      if (mounted == true) {
+                                                        setState(
+                                                          () {
+                                                            _nbrEnthesesAtteintes =
+                                                                value;
+                                                          },
+                                                        );
+                                                      }
+                                                    },
+                                                  ),
                                                 ),
                                               ),
                                             ),
                                           ),
-                                          sliderLimit(4.0),
+                                          Flexible(
+                                              child: sliderLimit(4.0), flex: 1),
                                         ],
                                       ),
                                       Padding(
@@ -258,63 +280,73 @@ class _Page1JspadaState extends State<Page1Jspada> {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.center,
                                         children: <Widget>[
-                                          sliderLimit(0.0),
-                                          Container(
-                                            width: 250,
-                                            child: Padding(
-                                              padding: const EdgeInsets.only(
-                                                  bottom: 5.0),
-                                              child: SliderTheme(
-                                                data: SliderTheme.of(context)
-                                                    .copyWith(
-                                                  activeTrackColor: cyan3,
-                                                  inactiveTrackColor: cyan2,
-                                                  showValueIndicator:
-                                                      ShowValueIndicator.always,
-                                                  thumbColor: Colors.blueAccent,
-                                                  overlayColor: Colors.purple
-                                                      .withAlpha(32),
-                                                  overlayShape:
-                                                      RoundSliderOverlayShape(
-                                                          overlayRadius: 16.0),
-                                                  activeTickMarkColor: cyan2,
-                                                  inactiveTickMarkColor: cyan2,
-                                                  valueIndicatorShape:
-                                                      PaddleSliderValueIndicatorShape(),
-                                                  valueIndicatorColor:
-                                                      Colors.blueAccent,
-                                                  valueIndicatorTextStyle:
-                                                      white16Bold,
-                                                ),
-                                                child: Slider(
-                                                  value:
-                                                      _evaluationDouleurPatient,
-                                                  min: 0.0,
-                                                  max: 10.0,
-                                                  divisions: 10,
-                                                  label:
-                                                      '$_evaluationDouleurPatient',
-                                                  onChanged: (value) {
-                                                    if (mounted == true) {
-                                                      setState(
-                                                        () {
-                                                          _evaluationDouleurPatient =
-                                                              value;
-                                                        },
-                                                      );
-                                                    }
-                                                  },
+                                          Flexible(
+                                              child: sliderLimit(0.0), flex: 1),
+                                          Flexible(
+                                            flex: 6,
+                                            child: Container(
+                                              // width: 250,
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    bottom: 5.0),
+                                                child: SliderTheme(
+                                                  data: SliderTheme.of(context)
+                                                      .copyWith(
+                                                    activeTrackColor: cyan3,
+                                                    inactiveTrackColor: cyan2,
+                                                    showValueIndicator:
+                                                        ShowValueIndicator
+                                                            .always,
+                                                    thumbColor:
+                                                        Colors.blueAccent,
+                                                    overlayColor: Colors.purple
+                                                        .withAlpha(32),
+                                                    overlayShape:
+                                                        RoundSliderOverlayShape(
+                                                            overlayRadius:
+                                                                16.0),
+                                                    activeTickMarkColor: cyan2,
+                                                    inactiveTickMarkColor:
+                                                        cyan2,
+                                                    valueIndicatorShape:
+                                                        PaddleSliderValueIndicatorShape(),
+                                                    valueIndicatorColor:
+                                                        Colors.blueAccent,
+                                                    valueIndicatorTextStyle:
+                                                        white16Bold,
+                                                  ),
+                                                  child: Slider(
+                                                    value:
+                                                        _evaluationDouleurPatient,
+                                                    min: 0.0,
+                                                    max: 10.0,
+                                                    divisions: 10,
+                                                    label:
+                                                        '$_evaluationDouleurPatient',
+                                                    onChanged: (value) {
+                                                      if (mounted == true) {
+                                                        setState(
+                                                          () {
+                                                            _evaluationDouleurPatient =
+                                                                value;
+                                                          },
+                                                        );
+                                                      }
+                                                    },
+                                                  ),
                                                 ),
                                               ),
                                             ),
                                           ),
-                                          sliderLimit(10.0),
+                                          Flexible(
+                                              child: sliderLimit(10.0),
+                                              flex: 1),
                                         ],
                                       ),
 
                                       Padding(
                                         padding: const EdgeInsets.only(
-                                            bottom: 16.0, top: 4.0),
+                                            bottom: 8.0, top: 4.0),
                                         child: Text(
                                           "Raideur matinale > 15 mn ?",
                                           style: cyan20Bold,
@@ -342,7 +374,7 @@ class _Page1JspadaState extends State<Page1Jspada> {
                                           }),
                                       Padding(
                                         padding: const EdgeInsets.only(
-                                            bottom: 16.0, top: 4.0),
+                                            bottom: 8.0, top: 4.0),
                                         child: Text(
                                           "Douleur sacroiliaque ou test de Patrick positif ?",
                                           style: cyan20Bold,
@@ -374,7 +406,7 @@ class _Page1JspadaState extends State<Page1Jspada> {
                                           }),
                                       Padding(
                                         padding: const EdgeInsets.only(
-                                            bottom: 16.0, top: 4.0),
+                                            bottom: 8.0, top: 4.0),
                                         child: Text(
                                           "Rachialgies inflammatoires ?",
                                           style: cyan20Bold,
@@ -404,7 +436,7 @@ class _Page1JspadaState extends State<Page1Jspada> {
                                           }),
                                       Padding(
                                         padding: const EdgeInsets.only(
-                                            bottom: 16.0, top: 4.0),
+                                            bottom: 8.0, top: 4.0),
                                         child: Text(
                                           "Uvéite ?",
                                           style: cyan20Bold,
@@ -445,55 +477,64 @@ class _Page1JspadaState extends State<Page1Jspada> {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.center,
                                         children: <Widget>[
-                                          sliderLimit(0.0),
-                                          Container(
-                                            width: 250,
-                                            child: Padding(
-                                              padding: const EdgeInsets.only(
-                                                  bottom: 5.0),
-                                              child: SliderTheme(
-                                                data: SliderTheme.of(context)
-                                                    .copyWith(
-                                                  activeTrackColor: cyan3,
-                                                  inactiveTrackColor: cyan2,
-                                                  showValueIndicator:
-                                                      ShowValueIndicator.always,
-                                                  thumbColor: Colors.blueAccent,
-                                                  overlayColor: Colors.purple
-                                                      .withAlpha(32),
-                                                  overlayShape:
-                                                      RoundSliderOverlayShape(
-                                                          overlayRadius: 16.0),
-                                                  activeTickMarkColor: cyan2,
-                                                  inactiveTickMarkColor: cyan2,
-                                                  valueIndicatorShape:
-                                                      PaddleSliderValueIndicatorShape(),
-                                                  valueIndicatorColor:
-                                                      Colors.blueAccent,
-                                                  valueIndicatorTextStyle:
-                                                      white16Bold,
-                                                ),
-                                                child: Slider(
-                                                  value: _mobiliteShober,
-                                                  min: 0.0,
-                                                  max: 4.0,
-                                                  divisions: 4,
-                                                  label: '$_mobiliteShober',
-                                                  onChanged: (value) {
-                                                    if (mounted == true) {
-                                                      setState(
-                                                        () {
-                                                          _mobiliteShober =
-                                                              value;
-                                                        },
-                                                      );
-                                                    }
-                                                  },
+                                          Flexible(
+                                              child: sliderLimit(0.0), flex: 1),
+                                          Flexible(
+                                            flex: 6,
+                                            child: Container(
+                                              // width: 250,
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    bottom: 5.0),
+                                                child: SliderTheme(
+                                                  data: SliderTheme.of(context)
+                                                      .copyWith(
+                                                    activeTrackColor: cyan3,
+                                                    inactiveTrackColor: cyan2,
+                                                    showValueIndicator:
+                                                        ShowValueIndicator
+                                                            .always,
+                                                    thumbColor:
+                                                        Colors.blueAccent,
+                                                    overlayColor: Colors.purple
+                                                        .withAlpha(32),
+                                                    overlayShape:
+                                                        RoundSliderOverlayShape(
+                                                            overlayRadius:
+                                                                16.0),
+                                                    activeTickMarkColor: cyan2,
+                                                    inactiveTickMarkColor:
+                                                        cyan2,
+                                                    valueIndicatorShape:
+                                                        PaddleSliderValueIndicatorShape(),
+                                                    valueIndicatorColor:
+                                                        Colors.blueAccent,
+                                                    valueIndicatorTextStyle:
+                                                        white16Bold,
+                                                  ),
+                                                  child: Slider(
+                                                    value: _mobiliteShober,
+                                                    min: 0.0,
+                                                    max: 4.0,
+                                                    divisions: 4,
+                                                    label: '$_mobiliteShober',
+                                                    onChanged: (value) {
+                                                      if (mounted == true) {
+                                                        setState(
+                                                          () {
+                                                            _mobiliteShober =
+                                                                value;
+                                                          },
+                                                        );
+                                                      }
+                                                    },
+                                                  ),
                                                 ),
                                               ),
                                             ),
                                           ),
-                                          sliderLimit(4.0),
+                                          Flexible(
+                                              child: sliderLimit(4.0), flex: 1),
                                         ],
                                       ),
                                       Align(

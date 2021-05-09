@@ -19,7 +19,7 @@ class SignInPatient extends StatefulWidget {
 }
 
 class _SignInPatientState extends State<SignInPatient> {
-  final _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   // text field state
   bool loading = false;
   // String telephone = '';
@@ -33,25 +33,35 @@ class _SignInPatientState extends State<SignInPatient> {
     String getPatientURL = 'http://192.168.1.16:4000/patients/me';
 
     try {
-      print(json.encode({"telephone": telephone, "password": password}));
+      // print(json.encode({"telephone": telephone, "password": password}));
       var loginResponse = await http.post("$loginURL",
           body: json.encode({"telephone": telephone, "password": password}),
           headers: {
             'Content-Type': 'application/json',
           });
-      print(loginResponse.body.toString());
+      // print(loginResponse.body.toString());
       if (loginResponse.statusCode == 200) {
         var getPatientResponse = await http.get("$getPatientURL", headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ${json.decode(loginResponse.body)["token"]}'
         });
-        print(getPatientResponse);
+        // print(getPatientResponse);
         if (getPatientResponse.statusCode == 200) {
-          print(getPatientResponse.body.toString());
-
-          patient = Patient.fromRawJson(getPatientResponse.body.toString());
-          Navigator.of(context)
-              .pushNamed(HomePatient.routeName, arguments: patient);
+          // print(getPatientResponse.body.toString());
+          // print(getPatientResponse.body);
+          // print((json.decode(getPatientResponse.body)["patient"]).toString());
+          // patient = Patient.fromRawJson(
+          //     json.decode(getPatientResponse.body)["patient"].toString());
+          // print(json.decode(getPatientResponse.body)["patient"]);
+          patient =
+              Patient.fromJson(json.decode(getPatientResponse.body)["patient"]);
+          print(" ppp  " + patient.bilan[0].typeBilan.toString());
+          // Navigator.of(context)
+          //     .pushNamed(HomePatient.routeName, arguments: patient);
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => HomePatient(
+                  patient: patient,
+                  token: json.decode(loginResponse.body)["token"])));
         }
         // if (mounted == true) {
         //   setState(() {
@@ -284,7 +294,7 @@ class _SignInPatientState extends State<SignInPatient> {
         ),
         color: Colors.white,
         child: Text(
-          'S\'IDENTIFIER',
+          'S\' IDENTIFIER',
           style: GoogleFonts.oxygen(
             color: cyan3,
             letterSpacing: 1.5,
@@ -303,18 +313,18 @@ class _SignInPatientState extends State<SignInPatient> {
         text: TextSpan(
           children: [
             TextSpan(
-              text: 'Vous êtes un de nos docteurs ?\n ',
+              text: 'Vous êtes un de nos docteurs ?\n',
               style: GoogleFonts.oxygen(
                 color: Colors.white,
-                fontSize: 16.0,
+                fontSize: 15.0,
                 fontWeight: FontWeight.w400,
               ),
             ),
             TextSpan(
-              text: 'S\'identifier en tant que docteur',
+              text: 'S\' identifier en tant que docteur',
               style: GoogleFonts.oxygen(
                 color: Colors.white,
-                fontSize: 20.0,
+                fontSize: 17.0,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -351,16 +361,16 @@ class _SignInPatientState extends State<SignInPatient> {
                               'BIENVENU PATIENT',
                               style: GoogleFonts.oxygen(
                                 color: Colors.white,
-                                fontSize: 30.0,
+                                fontSize: 26.0,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                             SizedBox(height: 30.0),
                             Text(
-                              'S\'IDENTIFIER',
+                              'S\' IDENTIFIER',
                               style: GoogleFonts.oxygen(
                                 color: Colors.white,
-                                fontSize: 30.0,
+                                fontSize: 22.0,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -370,7 +380,9 @@ class _SignInPatientState extends State<SignInPatient> {
                               height: 30.0,
                             ),
                             _buildPasswordTF(),
+                            SizedBox(height: 15.0),
                             _buildLoginBtn(),
+                            SizedBox(height: 15.0),
                             _buildSignupBtn(),
                           ],
                         ),

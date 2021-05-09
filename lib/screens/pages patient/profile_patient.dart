@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-// import 'package:rhumatologie/services/auth.dart';
+import 'package:rhumatologie/models/patient.dart';
 import 'package:rhumatologie/shared/constants.dart';
 import 'package:rhumatologie/shared/utils.dart';
 
 class Profile extends StatefulWidget {
+  Patient patient;
+  String token;
+  Profile({this.patient, this.token});
   @override
   _ProfileState createState() => _ProfileState();
 }
@@ -18,21 +21,20 @@ class _ProfileState extends State<Profile> {
       // resizeToAvoidBottomInset: false,
       backgroundColor: gris1,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: cyan2,
         title: FlatButton.icon(
           onPressed: null,
-          icon: Icon(FontAwesomeIcons.addressCard, color: Colors.white),
+          icon: Icon(FontAwesomeIcons.addressCard,
+              color: Colors.white, size: 20.0),
           label: Text(
             "  Profil",
-            style: white22Bold,
+            style: white20Bold,
           ),
         ),
         actions: [
           FlatButton.icon(
-            icon: Icon(
-              Icons.logout,
-              color: Colors.white,
-            ),
+            icon: Icon(Icons.logout, color: Colors.white, size: 14),
             label: Text(
               "Se déconnecter",
               style: disconnectStyle,
@@ -67,11 +69,15 @@ class _ProfileState extends State<Profile> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     SizedBox(height: 8),
-                    elementProfile("Nom et prénom", "Omar CHAABOUNI "),
-                    elementProfile("Age", "12"),
-                    elementProfile("N° Dossier", "126153"),
-                    elementProfile("Diagnostic", "spadilalalala"),
-                    elementProfile("N° téléphone", "55555555"),
+                    elementProfile("Nom", "${widget.patient.nom}"),
+                    elementProfile("Prénom", "${widget.patient.prenom}"),
+                    elementProfile("Age", "${widget.patient.age}"),
+                    elementProfile(
+                        "N° Dossier", "${widget.patient.numDossier}"),
+                    elementProfile(
+                        "Diagnostic", "${widget.patient.diagnostic}"),
+                    elementProfile(
+                        "N° téléphone", "${widget.patient.telephone}"),
                   ],
                 ),
               ),

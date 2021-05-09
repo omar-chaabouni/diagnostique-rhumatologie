@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:rhumatologie/models/bilan.dart';
 import 'package:rhumatologie/models/chaq.dart';
+import 'package:rhumatologie/models/doctor.dart';
 import 'package:rhumatologie/models/jadas.dart';
 import 'package:rhumatologie/models/jamar.dart';
 import 'package:rhumatologie/models/jspada.dart';
@@ -9,6 +10,7 @@ import 'package:rhumatologie/models/jspada.dart';
 class Patient {
   static List<Patient> patientsFromJson(String str) =>
       List<Patient>.from(json.decode(str).map((x) => Patient.fromJson(x)));
+
   factory Patient.fromRawJson(String str) => Patient.fromJson(json.decode(str));
 
   static String patientToJson(List<Patient> data) =>
@@ -31,6 +33,7 @@ class Patient {
     this.dateNaissance,
     this.age,
     this.evaluation,
+    this.docteur,
   });
 
   List<dynamic> ordonnance;
@@ -42,67 +45,77 @@ class Patient {
   int age;
   int numDossier;
   String diagnostic;
-  List<Jadas> jadas;
   int v;
-  List<dynamic> jspada;
+  List<Jadas> jadas;
+  List<Jspada> jspada;
   List<Chaq> chaq;
-  List<dynamic> jamar;
+  List<Jamar> jamar;
   DateTime dateNaissance;
   int evaluation;
   List<Bilan> bilan;
+  Doctor docteur;
 
-  factory Patient.fromJson(Map<String, dynamic> json) => Patient(
-        bilan: json["Bilan"] == null
+  factory Patient.fromJson(Map<String, dynamic> jsonn) => Patient(
+        docteur: jsonn["docteur"] == null
             ? null
-            : List<Bilan>.from(json["Bilan"].map((x) => Bilan.fromJson(x))),
-        ordonnance: json["ordonnance"] == null ? null : json["ordonnance"],
-        createdAt: json["createdAt"] == null
+            // :Docteur.fromJson(jsonn["doctoor"]),
+            : Doctor.fromRawJson(json.encode(jsonn["docteur"])),
+        bilan: jsonn["Bilan"] == null
             ? null
-            : DateTime.parse(json["createdAt"]),
-        id: json["_id"] == null ? null : json["_id"],
-        nom: json["nom"] == null ? null : json["nom"],
-        prenom: json["prenom"] == null ? null : json["prenom"],
-        telephone: json["telephone"] == null ? null : json["telephone"],
-        numDossier: json["num_dossier"] == null ? null : json["num_dossier"],
-        diagnostic: json["diagnostic"] == null ? null : json["diagnostic"],
-        jadas: json["JADAS"] == null
+            : List<Bilan>.from(jsonn["Bilan"].map((x) => Bilan.fromJson(x))),
+        ordonnance: jsonn["ordonnance"] == null ? null : jsonn["ordonnance"],
+        createdAt: jsonn["createdAt"] == null
             ? null
-            : List<Jadas>.from(json["JADAS"].map((x) => Jadas.fromJson(x))),
-        v: json["__v"] == null ? null : json["__v"],
-        jspada: json["JSPADA"] == null
+            : DateTime.parse(jsonn["createdAt"]),
+        id: jsonn["_id"] == null ? null : jsonn["_id"],
+        nom: jsonn["nom"] == null ? null : jsonn["nom"],
+        prenom: jsonn["prenom"] == null ? null : jsonn["prenom"],
+        telephone: jsonn["telephone"] == null ? null : jsonn["telephone"],
+        numDossier: jsonn["num_dossier"] == null ? null : jsonn["num_dossier"],
+        diagnostic: jsonn["diagnostic"] == null ? null : jsonn["diagnostic"],
+        v: jsonn["__v"] == null ? null : jsonn["__v"],
+        jadas: jsonn["JADAS"] == null
             ? null
-            : List<Jspada>.from(json["JSPADA"].map((x) => x)),
-        chaq: json["CHAQ"] == null
+            : List<Jadas>.from(jsonn["JADAS"].map((x) => Jadas.fromJson(x))),
+        jspada: jsonn["JSPADA"] == null
             ? null
-            : List<Chaq>.from(json["CHAQ"].map((x) => Chaq.fromJson(x))),
-        jamar: json["JAMAR"] == null
+            : List<Jspada>.from(jsonn["JSPADA"].map((x) => Jspada.fromJson(x))),
+        chaq: jsonn["CHAQ"] == null
             ? null
-            : List<Jamar>.from(json["JAMAR"].map((x) => x)),
-        dateNaissance: json["date_naissance"] == null
+            : List<Chaq>.from(jsonn["CHAQ"].map((x) => Chaq.fromJson(x))),
+        jamar: jsonn["JAMAR"] == null
             ? null
-            : DateTime.parse(json["date_naissance"]),
-        age: json["age"] == null ? null : json["age"],
-        evaluation: json["evaluation"] == null ? null : json["evaluation"],
+            : List<Jamar>.from(jsonn["JAMAR"].map((x) => x)),
+        dateNaissance: jsonn["date_naissance"] == null
+            ? null
+            : DateTime.parse(jsonn["date_naissance"]),
+        age: jsonn["age"] == null ? null : jsonn["age"],
+        evaluation: jsonn["evaluation"] == null ? null : jsonn["evaluation"],
       );
 
   Map<String, dynamic> toJson() => {
-        "Bilan": bilan[0].toJson(),
-        "ordonnance": ordonnance,
-        "createdAt": createdAt.toIso8601String(),
+        "Bilan": bilan != null ? bilan[0].toJson() : [],
+        "ordonnance": ordonnance != null ? ordonnance : [],
+        "createdAt": createdAt != null
+            ? createdAt.toIso8601String()
+            : DateTime.now().toIso8601String(),
         "_id": id,
-        "nom": nom,
-        "prenom": prenom,
+        "nom": nom != null ? nom : '',
+        "prenom": prenom != null ? prenom : '',
         "telephone": telephone,
         "num_dossier": numDossier,
         "diagnostic": diagnostic,
-        "JADAS": List<dynamic>.from(jadas.map((x) => x.toJson())),
-        "__v": v,
-        "JSPADA": List<dynamic>.from(jspada.map((x) => x)),
-        "CHAQ": List<dynamic>.from(chaq.map((x) => x.toJson())),
-        "JAMAR": List<dynamic>.from(jamar.map((x) => x)),
+        "JADAS":
+            jadas == null ? [] : List<Jadas>.from(jadas.map((x) => x.toJson())),
+        "JSPADA": jspada == null ? [] : List<Jspada>.from(jspada.map((x) => x)),
+        "CHAQ":
+            chaq == null ? [] : List<Chaq>.from(chaq.map((x) => x.toJson())),
+        "JAMAR": jamar == null ? [] : List<Jamar>.from(jamar.map((x) => x)),
         "date_naissance":
             dateNaissance == null ? null : dateNaissance.toIso8601String(),
-        "age": age,
+        "age": age == null ? 0 : age,
+        "__v": v == null ? 0 : v,
         "evaluation": evaluation == null ? null : evaluation,
+        "docteur": docteur != null ? docteur.toJson() : null,
       };
 }

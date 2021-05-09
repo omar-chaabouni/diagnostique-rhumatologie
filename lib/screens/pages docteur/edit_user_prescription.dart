@@ -1,8 +1,13 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:rhumatologie/models/chaq.dart';
+import 'package:rhumatologie/models/doctor.dart';
 import 'package:rhumatologie/models/historique_arguments.dart';
 import 'package:rhumatologie/models/jadas.dart';
+import 'package:rhumatologie/models/jamar.dart';
+import 'package:rhumatologie/models/jspada.dart';
 import 'package:rhumatologie/models/patient.dart';
 import 'package:rhumatologie/screens/pages%20docteur/details_jamar.dart';
 import 'package:rhumatologie/screens/pages%20docteur/historique_score.dart';
@@ -13,36 +18,60 @@ import 'package:rhumatologie/shared/utils.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'dart:async';
+import 'package:http/http.dart' as http;
 
 // ignore: must_be_immutable
 class EditUserPrescription extends StatefulWidget {
   static const routeName = '/patient';
   Patient patient;
-
+  Doctor doctor;
+  String token;
+  EditUserPrescription({this.doctor, this.token, this.patient});
   @override
   _EditUserPrescriptionState createState() => _EditUserPrescriptionState();
 }
 
 class _EditUserPrescriptionState extends State<EditUserPrescription> {
   // final myController = TextEditingController(text: 'Test test test');
-  var textfield1 = <TextEditingController>[];
-  var textfield2 = <TextEditingController>[];
-  var textfield3 = <TextEditingController>[];
-  var textfield4 = <TextEditingController>[];
-  var textfield5 = <TextEditingController>[];
-  var controller1 = TextEditingController(text: 'test test');
-  var controller2 = TextEditingController(text: '2 eme test');
+  // var textfield1 = TextEditingController();
+  // var textfield2 = TextEditingController();
+  // var textfield3 = TextEditingController();
+  // var textfield4 = TextEditingController();
+  // var textfield5 = TextEditingController();
+  var controller1 = TextEditingController();
+  var controller2 = TextEditingController();
   var controller3 = TextEditingController();
   var controller4 = TextEditingController();
   var controller5 = TextEditingController();
-  var cardsOrdonnance = <Card>[];
+  // var cardsOrdonnance = <Container>[];
   var cardsScore = <Card>[];
-  bool isChecked1 = false;
-  bool isChecked2 = false;
+  // List<Jadas> testsJadas=[];
+  //   List<Jspada> testsJadas=[];
+  // List<Chaq> testsJadas=[];
+  // List<Jadas> testsJadas=[];
+
+  bool hemoglobine = false;
+  bool vgm = false;
+  bool tcmh = false;
+  bool globulesBlancs = false;
+  bool polynucleairesNeutrophiles = false;
+  bool lymphocyte = false;
+  bool plaquettes = false;
+  bool vitesseDeSedimentation = false;
+  bool proteineCReactive = false;
+  bool asat = false;
+  bool alat = false;
+  bool ggt = false;
+  bool pal = false;
+  bool creatinine = false;
+  bool ferritinemie = false;
+  bool ecbu = false;
+  bool serologieHepatiteC = false;
+  bool serologieHepatiteB = false;
   bool jamarDemanded = true;
   bool jamarDemandedNotRempli = true;
   double evaluationGlobaleFaiteParMedecin = 0;
-  bool existeBilanNonValide = true;
+  bool existeBilanNonValide = false;
   List<String> scoreNames = [
     'JADAS',
     'JSPADA',
@@ -55,10 +84,10 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
     '  --  ',
     '  --  '
   ]; // mel BD
-  bool haveScores = true; // change it false !!!!!!
+  // bool haveScores = true; // change it false !!!!!!
   // if true on demande test
-  List<bool> testDemanded = [false, true, true, false];
-  List<bool> testRempli = [false, false, true, false]; // if true test rempli
+  List<bool> testDemanded = [false, false, false, false];
+  List<bool> testRempli = [false, false, false, false]; // if true test rempli
   List<bool> testValidated = [false, false, false, false]; //if true test validé
   // if true of demande validation
   // List<bool> demandToValidate = [false, false, false, false];
@@ -66,161 +95,435 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
   bool _isAddOrdonnanceButtonDisabled = false;
   void initState() {
     super.initState();
+    // widget?.patient = ModalRoute.of(context).settings.arguments;
+    // print(widget.patient);
+    fillScoreResults(widget.patient);
+    fillTestRempli(widget.patient);
+    fillTestValidated(widget.patient);
+    filltestDemanded(widget.patient);
+    fillOrdonnanceInitiale();
+    // print("houniiii +" jadas)
   }
 
-  void fillCardsOrdonnance() {
-    for (int i = 0; i < 5; i++) {
-      cardsOrdonnance.add(createOrdonnance(i));
+  void fillOrdonnanceInitiale() {
+    if (widget.patient.ordonnance.isNotEmpty) {
+      for (int i = 0; i < 5; i++) {
+        if (widget.patient.ordonnance.asMap()[i] == null) {
+          widget.patient.ordonnance.add('');
+        }
+      }
+      // print(widget.patient.ordonnance);
+      if (widget.patient.ordonnance[0] != '') {
+        controller1.text = widget.patient.ordonnance[0];
+      }
+      if (widget.patient.ordonnance[1] != '') {
+        controller2.text = widget.patient.ordonnance[1];
+      }
+      if (widget.patient.ordonnance[2] != '') {
+        controller3.text = widget.patient.ordonnance[2];
+      }
+      if (widget.patient.ordonnance[3] != '') {
+        controller4.text = widget.patient.ordonnance[3];
+      }
+      if (widget.patient.ordonnance[4] != '') {
+        controller5.text = widget.patient.ordonnance[4];
+      }
+    } else {
+      for (int i = 0; i < 5; i++) {
+        if (widget.patient.ordonnance.asMap()[i] == null) {
+          widget.patient.ordonnance.add('');
+        }
+      }
     }
+    if (widget.patient.bilan.isNotEmpty) {
+      if (widget.patient.bilan[0].typeBilan.isNotEmpty) {
+        if (widget.patient.bilan[0].state == 0) {
+          existeBilanNonValide = true;
+        }
+      }
+    }
+    evaluationGlobaleFaiteParMedecin = widget.patient.evaluation.toDouble();
   }
 
   void fillScoreResults(Patient patient) {
-    if (patient.jadas.isNotEmpty) {
-      if (patient.jadas[0].dateCalcul != null) {
-        scoreResults[0] = patient.jadas[0].score;
+    if (patient.jadas != null) {
+      if (patient.jadas.isNotEmpty) {
+        if (patient.jadas[0].dateCalcul != null) {
+          scoreResults[0] = patient.jadas[0].score;
+        }
       }
     }
-    if (patient.jspada.isNotEmpty) {
-      if (patient.jspada[0].dateCalcul != null) {
-        scoreResults[1] = patient.jadas[0].score;
+    if (patient.jspada != null) {
+      if (patient.jspada.isNotEmpty) {
+        if (patient.jspada[0].dateCalcul != null) {
+          scoreResults[1] = patient.jadas[0].score;
+        }
       }
     }
-    if (patient.chaq.isNotEmpty) {
-      if (patient.chaq[0].dateCalcul != null) {
-        scoreResults[2] = patient.jadas[0].score;
+    if (patient.chaq != null) {
+      if (patient.chaq.isNotEmpty) {
+        if (patient.chaq[0].dateCalcul != null) {
+          scoreResults[2] = patient.jadas[0].score;
+        }
       }
     }
-    if (patient.jamar.isNotEmpty) {
-      if (patient.jamar[0].dateCalcul != null) {
-        scoreResults[3] = patient.jadas[0].score;
+    if (patient.jamar != null) {
+      if (patient.jamar.isNotEmpty) {
+        if (patient.jamar[0].dateCalcul != null) {
+          scoreResults[3] = patient.jadas[0].score;
+        }
       }
     }
   }
 
   void fillTestRempli(Patient patient) {
-    if (patient.jadas.isNotEmpty) {
-      if (patient.jadas[0].dateCalcul != null) {
-        testRempli[0] = true;
+    if (patient.jadas != null) {
+      if (patient.jadas.isNotEmpty) {
+        if (patient.jadas[0].dateCalcul != null) {
+          testRempli[0] = true;
+        }
       }
     }
-    if (patient.jspada.isNotEmpty) {
-      if (patient.jspada[0].dateCalcul != null) {
-        testRempli[1] = true;
+    if (patient.jspada != null) {
+      if (patient.jspada.isNotEmpty) {
+        if (patient.jspada[0].dateCalcul != null) {
+          testRempli[1] = true;
+        }
       }
     }
-    if (patient.chaq.isNotEmpty) {
-      if (patient.chaq[0].dateCalcul != null) {
-        testRempli[2] = true;
+    if (patient.chaq != null) {
+      if (patient.chaq.isNotEmpty) {
+        if (patient.chaq[0].dateCalcul != null) {
+          testRempli[2] = true;
+        }
       }
     }
-    if (patient.jamar.isNotEmpty) {
-      if (patient.jamar[0].dateCalcul != null) {
-        testRempli[3] = true;
+    if (patient.jamar != null) {
+      if (patient.jamar.isNotEmpty) {
+        if (patient.jamar[0].dateCalcul != null) {
+          testRempli[3] = true;
+        }
       }
     }
   }
 
 // remplir l array , savoir si chaque test est validé ou pas
   void fillTestValidated(Patient patient) {
-    if (patient.jadas.isNotEmpty) {
-      if (patient.jadas[0].dateValidation != null) {
-        testValidated[0] = true;
+    if (patient.jadas != null) {
+      if (patient.jadas.isNotEmpty) {
+        if (patient.jadas[0].dateValidation != null) {
+          testValidated[0] = true;
+        }
       }
     }
-    if (patient.jspada.isNotEmpty) {
-      if (patient.jspada[0].dateValidation != null) {
-        testValidated[1] = true;
+    if (patient.jspada != null) {
+      if (patient.jspada.isNotEmpty) {
+        if (patient.jspada[0].dateValidation != null) {
+          testValidated[1] = true;
+        }
       }
     }
-    if (patient.chaq.isNotEmpty) {
-      if (patient.chaq[0].dateValidation != null) {
-        testValidated[2] = true;
+    if (patient.chaq != null) {
+      if (patient.chaq.isNotEmpty) {
+        if (patient.chaq[0].dateValidation != null) {
+          testValidated[2] = true;
+        }
       }
     }
-    if (patient.jamar.isNotEmpty) {
-      if (patient.jamar[0].dateValidation != null) {
-        testValidated[3] = true;
+    if (patient.jamar != null) {
+      if (patient.jamar.isNotEmpty) {
+        if (patient.jamar[0].dateValidation != null) {
+          testValidated[3] = true;
+        }
       }
     }
   }
 
   void filltestDemanded(Patient patient) {
-    if (patient.jadas.isNotEmpty) {
-      if (patient.jadas[0].dateDemande != null) {
-        testDemanded[0] = true;
+    if (patient.jadas != null) {
+      if (patient.jadas.isNotEmpty) {
+        if (patient.jadas[0].dateDemande != null) {
+          testDemanded[0] = true;
+        }
       }
     }
-    if (patient.jspada.isNotEmpty) {
-      if (patient.jspada[0].dateDemande != null) {
-        testDemanded[1] = true;
+    if (patient.jspada != null) {
+      if (patient.jspada.isNotEmpty) {
+        if (patient.jspada[0].dateDemande != null) {
+          testDemanded[1] = true;
+        }
       }
     }
-    if (patient.chaq.isNotEmpty) {
-      if (patient.chaq[0].dateDemande != null) {
-        testDemanded[2] = true;
+    if (patient.chaq != null) {
+      if (patient.chaq.isNotEmpty) {
+        if (patient.chaq[0].dateDemande != null) {
+          testDemanded[2] = true;
+        }
       }
     }
-    if (patient.jamar.isNotEmpty) {
-      if (patient.jamar[0].dateDemande != null) {
-        testDemanded[3] = true;
+    if (patient.jamar != null) {
+      if (patient.jamar.isNotEmpty) {
+        if (patient.jamar[0].dateDemande != null) {
+          testDemanded[3] = true;
+        }
       }
     }
   }
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    widget?.patient = ModalRoute.of(context).settings.arguments;
-    fillScoreResults(widget.patient);
-    fillCardsOrdonnance();
-    fillTestRempli(widget.patient);
-    fillTestValidated(widget.patient);
-    filltestDemanded(widget.patient);
-    if (widget.patient.jadas.isNotEmpty ||
-        widget.patient.jspada.isNotEmpty ||
-        widget.patient.chaq.isNotEmpty ||
-        widget.patient.jamar.isNotEmpty) {
-      haveScores = true;
+  demanderTest(String typeScore) async {
+    String demanderTestURL =
+        'http://192.168.1.16:4000/doctors/${widget.doctor.id}/patients/${widget.patient.id}/';
+    if (typeScore == "JADAS") {
+      demanderTestURL = demanderTestURL + "newJADAS";
+    } else if (typeScore == "JSPADA") {
+      demanderTestURL = demanderTestURL + "newJSPADA";
+    } else if (typeScore == "CHAQ") {
+      demanderTestURL = demanderTestURL + "newCHAQ";
+    } else {
+      demanderTestURL = demanderTestURL + "newJamar";
+    }
+    try {
+      var demanderTestResponse = await http.post("$demanderTestURL", headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ${widget.token}'
+      });
+      Future.delayed(Duration(milliseconds: 1000), () {
+        if (demanderTestResponse.statusCode == 200 ||
+            demanderTestResponse.statusCode == 201 ||
+            demanderTestResponse.statusCode == 202 ||
+            demanderTestResponse.statusCode == 203) {
+          enregistrerAvecSuccess(context);
+          // success = true;
+        } else {
+          Future.delayed(Duration(milliseconds: 1000), () {
+            erreurEnregistrement(context);
+          });
+          // success = false;
+        }
+      });
+    } catch (e) {
+      print(e.toString());
     }
   }
 
-  void _onDone() {
-    // List<PersonEntry> entries = [];
-    for (int i = 0; i < cardsOrdonnance.length; i++) {
-      var contenuFinalTextField1 = textfield1[i].text;
-      var contenuFinalTextField2 = textfield2[i].text;
-      var contenuFinalTextField3 = textfield3[i].text;
-      var contenuFinalTextField4 = textfield4[i].text;
-      var contenuFinalTextField5 = textfield5[i].text;
-      print("1 :  " + contenuFinalTextField1);
-      print("2 :  " + contenuFinalTextField2);
-      print("3 :  " + contenuFinalTextField3);
-      print("4 :  " + contenuFinalTextField4);
-      print("5 :  " + contenuFinalTextField5);
+  validerTest(String typeScore) async {
+    String validerTestURL =
+        'http://192.168.1.16:4000/doctors/${widget.doctor.id}/patients/${widget.patient.id}/';
+    if (typeScore == "JADAS") {
+      validerTestURL = validerTestURL + "validJADAS";
+    } else if (typeScore == "JSPADA") {
+      validerTestURL = validerTestURL + "validJSPADA";
+    } else if (typeScore == "CHAQ") {
+      validerTestURL = validerTestURL + "validCHAQ";
+    } else {
+      validerTestURL = validerTestURL + "validJamar";
+    }
+    try {
+      var validerTestResponse = await http.post("$validerTestURL", headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ${widget.token}'
+      });
+      Future.delayed(Duration(milliseconds: 1000), () {
+        if (validerTestResponse.statusCode == 200 ||
+            validerTestResponse.statusCode == 201 ||
+            validerTestResponse.statusCode == 202 ||
+            validerTestResponse.statusCode == 203) {
+          enregistrerAvecSuccess(context);
+          print("c bon");
+        } else {
+          Future.delayed(Duration(milliseconds: 1000), () {
+            erreurEnregistrement(context);
+          });
+          print("win mechi sahbi erreur");
+        }
+      });
+    } catch (e) {
+      print(e.toString());
     }
   }
 
-  TextEditingController _chooseController(index) {
-    switch (index) {
-      case 0:
-        return controller1;
-        break;
-      case 1:
-        return controller2;
-        break;
-      case 2:
-        return controller3;
-        break;
-      case 3:
-        return controller4;
-        break;
-      case 4:
-        return controller5;
-        break;
-      default:
-        return controller1;
+  void saveOrdonnanceAndEvaluationAndBilan(String patientIdString) async {
+    List<String> nouvelleOrdonnance = [];
+    nouvelleOrdonnance.addAll([
+      controller1.text,
+      controller2.text,
+      controller3.text,
+      controller4.text,
+      controller5.text
+    ]);
+    // print(json.encode(evaluationGlobaleFaiteParMedecin.toInt().toString());
+    // String evaluationFinale = '\"evaluation\"' +
+    //     ":" +
+    //     evaluationGlobaleFaiteParMedecin.toInt().toString();
+    // print(
+    //     );
+    bool success1 = true;
+    bool success2 = true;
+    bool success3 = true;
+    String updateEvaluationURL =
+        'http://192.168.1.16:4000/doctors/${widget.doctor.id.toString()}/patients/$patientIdString/updateEvaluation';
+    if (evaluationGlobaleFaiteParMedecin.toInt() != widget.patient.evaluation) {
+      try {
+        var updateEvaluationResponse = await http.post("$updateEvaluationURL",
+            body: json.encode(
+                {"evaluation": evaluationGlobaleFaiteParMedecin.toInt()}),
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ${widget.token}'
+            });
+        if (updateEvaluationResponse.statusCode == 200 ||
+            updateEvaluationResponse.statusCode == 201 ||
+            updateEvaluationResponse.statusCode == 202 ||
+            updateEvaluationResponse.statusCode == 203) {
+          success1 = true;
+        } else {
+          success1 = false;
+        }
+      } catch (e) {
+        print(e.toString());
+      }
     }
+    // print(json.encode({"ordonnance": nouvelleOrdonnance}));
+    String updateOrdonnanceURL =
+        'http://192.168.1.16:4000/doctors/${widget.doctor.id.toString()}/patients/$patientIdString/updateOrdonnance';
+    try {
+      var updateOrdonnanceResponse = await http.post("$updateOrdonnanceURL",
+          body: json.encode({"ordonnance": nouvelleOrdonnance}),
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ${widget.token}'
+          });
+      if (updateOrdonnanceResponse.statusCode == 200 ||
+          updateOrdonnanceResponse.statusCode == 201 ||
+          updateOrdonnanceResponse.statusCode == 202 ||
+          updateOrdonnanceResponse.statusCode == 203) {
+        success2 = true;
+      } else {
+        success2 = false;
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+    List<String> nouveauBilan = [];
+    if (hemoglobine == true) {
+      nouveauBilan.add('Hémoglobine');
+    }
+    if (vgm == true) {
+      nouveauBilan.add('VGM');
+    }
+    if (tcmh == true) {
+      nouveauBilan.add('TCMH');
+    }
+    if (globulesBlancs == true) {
+      nouveauBilan.add('Globules blancs');
+    }
+    if (polynucleairesNeutrophiles == true) {
+      nouveauBilan.add('Polynucléaires neutrophiles');
+    }
+    if (lymphocyte == true) {
+      nouveauBilan.add('Lymphocyte');
+    }
+    if (plaquettes == true) {
+      nouveauBilan.add('Plaquettes');
+    }
+    if (vitesseDeSedimentation == true) {
+      nouveauBilan.add('Vitesse de sédimentation');
+    }
+    if (proteineCReactive == true) {
+      nouveauBilan.add('Protéine C réactive');
+    }
+    if (asat == true) {
+      nouveauBilan.add('ASAT');
+    }
+    if (alat == true) {
+      nouveauBilan.add('ALAT');
+    }
+    if (ggt == true) {
+      nouveauBilan.add('GGT');
+    }
+    if (pal == true) {
+      nouveauBilan.add('PAL');
+    }
+    if (creatinine == true) {
+      nouveauBilan.add('Créatinine');
+    }
+    if (ferritinemie == true) {
+      nouveauBilan.add('Ferritinémie');
+    }
+    if (ecbu == true) {
+      nouveauBilan.add('ECBU');
+    }
+    if (serologieHepatiteC == true) {
+      nouveauBilan.add('Sérologie hépatite C');
+    }
+    if (serologieHepatiteB == true) {
+      nouveauBilan.add('Sérologie hépatite B');
+    }
+    // print(json.encode({"type_bilan": nouveauBilan}));
+    String askForBilanURL =
+        'http://192.168.1.16:4000/doctors/${widget.doctor.id.toString()}/patients/$patientIdString/newBilan';
+    if (existeBilanNonValide == false) {
+      try {
+        var askForBilanResponse = await http.post("$askForBilanURL",
+            body: json.encode({"type_bilan": nouveauBilan}),
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ${widget.token}'
+            });
+        if (askForBilanResponse.statusCode == 200 ||
+            askForBilanResponse.statusCode == 201 ||
+            askForBilanResponse.statusCode == 202 ||
+            askForBilanResponse.statusCode == 203) {
+          success3 = true;
+        } else {
+          success3 = false;
+        }
+      } catch (e) {
+        print(e.toString());
+      }
+    }
+    Future.delayed(Duration(milliseconds: 1000), () {
+      if (success1 && success2 && success3) {
+        enregistrerAvecSuccess(context);
+        Future.delayed(Duration(milliseconds: 1000), () {
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => HomeDoctor(
+              doctor: widget.doctor,
+              token: widget.token,
+            ),
+          ));
+        });
+        // success = true;
+      } else {
+        Future.delayed(Duration(milliseconds: 1000), () {
+          erreurEnregistrement(context);
+        });
+        // success = false;
+      }
+    });
   }
+
+  // TextEditingController _chooseController(index) {
+  //   switch (index) {
+  //     case 0:
+  //       return controller1;
+  //       break;
+  //     case 1:
+  //       return controller2;
+  //       break;
+  //     case 2:
+  //       return controller3;
+  //       break;
+  //     case 3:
+  //       return controller4;
+  //       break;
+  //     case 4:
+  //       return controller5;
+  //       break;
+  //     default:
+  //       return controller1;
+  //   }
+  // }
 
   Column createAllScores() {
     return Column(children: [
@@ -264,40 +567,40 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
                   RichText(
                     text: TextSpan(
                       text: typeScore + " : ",
-                      style: cyan18Bold,
+                      style: cyan16Bold,
                     ),
                   ),
                   RichText(
                     text: TextSpan(
                       text: "Date demandé :  ",
-                      style: black18Bold,
+                      style: black16Bold,
                       children: <TextSpan>[
-                        TextSpan(text: "$dateDemande", style: black16Normal),
+                        TextSpan(text: "$dateDemande", style: black14Normal),
                       ],
                     ),
                   ),
                   RichText(
                     text: TextSpan(
                       text: "Date rempli :  ",
-                      style: black18Bold,
+                      style: black16Bold,
                       children: <TextSpan>[
-                        TextSpan(text: "$dateCalcul", style: black16Normal),
+                        TextSpan(text: "$dateCalcul", style: black14Normal),
                       ],
                     ),
                   ),
                   RichText(
                     text: TextSpan(
                       text: "Date validé :  ",
-                      style: black18Bold,
+                      style: black16Bold,
                       children: <TextSpan>[
-                        TextSpan(text: "$dateValidation", style: black16Normal),
+                        TextSpan(text: "$dateValidation", style: black14Normal),
                       ],
                     ),
                   ),
                   RichText(
                     text: TextSpan(
                       text: "Résultat ",
-                      style: cyan18Bold,
+                      style: cyan16Bold,
                       children: <TextSpan>[
                         TextSpan(text: score, style: black18Normal),
                       ],
@@ -314,16 +617,19 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
                             //     //action : envoyer requete walla notification
                             //   });
                             // }
-                            Navigator.of(context).pushNamed(
-                                DetailsJamar.routeName,
-                                arguments: widget?.patient);
+                            // Navigator.of(context).pushNamed(
+                            //     DetailsJamar.routeName,
+                            //     arguments: widget?.patient);
+                            // Navigator.of(context).push(MaterialPageRoute(
+                            //     builder: (context) =>
+                            //         (DetailsJamar(patient: widget.patient))));
                           },
                           focusColor: cyan2,
                           hoverColor: cyan2,
                           splashColor: cyan2,
                           color: cyan2,
                           child: Container(
-                            width: 80,
+                            // width: 80,
                             child: Row(
                               children: <Widget>[
                                 Text(
@@ -348,11 +654,16 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
                         padding: const EdgeInsets.only(top: 10.0),
                         child: new FlatButton(
                           onPressed: () {
-                            Navigator.of(context).pushNamed(
-                                HistoriqueScore.routeName,
-                                arguments: HistoriqueArguments(
-                                    patient: widget?.patient,
-                                    typeScore: typeScore));
+                            // Navigator.of(context).pushNamed(
+                            //     HistoriqueScore.routeName,
+                            //     arguments: HistoriqueArguments(
+                            //         patient: widget?.patient,
+                            //         typeScore: typeScore));
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => (HistoriqueScore(
+                                    historiqueArguments: HistoriqueArguments(
+                                        patient: widget.patient,
+                                        typeScore: typeScore)))));
                           },
                           focusColor: cyan2,
                           hoverColor: cyan2,
@@ -404,14 +715,14 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
                                     splashColor: Colors.green,
                                     color: Colors.green,
                                     child: Container(
-                                      width: 125,
+                                      // width: 125,
                                       child: Column(
                                         children: [
                                           Row(
                                             children: <Widget>[
                                               Text(
                                                 'Demander test',
-                                                style: white15Bold,
+                                                style: white14Bold,
                                               ),
                                               Padding(
                                                 padding: const EdgeInsets.only(
@@ -439,14 +750,14 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
                                     disabledColor: Colors.red,
                                     color: Colors.red,
                                     child: Container(
-                                      width: 125,
+                                      // width: 125,
                                       child: Column(
                                         children: [
                                           Row(
                                             children: <Widget>[
                                               Text(
                                                 'Test demandé',
-                                                style: white15Bold,
+                                                style: white14Bold,
                                               ),
                                               Padding(
                                                 padding: const EdgeInsets.only(
@@ -481,12 +792,12 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
                                     disabledColor: Colors.lightGreen[800],
                                     color: Colors.green,
                                     child: Container(
-                                      width: 115,
+                                      // width: 115,
                                       child: Row(
                                         children: <Widget>[
                                           Text(
                                             'Test validé',
-                                            style: white16Bold,
+                                            style: white14Bold,
                                           ),
                                           Padding(
                                             padding: const EdgeInsets.only(
@@ -506,19 +817,19 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
                                   padding: const EdgeInsets.only(top: 10.0),
                                   child: new FlatButton(
                                     onPressed: () {
-                                      print("aaa");
+                                      validerTest(typeScore);
                                     },
                                     focusColor: Colors.green,
                                     hoverColor: Colors.green,
                                     splashColor: Colors.green,
                                     color: Colors.green,
                                     child: Container(
-                                      width: 115,
+                                      // width: 115,
                                       child: Row(
                                         children: <Widget>[
                                           Text(
                                             'Valider test',
-                                            style: white16Bold,
+                                            style: white14Bold,
                                           ),
                                           Padding(
                                             padding: const EdgeInsets.only(
@@ -538,7 +849,7 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
                               height: 0,
                               width: 0,
                             ),
-                      Spacer(),
+                      // Spacer(),
                     ],
                   )
                 ],
@@ -561,181 +872,203 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
     switch (typeScore) {
       case "JADAS":
         List<Jadas> testsJadas = patient.jadas;
-        DateFormat formatter;
-        initializeDateFormatting('fr');
-        formatter = DateFormat('d MMMM yyyy', 'fr');
-        if (testsJadas.isNotEmpty) {
-          if (patient.jadas[0]?.dateDemande != null) {
-            dateDemandee = patient.jadas[0]?.dateDemande;
-            dateDemande = formatter.format(
-              dateDemandee,
-            );
+        if (testsJadas != null) {
+          print("jadassss " + testsJadas.toString());
+          DateFormat formatter;
+          initializeDateFormatting('fr');
+          formatter = DateFormat('d MMMM yyyy  hh:mm', 'fr');
+          if (testsJadas.isNotEmpty) {
+            if (patient.jadas[0].dateDemande != null) {
+              dateDemandee = patient.jadas[0].dateDemande;
+              dateDemande = formatter.format(
+                dateDemandee,
+              );
+            } else {
+              dateDemande = "Pas encore demandé";
+            }
           } else {
             dateDemande = "Pas encore demandé";
           }
-        } else {
-          dateDemande = "Pas encore demandé";
-        }
-        if (testsJadas.isNotEmpty) {
-          if (patient.jadas[0]?.dateCalcul != null) {
-            dateCalcull = patient.jadas[0]?.dateCalcul;
-            dateCalcul = formatter.format(
-              dateCalcull,
-            );
+          if (testsJadas.isNotEmpty) {
+            if (patient.jadas[0].dateCalcul != null) {
+              dateCalcull = patient.jadas[0].dateCalcul;
+              dateCalcul = formatter.format(
+                dateCalcull,
+              );
+            } else {
+              dateCalcul = "Pas encore rempli";
+            }
           } else {
             dateCalcul = "Pas encore rempli";
           }
-        } else {
-          dateCalcul = "Pas encore rempli";
-        }
-        if (testsJadas.isNotEmpty) {
-          if (patient.jadas[0]?.dateValidation != null) {
-            dateValidationn = patient.jadas[0]?.dateValidation;
-            dateValidation = formatter.format(
-              dateValidationn,
-            );
+          if (testsJadas.isNotEmpty) {
+            if (patient.jadas[0].dateValidation != null) {
+              dateValidationn = patient.jadas[0].dateValidation;
+              dateValidation = formatter.format(
+                dateValidationn,
+              );
+            } else {
+              dateValidation = "Pas encore validé";
+            }
           } else {
             dateValidation = "Pas encore validé";
           }
+          allDates.addAll([dateDemande, dateCalcul, dateValidation]);
+          // return allDates;
         } else {
-          dateValidation = "Pas encore validé";
+          allDates.addAll(
+              ["Pas encore demandé", "Pas encore rempli", "Pas encore validé"]);
         }
-        allDates.addAll([dateDemande, dateCalcul, dateValidation]);
         break;
       case "JSPADA":
-        List<Jadas> testsJadas = patient.jadas;
-        DateFormat formatter;
-        initializeDateFormatting('fr');
-        formatter = DateFormat('d MMMM yyyy  hh:mm', 'fr');
-        if (testsJadas.isNotEmpty) {
-          if (patient.jadas[0]?.dateDemande != null) {
-            dateDemandee = patient.jadas[0]?.dateDemande;
-            dateDemande = formatter.format(
-              dateDemandee,
-            );
+        List<Jspada> testsJspada = patient.jspada;
+        if (testsJspada != null) {
+          DateFormat formatter;
+          initializeDateFormatting('fr');
+          formatter = DateFormat('d MMMM yyyy  hh:mm', 'fr');
+          if (testsJspada.isNotEmpty) {
+            if (patient.jspada[0].dateDemande != null) {
+              dateDemandee = patient.jspada[0].dateDemande;
+              dateDemande = formatter.format(
+                dateDemandee,
+              );
+            } else {
+              dateDemande = "Pas encore demandé";
+            }
           } else {
             dateDemande = "Pas encore demandé";
           }
-        } else {
-          dateDemande = "Pas encore demandé";
-        }
-        if (patient.jadas.isNotEmpty) {
-          if (patient.jadas[0]?.dateCalcul != null) {
-            dateCalcull = patient.jadas[0]?.dateCalcul;
-            dateCalcul = formatter.format(
-              dateCalcull,
-            );
+          if (patient.jspada.isNotEmpty) {
+            if (patient.jspada[0].dateCalcul != null) {
+              dateCalcull = patient.jspada[0].dateCalcul;
+              dateCalcul = formatter.format(
+                dateCalcull,
+              );
+            } else {
+              dateCalcul = "Pas encore rempli";
+            }
           } else {
             dateCalcul = "Pas encore rempli";
           }
-        } else {
-          dateCalcul = "Pas encore rempli";
-        }
-        if (patient.jadas.isNotEmpty) {
-          if (patient.jadas[0]?.dateValidation != null) {
-            dateValidationn = patient.jadas[0]?.dateValidation;
-            dateValidation = formatter.format(
-              dateValidationn,
-            );
+          if (patient.jspada.isNotEmpty) {
+            if (patient.jspada[0].dateValidation != null) {
+              dateValidationn = patient.jspada[0].dateValidation;
+              dateValidation = formatter.format(
+                dateValidationn,
+              );
+            } else {
+              dateValidation = "Pas encore validé";
+            }
           } else {
             dateValidation = "Pas encore validé";
           }
+          allDates.addAll([dateDemande, dateCalcul, dateValidation]);
         } else {
-          dateValidation = "Pas encore validé";
+          allDates.addAll(
+              ["Pas encore demandé", "Pas encore rempli", "Pas encore validé"]);
         }
-        allDates.addAll([dateDemande, dateCalcul, dateValidation]);
-        return allDates;
         break;
 
       case "CHAQ":
-        List<Jadas> testsJadas = patient.jadas;
-        DateFormat formatter;
-        initializeDateFormatting('fr');
-        formatter = DateFormat('d MMMM yyyy  hh:mm', 'fr');
-        if (testsJadas.isNotEmpty) {
-          if (patient.jadas[0]?.dateDemande != null) {
-            dateDemandee = patient.jadas[0]?.dateDemande;
-            dateDemande = formatter.format(
-              dateDemandee,
-            );
+        List<Chaq> testsChaq = patient.chaq;
+        if (testsChaq != null) {
+          print("chaqqqqq " + testsChaq.toString());
+
+          DateFormat formatter;
+          initializeDateFormatting('fr');
+          formatter = DateFormat('d MMMM yyyy  hh:mm', 'fr');
+          if (testsChaq.isNotEmpty) {
+            if (patient.chaq[0].dateDemande != null) {
+              dateDemandee = patient.chaq[0].dateDemande;
+              dateDemande = formatter.format(
+                dateDemandee,
+              );
+            } else {
+              dateDemande = "Pas encore demandé";
+            }
           } else {
             dateDemande = "Pas encore demandé";
           }
-        } else {
-          dateDemande = "Pas encore demandé";
-        }
-        if (patient.jadas.isNotEmpty) {
-          if (patient.jadas[0]?.dateCalcul != null) {
-            dateCalcull = patient.jadas[0]?.dateCalcul;
-            dateCalcul = formatter.format(
-              dateCalcull,
-            );
+          if (patient.chaq.isNotEmpty) {
+            if (patient.chaq[0].dateCalcul != null) {
+              dateCalcull = patient.chaq[0]?.dateCalcul;
+              dateCalcul = formatter.format(
+                dateCalcull,
+              );
+            } else {
+              dateCalcul = "Pas encore rempli";
+            }
           } else {
             dateCalcul = "Pas encore rempli";
           }
-        } else {
-          dateCalcul = "Pas encore rempli";
-        }
-        if (patient.jadas.isNotEmpty) {
-          if (patient.jadas[0]?.dateValidation != null) {
-            dateValidationn = patient.jadas[0]?.dateValidation;
-            dateValidation = formatter.format(
-              dateValidationn,
-            );
+          if (patient.chaq.isNotEmpty) {
+            if (patient.chaq[0].dateValidation != null) {
+              dateValidationn = patient.chaq[0].dateValidation;
+              dateValidation = formatter.format(
+                dateValidationn,
+              );
+            } else {
+              dateValidation = "Pas encore validé";
+            }
           } else {
             dateValidation = "Pas encore validé";
           }
+          allDates.addAll([dateDemande, dateCalcul, dateValidation]);
         } else {
-          dateValidation = "Pas encore validé";
+          allDates.addAll(
+              ["Pas encore demandé", "Pas encore rempli", "Pas encore validé"]);
         }
-        allDates.addAll([dateDemande, dateCalcul, dateValidation]);
-        return allDates;
         break;
       case "JAMAR":
-        List<Jadas> testsJadas = patient.jadas;
-        DateFormat formatter;
-        initializeDateFormatting('fr');
-        formatter = DateFormat('d MMMM yyyy  hh:mm', 'fr');
-        if (testsJadas.isNotEmpty) {
-          if (patient.jadas[0]?.dateDemande != null) {
-            dateDemandee = patient.jadas[0]?.dateDemande;
-            dateDemande = formatter.format(
-              dateDemandee,
-            );
+        List<Jamar> testsJamar = patient.jamar;
+        if (testsJamar != null) {
+          DateFormat formatter;
+          initializeDateFormatting('fr');
+          formatter = DateFormat('d MMMM yyyy  hh:mm', 'fr');
+          if (testsJamar.isNotEmpty) {
+            if (patient.jamar[0].dateDemande != null) {
+              dateDemandee = patient.jamar[0].dateDemande;
+              dateDemande = formatter.format(
+                dateDemandee,
+              );
+            } else {
+              dateDemande = "Pas encore demandé";
+            }
           } else {
             dateDemande = "Pas encore demandé";
           }
-        } else {
-          dateDemande = "Pas encore demandé";
-        }
-        if (patient.jadas.isNotEmpty) {
-          if (patient.jadas[0]?.dateCalcul != null) {
-            dateCalcull = patient.jadas[0]?.dateCalcul;
-            dateCalcul = formatter.format(
-              dateCalcull,
-            );
+          if (patient.jamar.isNotEmpty) {
+            if (patient.jamar[0].dateCalcul != null) {
+              dateCalcull = patient.jamar[0].dateCalcul;
+              dateCalcul = formatter.format(
+                dateCalcull,
+              );
+            } else {
+              dateCalcul = "Pas encore rempli";
+            }
           } else {
             dateCalcul = "Pas encore rempli";
           }
-        } else {
-          dateCalcul = "Pas encore rempli";
-        }
-        if (patient.jadas.isNotEmpty) {
-          if (patient.jadas[0]?.dateValidation != null) {
-            dateValidationn = patient.jadas[0]?.dateValidation;
-            dateValidation = formatter.format(
-              dateValidationn,
-            );
+          if (patient.jamar.isNotEmpty) {
+            if (patient.jamar[0].dateValidation != null) {
+              dateValidationn = patient.jamar[0].dateValidation;
+              dateValidation = formatter.format(
+                dateValidationn,
+              );
+            } else {
+              dateValidation = "Pas encore validé";
+            }
           } else {
             dateValidation = "Pas encore validé";
           }
+          allDates.addAll([dateDemande, dateCalcul, dateValidation]);
         } else {
-          dateValidation = "Pas encore validé";
+          allDates.addAll(
+              ["Pas encore demandé", "Pas encore rempli", "Pas encore validé"]);
         }
-        allDates.addAll([dateDemande, dateCalcul, dateValidation]);
-        return allDates;
         break;
     }
+    print("all date " + allDates.toString());
     return allDates;
   }
 
@@ -770,109 +1103,123 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
                   RichText(
                     text: TextSpan(
                       text: typeScore + " : ",
-                      style: cyan18Bold,
+                      style: cyan16Bold,
                     ),
                   ),
                   RichText(
                     text: TextSpan(
                       text: "Date demandé :  ",
-                      style: black18Bold,
+                      style: black16Bold,
                       children: <TextSpan>[
-                        TextSpan(text: "$dateDemande", style: black16Normal),
+                        TextSpan(text: "$dateDemande", style: black14Normal),
                       ],
                     ),
                   ),
                   RichText(
                     text: TextSpan(
                       text: "Date rempli :  ",
-                      style: black18Bold,
+                      style: black16Bold,
                       children: <TextSpan>[
-                        TextSpan(text: "$dateCalcul", style: black16Normal),
+                        TextSpan(text: "$dateCalcul", style: black14Normal),
                       ],
                     ),
                   ),
                   RichText(
                     text: TextSpan(
                       text: "Date validé :  ",
-                      style: black18Bold,
+                      style: black16Bold,
                       children: <TextSpan>[
-                        TextSpan(text: "$dateValidation", style: black16Normal),
+                        TextSpan(text: "$dateValidation", style: black14Normal),
                       ],
                     ),
                   ),
                   RichText(
                     text: TextSpan(
                       text: "Résultat : ",
-                      style: cyan18Bold,
+                      style: cyan16Bold,
                       children: <TextSpan>[
-                        TextSpan(text: score, style: black18Normal),
+                        TextSpan(text: score, style: black14Normal),
                       ],
                     ),
                   ),
                   Row(
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 10.0),
-                        child: new FlatButton(
-                          onPressed: () {
-                            Navigator.of(context).pushNamed(
-                                HistoriqueScore.routeName,
-                                arguments: HistoriqueArguments(
-                                    patient: widget?.patient,
-                                    typeScore: typeScore));
-                          },
-                          focusColor: cyan2,
-                          hoverColor: cyan2,
-                          splashColor: cyan2,
-                          color: cyan2,
-                          child: Container(
-                            width: 102,
-                            child: Row(
-                              children: <Widget>[
-                                Text(
-                                  'Historique',
-                                  style: white16Bold,
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 6.0),
-                                  child: Icon(
-                                    FontAwesomeIcons.history,
-                                    size: 18.0,
-                                    color: Colors.white,
+                      Flexible(
+                        flex: 6,
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 10.0),
+                          child: new FlatButton(
+                            padding: EdgeInsets.only(left: 10.0, right: 10.0),
+                            onPressed: () {
+                              // Navigator.of(context).pushNamed(
+                              //     HistoriqueScore.routeName,
+                              //     arguments: HistoriqueArguments(
+                              //         patient: widget?.patient,
+                              //         typeScore: typeScore));
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => (HistoriqueScore(
+                                      historiqueArguments: HistoriqueArguments(
+                                          patient: widget.patient,
+                                          typeScore: typeScore)))));
+                            },
+                            focusColor: cyan2,
+                            hoverColor: cyan2,
+                            splashColor: cyan2,
+                            color: cyan2,
+                            child: Container(
+                              child: Row(
+                                children: <Widget>[
+                                  Text(
+                                    'Historique',
+                                    style: white14Bold,
                                   ),
-                                ),
-                              ],
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 3.0),
+                                    child: Icon(
+                                      FontAwesomeIcons.history,
+                                      size: 11.0,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
                       ),
-                      Spacer(),
+                      // Spacer(),
                       (!testRempli[index] && !testValidated[index])
                           ? ((!testDemanded[index])
-                              ? Padding(
-                                  padding: const EdgeInsets.only(
-                                      top: 10.0, left: 11.0),
-                                  child: new FlatButton(
-                                    onPressed: () {
-                                      Future.delayed(
-                                          Duration(milliseconds: 100), () {
-                                        if (mounted == true) {
-                                          setState(() {
-                                            testDemanded[index] = true;
-                                            //action : envoyer requete walla notification
+                              ? Flexible(
+                                  flex: 8,
+                                  child: Container(
+                                    margin: EdgeInsets.only(left: 5),
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(top: 10.0),
+                                      child: new FlatButton(
+                                        padding: EdgeInsets.only(
+                                            left: 9.0, right: 9.0),
+                                        onPressed: () {
+                                          Future.delayed(
+                                              Duration(milliseconds: 100), () {
+                                            if (mounted == true) {
+                                              setState(() {
+                                                testDemanded[index] = true;
+                                                //action : envoyer requete walla notification
+                                              });
+                                            }
                                           });
-                                        }
-                                      });
-                                    },
-                                    focusColor: Colors.green,
-                                    hoverColor: Colors.green,
-                                    splashColor: Colors.green,
-                                    color: Colors.green,
-                                    child: Container(
-                                      width: 116,
-                                      child: Column(
-                                        children: [
-                                          Row(
+                                          demanderTest(typeScore);
+                                        },
+                                        focusColor: Colors.green,
+                                        hoverColor: Colors.green,
+                                        splashColor: Colors.green,
+                                        color: Colors.green,
+                                        child: Container(
+                                          // width: 116,
+                                          // child: Column(
+                                          //   children: [
+                                          child: Row(
                                             children: <Widget>[
                                               Text(
                                                 'Demander test',
@@ -880,7 +1227,7 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
                                               ),
                                               Padding(
                                                 padding: const EdgeInsets.only(
-                                                    left: 5.0),
+                                                    left: 3.0),
                                                 child: Icon(
                                                   FontAwesomeIcons.fileAlt,
                                                   size: 12.0,
@@ -888,27 +1235,34 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
                                                 ),
                                               ),
                                             ],
+                                            //   ),
+                                            // ],
                                           ),
-                                        ],
+                                        ),
                                       ),
                                     ),
                                   ),
                                 )
-                              : Padding(
-                                  padding: const EdgeInsets.only(
-                                      top: 10.0, left: 12.0),
-                                  child: new RaisedButton(
-                                    onPressed: null,
-                                    focusColor: Colors.red,
-                                    hoverColor: Colors.red,
-                                    splashColor: Colors.red,
-                                    disabledColor: Colors.red,
-                                    color: Colors.red,
-                                    child: Container(
-                                      width: 112,
-                                      child: Column(
-                                        children: [
-                                          Row(
+                              : Flexible(
+                                  flex: 8,
+                                  child: Container(
+                                    margin: EdgeInsets.only(left: 5),
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(top: 10.0),
+                                      child: new RaisedButton(
+                                        padding: EdgeInsets.only(
+                                            left: 10.0, right: 10.0),
+                                        onPressed: null,
+                                        focusColor: Colors.red,
+                                        hoverColor: Colors.red,
+                                        splashColor: Colors.red,
+                                        disabledColor: Colors.red,
+                                        color: Colors.red,
+                                        child: Container(
+                                          // width: 112,
+                                          // child: Column(
+                                          //   children: [
+                                          child: Row(
                                             children: <Widget>[
                                               Text(
                                                 'Test demandé',
@@ -916,7 +1270,7 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
                                               ),
                                               Padding(
                                                 padding: const EdgeInsets.only(
-                                                    left: 5.0),
+                                                    left: 3.0),
                                                 child: Icon(
                                                   FontAwesomeIcons.fileAlt,
                                                   size: 12.0,
@@ -925,7 +1279,9 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
                                               ),
                                             ],
                                           ),
-                                        ],
+                                          //   ],
+                                          // ),
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -934,68 +1290,87 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
                               height: 0,
                               width: 0,
                             ),
-                      Spacer(),
+                      // Spacer(),
                       (testDemanded[index] && testRempli[index])
                           ? ((testValidated[index])
-                              ? Padding(
-                                  padding: const EdgeInsets.only(top: 10.0),
-                                  child: new RaisedButton(
-                                    onPressed: null,
-                                    focusColor: Colors.green,
-                                    hoverColor: Colors.green,
-                                    splashColor: Colors.green,
-                                    disabledColor: Colors.lightGreen[800],
-                                    color: Colors.green,
-                                    child: Container(
-                                      width: 115,
-                                      child: Row(
-                                        children: <Widget>[
-                                          Text(
-                                            'Test validé',
-                                            style: white16Bold,
+                              ? Flexible(
+                                  flex: 7,
+                                  child: Container(
+                                    margin: EdgeInsets.only(left: 5),
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(top: 10.0),
+                                      child: new RaisedButton(
+                                        padding: EdgeInsets.only(
+                                            left: 10.0, right: 10.0),
+                                        onPressed: null,
+                                        focusColor: Colors.green,
+                                        hoverColor: Colors.green,
+                                        splashColor: Colors.green,
+                                        disabledColor: Colors.lightGreen[800],
+                                        color: Colors.green,
+                                        child: Container(
+                                          // width: 115,
+                                          child: Row(
+                                            children: <Widget>[
+                                              Text(
+                                                'Test validé',
+                                                style: white14Bold,
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 10.0),
+                                                child: Icon(
+                                                  FontAwesomeIcons.checkCircle,
+                                                  size: 15.0,
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                            ],
                                           ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 6.0),
-                                            child: Icon(
-                                              FontAwesomeIcons.checkCircle,
-                                              size: 18.0,
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        ],
+                                        ),
                                       ),
                                     ),
                                   ),
                                 )
-                              : Padding(
-                                  padding: const EdgeInsets.only(top: 10.0),
-                                  child: new FlatButton(
-                                    onPressed: () {
-                                      print("aaa");
-                                    },
-                                    focusColor: Colors.green,
-                                    hoverColor: Colors.green,
-                                    splashColor: Colors.green,
-                                    color: Colors.green,
-                                    child: Container(
-                                      width: 115,
-                                      child: Row(
-                                        children: <Widget>[
-                                          Text(
-                                            'Valider test',
-                                            style: white16Bold,
+                              : Flexible(
+                                  flex: 7,
+                                  child: Container(
+                                    margin: EdgeInsets.only(left: 5),
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(top: 10.0),
+                                      child: new FlatButton(
+                                        padding: EdgeInsets.only(
+                                            left: 10.0, right: 10.0),
+                                        onPressed: () {
+                                          validerTest(typeScore);
+                                          setState(() {
+                                            testValidated[index] = true;
+                                          });
+                                        },
+                                        focusColor: Colors.green,
+                                        hoverColor: Colors.green,
+                                        splashColor: Colors.green,
+                                        color: Colors.green,
+                                        child: Container(
+                                          // width: 115,
+                                          child: Row(
+                                            children: <Widget>[
+                                              Text(
+                                                'Valider test',
+                                                style: white14Bold,
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 10.0),
+                                                child: Icon(
+                                                  FontAwesomeIcons.checkCircle,
+                                                  size: 15.0,
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                            ],
                                           ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 6.0),
-                                            child: Icon(
-                                              FontAwesomeIcons.checkCircle,
-                                              size: 18.0,
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        ],
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -1015,52 +1390,52 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
     );
   }
 
-  Card createOrdonnance(index) {
-    // print("index " + index.toString());
-    textfield1.add(controller1);
-    textfield2.add(controller2);
-    textfield3.add(controller3);
-    textfield4.add(controller4);
-    textfield5.add(controller5);
+  // Card createOrdonnance(index) {
+  //   // print("index " + index.toString());
+  //   textfield1.add(controller1);
+  //   textfield2.add(controller2);
+  //   textfield3.add(controller3);
+  //   textfield4.add(controller4);
+  //   textfield5.add(controller5);
 
-    return Card(
-        shadowColor: null,
-        shape: null,
-        elevation: 0.0,
-        child: Container(
-          margin: EdgeInsets.only(bottom: 2.0, top: 2.0, right: 5.0, left: 5.0),
-          padding: EdgeInsets.only(right: 10.0, left: 10.0),
-          decoration: BoxDecoration(
-            border: Border.all(color: cyan2, width: 2.0),
-            borderRadius: BorderRadius.all(Radius.circular(8)),
-          ),
-          child: TextFormField(
-            maxLines: 1,
-            cursorColor: cyan2,
-            controller: _chooseController(index),
-            onChanged: (text) {
-              print("TextField ${index + 1} :   $text");
-            },
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              hintText: "Veuillez préscrire un traitement",
-              prefixIcon: Padding(
-                padding: const EdgeInsetsDirectional.only(end: 12.0),
-                child: Icon(
-                  FontAwesomeIcons.pills,
-                  size: 25.0,
-                  color: cyan2,
-                ),
-              ),
-            ),
-            style: black18Normal,
-          ),
-        ));
-  }
+  //   return Card(
+  //       shadowColor: null,
+  //       shape: null,
+  //       elevation: 0.0,
+  //       child: Container(
+  //         margin: EdgeInsets.only(bottom: 2.0, top: 2.0, right: 5.0, left: 5.0),
+  //         padding: EdgeInsets.only(right: 10.0, left: 10.0),
+  //         decoration: BoxDecoration(
+  //           border: Border.all(color: cyan2, width: 2.0),
+  //           borderRadius: BorderRadius.all(Radius.circular(8)),
+  //         ),
+  //         child: TextFormField(
+  //           maxLines: 1,
+  //           cursorColor: cyan2,
+  //           controller: _chooseController(index),
+  //           onChanged: (text) {
+  //             print("TextField ${index + 1} :   $text");
+  //           },
+  //           decoration: InputDecoration(
+  //             border: InputBorder.none,
+  //             hintText: "Veuillez préscrire un traitement",
+  //             prefixIcon: Padding(
+  //               padding: const EdgeInsetsDirectional.only(end: 12.0),
+  //               child: Icon(
+  //                 FontAwesomeIcons.pills,
+  //                 size: 25.0,
+  //                 color: cyan2,
+  //               ),
+  //             ),
+  //           ),
+  //           style: black18Normal,
+  //         ),
+  //       ));
+  // }
 
   @override
   Widget build(BuildContext context) {
-    final Patient patient = ModalRoute.of(context).settings.arguments;
+    // final Patient patient = ModalRoute.of(context).settings.arguments;
 
     return Scaffold(
       backgroundColor: gris1,
@@ -1071,12 +1446,15 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
           children: [
             Padding(
               padding:
-                  const EdgeInsets.only(bottom: 10.0, right: 14.0, top: 10.0),
-              child: Icon(FontAwesomeIcons.userInjured, size: 22),
+                  const EdgeInsets.only(bottom: 10.0, right: 14.0, top: 6.0),
+              child: Icon(FontAwesomeIcons.userInjured, size: 18),
             ),
-            Text(
-              patient.prenom + '  ' + patient.nom,
-              style: white19Normal,
+            Expanded(
+              child: Text(
+                widget.patient.prenom + '  ' + widget.patient.nom,
+                style: white18Bold,
+                overflow: TextOverflow.ellipsis,
+              ),
             ),
           ],
         ),
@@ -1110,7 +1488,7 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
                           padding: const EdgeInsets.only(left: 10, bottom: 8.0),
                           child: Text(
                             "Patient",
-                            style: cyan22Bold,
+                            style: cyan19Bold,
                           ),
                         ),
                       ],
@@ -1134,24 +1512,34 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
                               children: [
                                 RichText(
                                   text: TextSpan(
-                                    text: "Nom et prénom :  ",
-                                    style: black18Bold,
+                                    text: "Nom :  ",
+                                    style: black16Bold,
                                     children: <TextSpan>[
                                       TextSpan(
-                                          text:
-                                              "${patient?.prenom} ${patient?.nom}",
-                                          style: black18Normal),
+                                          text: "${widget.patient?.nom}",
+                                          style: black16Normal),
+                                    ],
+                                  ),
+                                ),
+                                RichText(
+                                  text: TextSpan(
+                                    text: "Prénom :  ",
+                                    style: black16Bold,
+                                    children: <TextSpan>[
+                                      TextSpan(
+                                          text: "${widget.patient?.prenom}",
+                                          style: black16Normal),
                                     ],
                                   ),
                                 ),
                                 RichText(
                                   text: TextSpan(
                                     text: "N° dossier :  ",
-                                    style: black18Bold,
+                                    style: black16Bold,
                                     children: <TextSpan>[
                                       TextSpan(
-                                          text: "${patient?.numDossier}",
-                                          style: black18Normal),
+                                          text: "${widget.patient.numDossier}",
+                                          style: black16Normal),
                                       // TextSpan(
                                       //     text: ' vous a préscrit ces médicaments : '),
                                     ],
@@ -1160,10 +1548,11 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
                                 RichText(
                                   text: TextSpan(
                                     text: "Age :  ",
-                                    style: black18Bold,
+                                    style: black16Bold,
                                     children: <TextSpan>[
                                       TextSpan(
-                                          text: "12", style: black18Normal),
+                                          text: "${widget.patient?.age}",
+                                          style: black16Normal),
                                       // TextSpan(
                                       //     text: ' vous a préscrit ces médicaments : '),
                                     ],
@@ -1172,11 +1561,11 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
                                 RichText(
                                   text: TextSpan(
                                     text: "Diagnostic :  ",
-                                    style: black18Bold,
+                                    style: black16Bold,
                                     children: <TextSpan>[
                                       TextSpan(
-                                          text: "${patient?.diagnostic}",
-                                          style: black18Normal),
+                                          text: "${widget.patient?.diagnostic}",
+                                          style: black16Normal),
                                       // TextSpan(
                                       //     text: ' vous a préscrit ces médicaments : '),
                                     ],
@@ -1185,11 +1574,11 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
                                 RichText(
                                   text: TextSpan(
                                     text: "Téléphone :  ",
-                                    style: black18Bold,
+                                    style: black16Bold,
                                     children: <TextSpan>[
                                       TextSpan(
-                                          text: "${patient?.telephone}",
-                                          style: black18Normal),
+                                          text: "${widget.patient?.telephone}",
+                                          style: black16Normal),
                                     ],
                                   ),
                                 ),
@@ -1199,21 +1588,22 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
                         ),
                       ),
                     ),
-                    (haveScores == true)
-                        ? Padding(
-                            padding:
-                                const EdgeInsets.only(left: 10, bottom: 8.0),
-                            child: Text(
-                              "Résultat du dernier diagnostic",
-                              style: cyan22Bold,
-                            ),
-                          )
-                        : SizedBox(height: 0.0),
-                    (haveScores == true)
-                        ? Column(
-                            children: [createAllScores()],
-                          )
-                        : SizedBox(height: 0.0),
+                    // (haveScores == true)
+                    // ?
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10, bottom: 8.0),
+                      child: Text(
+                        "Résultat du dernier diagnostic",
+                        style: cyan19Bold,
+                      ),
+                    ),
+                    // : SizedBox(height: 0.0),
+                    // (haveScores == true)
+                    //     ?
+                    Column(
+                      children: [createAllScores()],
+                    ),
+                    // : SizedBox(height: 0.0),
                     // createScore('JADAS','40/60'),
                     Container(
                       margin: const EdgeInsets.only(top: 5.0),
@@ -1224,59 +1614,64 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
                             Padding(
                               padding: const EdgeInsets.only(bottom: 16.0),
                               child: Text(
-                                "Evaluation globale faite par le médecin?",
-                                style: cyan20Bold,
+                                "Evaluation globale faite par le médecin ?",
+                                style: cyan19Bold,
                               ),
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: <Widget>[
-                                sliderLimit(0.0),
-                                Container(
-                                  width: 250,
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(bottom: 5.0),
-                                    child: SliderTheme(
-                                      data: SliderTheme.of(context).copyWith(
-                                        activeTrackColor: cyan3,
-                                        inactiveTrackColor: cyan2,
-                                        showValueIndicator:
-                                            ShowValueIndicator.always,
-                                        thumbColor: Colors.blueAccent,
-                                        overlayColor:
-                                            Colors.purple.withAlpha(32),
-                                        overlayShape: RoundSliderOverlayShape(
-                                            overlayRadius: 16.0),
-                                        activeTickMarkColor: cyan2,
-                                        inactiveTickMarkColor: cyan2,
-                                        valueIndicatorShape:
-                                            PaddleSliderValueIndicatorShape(),
-                                        valueIndicatorColor: Colors.blueAccent,
-                                        valueIndicatorTextStyle: white16Bold,
-                                      ),
-                                      child: Slider(
-                                        value: evaluationGlobaleFaiteParMedecin,
-                                        min: 0.0,
-                                        max: 10.0,
-                                        divisions: 10,
-                                        label:
-                                            '$evaluationGlobaleFaiteParMedecin',
-                                        onChanged: (value) {
-                                          if (mounted == true) {
-                                            setState(
-                                              () {
-                                                evaluationGlobaleFaiteParMedecin =
-                                                    value;
-                                              },
-                                            );
-                                          }
-                                        },
+                                Flexible(child: sliderLimit(0.0), flex: 1),
+                                Flexible(
+                                  flex: 6,
+                                  child: Container(
+                                    width: 250,
+                                    child: Padding(
+                                      padding:
+                                          const EdgeInsets.only(bottom: 5.0),
+                                      child: SliderTheme(
+                                        data: SliderTheme.of(context).copyWith(
+                                          activeTrackColor: cyan3,
+                                          inactiveTrackColor: cyan2,
+                                          showValueIndicator:
+                                              ShowValueIndicator.always,
+                                          thumbColor: Colors.blueAccent,
+                                          overlayColor:
+                                              Colors.purple.withAlpha(32),
+                                          overlayShape: RoundSliderOverlayShape(
+                                              overlayRadius: 16.0),
+                                          activeTickMarkColor: cyan2,
+                                          inactiveTickMarkColor: cyan2,
+                                          valueIndicatorShape:
+                                              PaddleSliderValueIndicatorShape(),
+                                          valueIndicatorColor:
+                                              Colors.blueAccent,
+                                          valueIndicatorTextStyle: white16Bold,
+                                        ),
+                                        child: Slider(
+                                          value:
+                                              evaluationGlobaleFaiteParMedecin,
+                                          min: 0.0,
+                                          max: 10.0,
+                                          divisions: 10,
+                                          label:
+                                              '$evaluationGlobaleFaiteParMedecin',
+                                          onChanged: (value) {
+                                            if (mounted == true) {
+                                              setState(
+                                                () {
+                                                  evaluationGlobaleFaiteParMedecin =
+                                                      value;
+                                                },
+                                              );
+                                            }
+                                          },
+                                        ),
                                       ),
                                     ),
                                   ),
                                 ),
-                                sliderLimit(10.0),
+                                Flexible(child: sliderLimit(10.0), flex: 1),
                               ],
                             ),
                           ],
@@ -1291,7 +1686,7 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
                             padding: const EdgeInsets.only(bottom: 8.0),
                             child: Text(
                               "Ordonnance",
-                              style: cyan22Bold,
+                              style: cyan19Bold,
                             ),
                           ),
                           Spacer(),
@@ -1346,57 +1741,129 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
                         ],
                       ),
                     ),
-                    Column(
-                      children: cardsOrdonnance,
-                    ),
+                    Column(children: [
+                      textFormFieldTextWithoutValidator(
+                          controller1,
+                          'Entrez un médicament',
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 8.0),
+                            child: Icon(
+                              FontAwesomeIcons.pills,
+                              color: gris2,
+                              size: 18,
+                            ),
+                          )),
+                      textFormFieldTextWithoutValidator(
+                          controller2,
+                          'Entrez un médicament',
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 8.0),
+                            child: Icon(
+                              FontAwesomeIcons.pills,
+                              color: gris2,
+                              size: 18,
+                            ),
+                          )),
+                      textFormFieldTextWithoutValidator(
+                          controller3,
+                          'Entrez un médicament',
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 8.0),
+                            child: Icon(
+                              FontAwesomeIcons.pills,
+                              color: gris2,
+                              size: 18,
+                            ),
+                          )),
+                      textFormFieldTextWithoutValidator(
+                          controller4,
+                          'Entrez un médicament',
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 8.0),
+                            child: Icon(
+                              FontAwesomeIcons.pills,
+                              color: gris2,
+                              size: 18,
+                            ),
+                          )),
+                      textFormFieldTextWithoutValidator(
+                          controller5,
+                          'Entrez un médicament',
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 8.0),
+                            child: Icon(
+                              FontAwesomeIcons.pills,
+                              color: gris2,
+                              size: 18,
+                            ),
+                          )),
+                    ]),
                     Padding(
                       padding: const EdgeInsets.only(top: 8.0),
                       child: Row(
                         children: [
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 10, bottom: 8.0, top: 5.0),
-                              child: Text(
-                                "Biologie",
-                                style: cyan22Bold,
+                          Flexible(
+                            flex: 4,
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 10, bottom: 8.0, top: 5.0),
+                                child: Text(
+                                  "Biologie",
+                                  style: cyan19Bold,
+                                ),
                               ),
                             ),
                           ),
+                          // Flexible(flex: 3, child: Spacer()),
                           Spacer(),
                           existeBilanNonValide
-                              ? Align(
-                                  alignment: Alignment.centerRight,
-                                  child: FlatButton(
-                                    onPressed: () {
-                                      Navigator.of(context).pushNamed(
-                                        ValiderBilans.routeName,
-                                        arguments: patient,
-                                      );
-                                    },
-                                    focusColor: cyan2,
-                                    hoverColor: cyan2,
-                                    splashColor: cyan2,
-                                    color: cyan2,
-                                    child: Container(
-                                      width: 210,
-                                      child: Row(
-                                        children: <Widget>[
-                                          Text(
-                                            'Voir les bilans demandés',
-                                            style: white16Bold,
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 6.0),
-                                            child: Icon(
-                                              FontAwesomeIcons.fileAlt,
-                                              size: 14.0,
-                                              color: Colors.white,
+                              ? Flexible(
+                                  flex: 8,
+                                  child: Align(
+                                    alignment: Alignment.centerRight,
+                                    child: FlatButton(
+                                      padding:
+                                          EdgeInsets.only(left: 10, right: 10),
+                                      onPressed: () {
+                                        // Navigator.of(context).pushNamed(
+                                        //   ValiderBilans.routeName,
+                                        //   arguments: widget.patient,
+                                        // );
+
+                                        Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    ValiderBilans(
+                                                        doctor: widget.doctor,
+                                                        token: widget.token,
+                                                        patient:
+                                                            widget.patient)));
+                                      },
+                                      focusColor: cyan2,
+                                      hoverColor: cyan2,
+                                      splashColor: cyan2,
+                                      color: cyan2,
+                                      child: Container(
+                                        // width: 210,
+                                        child: Row(
+                                          children: <Widget>[
+                                            Text(
+                                              'Voir les bilans demandés',
+                                              style: white12Bold,
                                             ),
-                                          ),
-                                        ],
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 6.0),
+                                              child: Icon(
+                                                FontAwesomeIcons.fileAlt,
+                                                size: 14.0,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -1410,181 +1877,181 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
                             children: [
                               flatButtonMultipleChoice(
                                   title: 'Hémoglobine',
-                                  initValue: isChecked1,
+                                  initValue: hemoglobine,
                                   onChanged: (newValue) {
                                     if (this.mounted) {
                                       setState(() {
-                                        isChecked1 = newValue;
+                                        hemoglobine = newValue;
                                       });
                                     }
                                   }),
                               flatButtonMultipleChoice(
                                   title: 'VGM',
-                                  initValue: isChecked2,
+                                  initValue: vgm,
                                   onChanged: (newValue) {
                                     if (this.mounted) {
                                       setState(() {
-                                        isChecked2 = newValue;
+                                        vgm = newValue;
                                       });
                                     }
                                   }),
                               flatButtonMultipleChoice(
                                   title: 'TCMH',
-                                  initValue: isChecked1,
+                                  initValue: tcmh,
                                   onChanged: (newValue) {
                                     if (this.mounted) {
                                       setState(() {
-                                        isChecked1 = newValue;
+                                        tcmh = newValue;
                                       });
                                     }
                                   }),
                               flatButtonMultipleChoice(
                                   title: 'Globules blancs',
-                                  initValue: isChecked1,
+                                  initValue: globulesBlancs,
                                   onChanged: (newValue) {
                                     if (this.mounted) {
                                       setState(() {
-                                        isChecked1 = newValue;
+                                        globulesBlancs = newValue;
                                       });
                                     }
                                   }),
                               flatButtonMultipleChoice(
                                   title: 'Polynucléaires neutrophiles',
-                                  initValue: isChecked1,
+                                  initValue: polynucleairesNeutrophiles,
                                   onChanged: (newValue) {
                                     if (this.mounted) {
                                       setState(() {
-                                        isChecked1 = newValue;
+                                        polynucleairesNeutrophiles = newValue;
                                       });
                                     }
                                   }),
                               flatButtonMultipleChoice(
                                   title: 'Lymphocyte',
-                                  initValue: isChecked1,
+                                  initValue: lymphocyte,
                                   onChanged: (newValue) {
                                     if (this.mounted) {
                                       setState(() {
-                                        isChecked1 = newValue;
+                                        lymphocyte = newValue;
                                       });
                                     }
                                   }),
                               flatButtonMultipleChoice(
                                   title: 'Plaquettes',
-                                  initValue: isChecked1,
+                                  initValue: plaquettes,
                                   onChanged: (newValue) {
                                     if (this.mounted) {
                                       setState(() {
-                                        isChecked1 = newValue;
+                                        plaquettes = newValue;
                                       });
                                     }
                                   }),
                               flatButtonMultipleChoice(
                                   title: 'Vitesse de sédimentation',
-                                  initValue: isChecked1,
+                                  initValue: vitesseDeSedimentation,
                                   onChanged: (newValue) {
                                     if (this.mounted) {
                                       setState(() {
-                                        isChecked1 = newValue;
+                                        vitesseDeSedimentation = newValue;
                                       });
                                     }
                                   }),
                               flatButtonMultipleChoice(
                                   title: 'Protéine C réactive',
-                                  initValue: isChecked1,
+                                  initValue: proteineCReactive,
                                   onChanged: (newValue) {
                                     if (this.mounted) {
                                       setState(() {
-                                        isChecked1 = newValue;
+                                        proteineCReactive = newValue;
                                       });
                                     }
                                   }),
                               flatButtonMultipleChoice(
                                   title: 'ASAT',
-                                  initValue: isChecked1,
+                                  initValue: asat,
                                   onChanged: (newValue) {
                                     if (this.mounted) {
                                       setState(() {
-                                        isChecked1 = newValue;
+                                        asat = newValue;
                                       });
                                     }
                                   }),
                               flatButtonMultipleChoice(
                                   title: 'ALAT',
-                                  initValue: isChecked1,
+                                  initValue: alat,
                                   onChanged: (newValue) {
                                     if (this.mounted) {
                                       setState(() {
-                                        isChecked1 = newValue;
+                                        alat = newValue;
                                       });
                                     }
                                   }),
                               flatButtonMultipleChoice(
                                   title: 'GGT',
-                                  initValue: isChecked1,
+                                  initValue: ggt,
                                   onChanged: (newValue) {
                                     if (this.mounted) {
                                       setState(() {
-                                        isChecked1 = newValue;
+                                        ggt = newValue;
                                       });
                                     }
                                   }),
                               flatButtonMultipleChoice(
                                   title: 'PAL',
-                                  initValue: isChecked1,
+                                  initValue: pal,
                                   onChanged: (newValue) {
                                     if (this.mounted) {
                                       setState(() {
-                                        isChecked1 = newValue;
+                                        pal = newValue;
                                       });
                                     }
                                   }),
                               flatButtonMultipleChoice(
                                   title: 'Créatinine',
-                                  initValue: isChecked1,
+                                  initValue: creatinine,
                                   onChanged: (newValue) {
                                     if (this.mounted) {
                                       setState(() {
-                                        isChecked1 = newValue;
+                                        creatinine = newValue;
                                       });
                                     }
                                   }),
                               flatButtonMultipleChoice(
                                   title: 'Ferritinémie',
-                                  initValue: isChecked1,
+                                  initValue: ferritinemie,
                                   onChanged: (newValue) {
                                     if (this.mounted) {
                                       setState(() {
-                                        isChecked1 = newValue;
+                                        ferritinemie = newValue;
                                       });
                                     }
                                   }),
                               flatButtonMultipleChoice(
                                   title: 'ECBU',
-                                  initValue: isChecked1,
+                                  initValue: ecbu,
                                   onChanged: (newValue) {
                                     if (this.mounted) {
                                       setState(() {
-                                        isChecked1 = newValue;
+                                        ecbu = newValue;
                                       });
                                     }
                                   }),
                               flatButtonMultipleChoice(
                                   title: 'Sérologie hépatite C',
-                                  initValue: isChecked1,
+                                  initValue: serologieHepatiteC,
                                   onChanged: (newValue) {
                                     if (this.mounted) {
                                       setState(() {
-                                        isChecked1 = newValue;
+                                        serologieHepatiteC = newValue;
                                       });
                                     }
                                   }),
                               flatButtonMultipleChoice(
                                   title: 'Sérologie hépatite B',
-                                  initValue: isChecked1,
+                                  initValue: serologieHepatiteB,
                                   onChanged: (newValue) {
                                     if (this.mounted) {
                                       setState(() {
-                                        isChecked1 = newValue;
+                                        serologieHepatiteB = newValue;
                                       });
                                     }
                                   }),
@@ -1599,40 +2066,42 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
                           child: new FlatButton(
                             minWidth: 60.0,
                             onPressed: () {
-                              _onDone();
-                              showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return AlertDialog(
-                                      // content: Text(myController.text),
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(10.0))),
-                                      content: Container(
-                                        height: 60,
-                                        child: Column(
-                                          children: [
-                                            Text(
-                                              "Enregistré avec succès",
-                                              style: GoogleFonts.oxygen(
-                                                  fontWeight: FontWeight.w600,
-                                                  color: Colors.green,
-                                                  fontSize: 18.0),
-                                            ),
-                                            Icon(
-                                              FontAwesomeIcons.checkCircle,
-                                              color: Colors.green,
-                                            )
-                                          ],
-                                        ),
-                                      ));
-                                },
-                              );
-                              Future.delayed(Duration(seconds: 2), () {
-                                Navigator.pushNamedAndRemoveUntil(context,
-                                    HomeDoctor.routeName, (_) => false);
-                              });
+                              saveOrdonnanceAndEvaluationAndBilan(
+                                  widget.patient.id.toString());
+                              // showDialog(
+                              //   context: context,
+                              //   builder: (context) {
+                              //     return AlertDialog(
+                              //         // content: Text(myController.text),
+                              //         shape: RoundedRectangleBorder(
+                              //             borderRadius: BorderRadius.all(
+                              //                 Radius.circular(10.0))),
+                              //         content: Container(
+                              //           height: 60,
+                              //           child: Column(
+                              //             children: [
+                              //               Text(
+                              //                 "Enregistré avec succès",
+                              //                 style: GoogleFonts.oxygen(
+                              //                     fontWeight: FontWeight.w600,
+                              //                     color: Colors.green,
+                              //                     fontSize: 18.0),
+                              //               ),
+                              //               Icon(
+                              //                 FontAwesomeIcons.checkCircle,
+                              //                 color: Colors.green,
+                              //               )
+                              //             ],
+                              //           ),
+                              //         ));
+                              //   },
+                              // );
+                              // Future.delayed(Duration(seconds: 2), () {
+                              //   Navigator.pushNamedAndRemoveUntil(context,
+                              //       HomeDoctor.routeName, (_) => false);
+                              // });
                             },
+                            padding: EdgeInsets.only(left: 10, right: 10),
                             focusColor: cyan2,
                             hoverColor: cyan2,
                             splashColor: cyan2,
@@ -1644,18 +2113,16 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
                                   existeBilanNonValide
                                       ? Text(
                                           'Enregistrer l\'ordonnance',
-                                          style: white16Bold,
+                                          style: white14Bold,
                                         )
                                       : Text(
                                           'Enregistrer l\'ordonnance et les bilans',
-                                          style: white16Bold,
+                                          style: white14Bold,
                                         ),
                                   Padding(
                                     padding: const EdgeInsets.only(left: 12.0),
-                                    child: Icon(
-                                      Icons.save,
-                                      color: Colors.white,
-                                    ),
+                                    child: Icon(Icons.save,
+                                        color: Colors.white, size: 18.0),
                                   ),
                                 ],
                               ),
@@ -1675,39 +2142,3 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
     );
   }
 }
-// class PatientDetailCard extends StatelessWidget {
-//   final String title;
-//   final MaterialColor color;
-//   PatientDetailCard({this.title, this.color});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Card(
-//       color: color,
-//       elevation: 10,
-//       child: Center(
-//         child: Text(
-//           title,
-//           style: TextStyle(color: Colors.white, fontSize: 18),
-//         ),
-//       ),
-//     );
-//   }
-// }
-
-// class PatientCard extends StatelessWidget {
-//   final String title;
-//   const PatientCard({Key key, this.title}) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Card(
-//       elevation: 10,
-//       child: Center(
-//           child: Text(
-//         title,
-//         style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-//       )),
-//     );
-//   }
-// }
