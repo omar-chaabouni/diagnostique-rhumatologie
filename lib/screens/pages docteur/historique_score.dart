@@ -12,7 +12,6 @@ import 'package:intl/date_symbol_data_local.dart';
 
 // ignore: must_be_immutable
 class HistoriqueScore extends StatefulWidget {
-  static const routeName = '/historique_score';
   HistoriqueArguments historiqueArguments;
   HistoriqueScore({this.historiqueArguments});
   @override
@@ -25,10 +24,15 @@ class _HistoriqueScoreState extends State<HistoriqueScore> {
   List<Jamar> testsJamar = [];
   List<Chaq> testsChaq = [];
   List<Jspada> testsJspada = [];
-
+  ScrollController scrollController = ScrollController();
   @override
   void initState() {
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
     getHistorique();
     fillHistoriqueCards();
   }
@@ -48,12 +52,6 @@ class _HistoriqueScoreState extends State<HistoriqueScore> {
         return "Demandé";
     }
   }
-
-  // @override
-  // void didChangeDependencies() {
-  //   super.didChangeDependencies();
-  //   // widget.historiqueArguments = ModalRoute.of(context).settings.arguments;
-  // }
 
   fillHistoriqueCards() {
     if (testsJadas.isNotEmpty) {
@@ -103,11 +101,11 @@ class _HistoriqueScoreState extends State<HistoriqueScore> {
         String dateCalcul = "";
         String dateValidation = "";
         String dateDemande = "";
-        DateFormat formatter;
+        final DateFormat formatter = DateFormat('d MMMM yyyy', 'fr');
         initializeDateFormatting('fr');
         String state;
         state = getStateString(testsChaq[i].state);
-        if (testsJadas[i].dateDemande != null) {
+        if (testsChaq[i].dateDemande != null) {
           dateDemandee = testsChaq[i].dateDemande;
           dateDemande = formatter.format(dateDemandee);
         } else {
@@ -131,7 +129,7 @@ class _HistoriqueScoreState extends State<HistoriqueScore> {
             dateValidation.toString(),
             dateCalcul.toString(),
             state,
-            "40/60")); // testChaq[i].score
+            testsChaq[i].score));
       }
     }
     if (testsJspada.isNotEmpty) {
@@ -142,7 +140,7 @@ class _HistoriqueScoreState extends State<HistoriqueScore> {
         String dateCalcul = "";
         String dateValidation = "";
         String dateDemande = "";
-        DateFormat formatter;
+        final DateFormat formatter = DateFormat('d MMMM yyyy', 'fr');
         initializeDateFormatting('fr');
         String state;
         state = getStateString(testsJspada[i].state);
@@ -170,7 +168,7 @@ class _HistoriqueScoreState extends State<HistoriqueScore> {
             dateValidation.toString(),
             dateCalcul.toString(),
             state,
-            "40/60")); // testJspada[i].score
+            testsJspada[i].score)); // testJspada[i].score
       }
     }
     if (testsJamar.isNotEmpty) {
@@ -181,7 +179,7 @@ class _HistoriqueScoreState extends State<HistoriqueScore> {
         String dateCalcul = "";
         String dateValidation = "";
         String dateDemande = "";
-        DateFormat formatter;
+        final DateFormat formatter = DateFormat('d MMMM yyyy', 'fr');
         initializeDateFormatting('fr');
         String state;
         state = getStateString(testsJamar[i].state);
@@ -209,7 +207,7 @@ class _HistoriqueScoreState extends State<HistoriqueScore> {
             dateValidation.toString(),
             dateCalcul.toString(),
             state,
-            "40/60")); // testJamar[i].score
+            testsJamar[i].score));
       }
     } else {
       if (allHistoriqueCards.isEmpty) {
@@ -218,7 +216,7 @@ class _HistoriqueScoreState extends State<HistoriqueScore> {
     }
   }
 
-  void getHistorique() {
+  void getHistorique() async {
     if (widget.historiqueArguments.typeScore == 'JADAS') {
       testsJadas = widget.historiqueArguments.patient.jadas;
     }
@@ -235,8 +233,6 @@ class _HistoriqueScoreState extends State<HistoriqueScore> {
 
   @override
   Widget build(BuildContext context) {
-    // final HistoriqueArguments historiqueArguments =
-    //     ModalRoute.of(context).settings.arguments;
     return Scaffold(
         backgroundColor: gris1,
         resizeToAvoidBottomPadding: false,
@@ -258,78 +254,94 @@ class _HistoriqueScoreState extends State<HistoriqueScore> {
           ),
         ),
         body: Builder(builder: (BuildContext context) {
-          return new SingleChildScrollView(
-            child: Container(
-              color: gris1,
-              padding: EdgeInsets.all(10),
-              width: MediaQuery.of(context).size.width,
+          return Scrollbar(
+            radius: Radius.circular(15.0),
+            isAlwaysShown: true,
+            controller: scrollController,
+            child: new SingleChildScrollView(
+              controller: scrollController,
               child: Container(
-                margin: const EdgeInsets.only(
-                    left: 5.0, right: 5.0, top: 5.0, bottom: 5.0),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.all(Radius.circular(15)),
-                ),
+                color: gris1,
+                padding: EdgeInsets.all(10),
+                width: MediaQuery.of(context).size.width,
                 child: Container(
+                  margin: const EdgeInsets.only(
+                      left: 5.0, right: 5.0, top: 5.0, bottom: 5.0),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.all(Radius.circular(15)),
                   ),
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                        left: 15.0, right: 15.0, top: 10.0, bottom: 10.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.only(left: 10, bottom: 8.0),
-                          child: Text(
-                            "Patient",
-                            style: cyan20Bold,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 10, bottom: 8.0),
-                          child: RichText(
-                            text: TextSpan(
-                              text: "Patient :  ",
-                              style: black16Bold,
-                              children: <TextSpan>[
-                                TextSpan(
-                                    text:
-                                        "${widget.historiqueArguments.patient.prenom} ${widget.historiqueArguments.patient.nom}",
-                                    style: black16Normal),
-                              ],
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(Radius.circular(15)),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                          left: 15.0, right: 15.0, top: 10.0, bottom: 10.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Padding(
+                            padding:
+                                const EdgeInsets.only(left: 10, bottom: 8.0),
+                            child: Text(
+                              "Patient",
+                              style: cyan20Bold,
                             ),
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 10, bottom: 8.0),
-                          child: RichText(
-                            text: TextSpan(
-                              text: "Diagnostic :  ",
-                              style: black16Bold,
-                              children: <TextSpan>[
-                                TextSpan(
-                                    text:
-                                        "${widget.historiqueArguments.patient.diagnostic}",
-                                    style: black16Normal),
-                              ],
+                          Padding(
+                            padding:
+                                const EdgeInsets.only(left: 10, bottom: 8.0),
+                            child: RichText(
+                              text: TextSpan(
+                                text: "Patient :  ",
+                                style: black18Bold,
+                                children: <TextSpan>[
+                                  TextSpan(
+                                      text:
+                                          "${widget.historiqueArguments.patient.prenom} ${widget.historiqueArguments.patient.nom}",
+                                      style: black16Normal),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 10, bottom: 8.0),
-                          child: Text(
-                            "Historique du score",
-                            style: cyan20Bold,
+                          Padding(
+                            padding:
+                                const EdgeInsets.only(left: 10, bottom: 8.0),
+                            child: RichText(
+                              text: TextSpan(
+                                text: "Diagnostic :  ",
+                                style: black18Bold,
+                                children: <TextSpan>[
+                                  TextSpan(
+                                      text:
+                                          "${widget.historiqueArguments.patient.diagnostic}",
+                                      style: black16Normal),
+                                ],
+                              ),
+                            ),
                           ),
-                        ),
-                        Column(
-                          children: allHistoriqueCards,
-                        ),
-                        SizedBox(height: 40),
-                      ],
+                          Padding(
+                            padding:
+                                const EdgeInsets.only(left: 10, bottom: 8.0),
+                            child: Text(
+                              "Historique du score",
+                              style: cyan20Bold,
+                            ),
+                          ),
+                          // Column(
+                          ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: allHistoriqueCards.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return allHistoriqueCards[index];
+                              }),
+                          // children: allHistoriqueCards,
+                          // ),
+                          SizedBox(height: 30),
+                        ],
+                      ),
                     ),
                   ),
                 ),

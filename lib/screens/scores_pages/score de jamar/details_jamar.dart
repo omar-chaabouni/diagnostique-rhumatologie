@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:rhumatologie/models/patient.dart';
 import 'package:rhumatologie/shared/constants.dart';
 
+// ignore: must_be_immutable
 class DetailsJamar extends StatefulWidget {
-  static const routeName = '/detail_jamar';
   Patient patient;
   DetailsJamar({this.patient});
   @override

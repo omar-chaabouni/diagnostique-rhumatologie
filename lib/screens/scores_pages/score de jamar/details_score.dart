@@ -4,8 +4,6 @@ import 'package:rhumatologie/shared/constants.dart';
 import 'package:rhumatologie/shared/utils.dart';
 
 class DetailsScore extends StatefulWidget {
-  static const routeName = '/detail_score';
-
   @override
   _DetailsScoreState createState() => _DetailsScoreState();
 }
@@ -13,9 +11,6 @@ class DetailsScore extends StatefulWidget {
 class _DetailsScoreState extends State<DetailsScore> {
   @override
   Widget build(BuildContext context) {
-    // final TestModel score = ModalRoute.of(context).settings.arguments;
-    // final String score="test";
-
     return Scaffold(
       backgroundColor: gris1,
       resizeToAvoidBottomPadding: false,

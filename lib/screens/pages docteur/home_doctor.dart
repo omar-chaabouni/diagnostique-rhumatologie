@@ -9,7 +9,6 @@ import 'package:rhumatologie/shared/constants.dart';
 
 // ignore: must_be_immutable
 class HomeDoctor extends StatefulWidget {
-  static const routeName = '/home_doctor';
   Doctor doctor;
   String token;
   HomeDoctor({Key key, this.doctor, this.token}) : super(key: key);
@@ -28,7 +27,6 @@ class _HomeDoctorState extends State<HomeDoctor> {
   void initState() {
     super.initState();
     doctor = widget.doctor;
-    print("aaa " + widget.doctor.id.toString());
     token = widget.token;
     _screens = <Widget>[
       PatientsEnAttente(doctor: doctor, token: token),
@@ -39,23 +37,18 @@ class _HomeDoctorState extends State<HomeDoctor> {
 
   void didChangeDependencies() {
     super.didChangeDependencies();
-    // DoctorLoginArguments arguments = ModalRoute.of(context).settings.arguments;
-    // widget.doctor = arguments.doctor;
-    // widget.token = arguments.token;
   }
 
   final PageController _pageController = PageController();
   Future<void> _onPageChanged(int index) async {
     if (mounted) {
       setState(() {
-        // print("current  " + _currentIndex.toString());
         _currentIndex = index;
       });
     }
   }
 
   void _onItemTapped(int selectedIndex) {
-    // print("selected  " + selectedIndex.toString());
     _pageController.jumpToPage(selectedIndex);
   }
 
@@ -69,8 +62,6 @@ class _HomeDoctorState extends State<HomeDoctor> {
         onPageChanged: _onPageChanged,
         children: _screens,
       ),
-      // ),
-
       bottomNavigationBar: SizedBox(
         height: 82,
         child: BottomNavigationBar(

@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:rhumatologie/models/chaq.dart';
 import 'package:rhumatologie/models/doctor.dart';
 import 'package:rhumatologie/models/historique_arguments.dart';
@@ -9,7 +8,6 @@ import 'package:rhumatologie/models/jadas.dart';
 import 'package:rhumatologie/models/jamar.dart';
 import 'package:rhumatologie/models/jspada.dart';
 import 'package:rhumatologie/models/patient.dart';
-import 'package:rhumatologie/screens/pages%20docteur/details_jamar.dart';
 import 'package:rhumatologie/screens/pages%20docteur/historique_score.dart';
 import 'package:rhumatologie/screens/pages%20docteur/home_doctor.dart';
 import 'package:rhumatologie/screens/pages%20docteur/valider_bilans.dart';
@@ -22,7 +20,6 @@ import 'package:http/http.dart' as http;
 
 // ignore: must_be_immutable
 class EditUserPrescription extends StatefulWidget {
-  static const routeName = '/patient';
   Patient patient;
   Doctor doctor;
   String token;
@@ -32,24 +29,16 @@ class EditUserPrescription extends StatefulWidget {
 }
 
 class _EditUserPrescriptionState extends State<EditUserPrescription> {
-  // final myController = TextEditingController(text: 'Test test test');
-  // var textfield1 = TextEditingController();
-  // var textfield2 = TextEditingController();
-  // var textfield3 = TextEditingController();
-  // var textfield4 = TextEditingController();
-  // var textfield5 = TextEditingController();
   var controller1 = TextEditingController();
   var controller2 = TextEditingController();
   var controller3 = TextEditingController();
   var controller4 = TextEditingController();
   var controller5 = TextEditingController();
-  // var cardsOrdonnance = <Container>[];
-  var cardsScore = <Card>[];
-  // List<Jadas> testsJadas=[];
-  //   List<Jspada> testsJadas=[];
-  // List<Chaq> testsJadas=[];
-  // List<Jadas> testsJadas=[];
+  ScrollController scrollController = ScrollController();
 
+  double evaluationGlobaleFaiteParMedecin = 0;
+  int nbrCards = 0;
+  bool existeBilanNonValide = false;
   bool hemoglobine = false;
   bool vgm = false;
   bool tcmh = false;
@@ -70,39 +59,20 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
   bool serologieHepatiteB = false;
   bool jamarDemanded = true;
   bool jamarDemandedNotRempli = true;
-  double evaluationGlobaleFaiteParMedecin = 0;
-  bool existeBilanNonValide = false;
-  List<String> scoreNames = [
-    'JADAS',
-    'JSPADA',
-    'CHAQ',
-    'JAMAR'
-  ]; // ordre à spécifier
-  List<String> scoreResults = <String>[
-    '  --  ',
-    '  --  ',
-    '  --  ',
-    '  --  '
-  ]; // mel BD
-  // bool haveScores = true; // change it false !!!!!!
-  // if true on demande test
+
+  List<String> scoreNames = ['JADAS', 'JSPADA', 'CHAQ', 'JAMAR'];
+  List<String> scoreResults = <String>['  --  ', '  --  ', '  --  ', '  --  '];
   List<bool> testDemanded = [false, false, false, false];
   List<bool> testRempli = [false, false, false, false]; // if true test rempli
   List<bool> testValidated = [false, false, false, false]; //if true test validé
-  // if true of demande validation
-  // List<bool> demandToValidate = [false, false, false, false];
-  int nbrCards = 0;
-  bool _isAddOrdonnanceButtonDisabled = false;
+
   void initState() {
     super.initState();
-    // widget?.patient = ModalRoute.of(context).settings.arguments;
-    // print(widget.patient);
     fillScoreResults(widget.patient);
     fillTestRempli(widget.patient);
     fillTestValidated(widget.patient);
     filltestDemanded(widget.patient);
     fillOrdonnanceInitiale();
-    // print("houniiii +" jadas)
   }
 
   void fillOrdonnanceInitiale() {
@@ -112,7 +82,6 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
           widget.patient.ordonnance.add('');
         }
       }
-      // print(widget.patient.ordonnance);
       if (widget.patient.ordonnance[0] != '') {
         controller1.text = widget.patient.ordonnance[0];
       }
@@ -156,21 +125,21 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
     if (patient.jspada != null) {
       if (patient.jspada.isNotEmpty) {
         if (patient.jspada[0].dateCalcul != null) {
-          scoreResults[1] = patient.jadas[0].score;
+          scoreResults[1] = patient.jspada[0].score;
         }
       }
     }
     if (patient.chaq != null) {
       if (patient.chaq.isNotEmpty) {
         if (patient.chaq[0].dateCalcul != null) {
-          scoreResults[2] = patient.jadas[0].score;
+          scoreResults[2] = patient.chaq[0].score;
         }
       }
     }
     if (patient.jamar != null) {
       if (patient.jamar.isNotEmpty) {
         if (patient.jamar[0].dateCalcul != null) {
-          scoreResults[3] = patient.jadas[0].score;
+          scoreResults[3] = patient.jamar[0].score;
         }
       }
     }
@@ -207,7 +176,6 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
     }
   }
 
-// remplir l array , savoir si chaque test est validé ou pas
   void fillTestValidated(Patient patient) {
     if (patient.jadas != null) {
       if (patient.jadas.isNotEmpty) {
@@ -293,12 +261,10 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
             demanderTestResponse.statusCode == 202 ||
             demanderTestResponse.statusCode == 203) {
           enregistrerAvecSuccess(context);
-          // success = true;
         } else {
           Future.delayed(Duration(milliseconds: 1000), () {
             erreurEnregistrement(context);
           });
-          // success = false;
         }
       });
     } catch (e) {
@@ -329,12 +295,10 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
             validerTestResponse.statusCode == 202 ||
             validerTestResponse.statusCode == 203) {
           enregistrerAvecSuccess(context);
-          print("c bon");
         } else {
           Future.delayed(Duration(milliseconds: 1000), () {
             erreurEnregistrement(context);
           });
-          print("win mechi sahbi erreur");
         }
       });
     } catch (e) {
@@ -351,12 +315,6 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
       controller4.text,
       controller5.text
     ]);
-    // print(json.encode(evaluationGlobaleFaiteParMedecin.toInt().toString());
-    // String evaluationFinale = '\"evaluation\"' +
-    //     ":" +
-    //     evaluationGlobaleFaiteParMedecin.toInt().toString();
-    // print(
-    //     );
     bool success1 = true;
     bool success2 = true;
     bool success3 = true;
@@ -383,7 +341,6 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
         print(e.toString());
       }
     }
-    // print(json.encode({"ordonnance": nouvelleOrdonnance}));
     String updateOrdonnanceURL =
         'http://192.168.1.16:4000/doctors/${widget.doctor.id.toString()}/patients/$patientIdString/updateOrdonnance';
     try {
@@ -459,7 +416,6 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
     if (serologieHepatiteB == true) {
       nouveauBilan.add('Sérologie hépatite B');
     }
-    // print(json.encode({"type_bilan": nouveauBilan}));
     String askForBilanURL =
         'http://192.168.1.16:4000/doctors/${widget.doctor.id.toString()}/patients/$patientIdString/newBilan';
     if (existeBilanNonValide == false) {
@@ -493,37 +449,13 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
             ),
           ));
         });
-        // success = true;
       } else {
         Future.delayed(Duration(milliseconds: 1000), () {
           erreurEnregistrement(context);
         });
-        // success = false;
       }
     });
   }
-
-  // TextEditingController _chooseController(index) {
-  //   switch (index) {
-  //     case 0:
-  //       return controller1;
-  //       break;
-  //     case 1:
-  //       return controller2;
-  //       break;
-  //     case 2:
-  //       return controller3;
-  //       break;
-  //     case 3:
-  //       return controller4;
-  //       break;
-  //     case 4:
-  //       return controller5;
-  //       break;
-  //     default:
-  //       return controller1;
-  //   }
-  // }
 
   Column createAllScores() {
     return Column(children: [
@@ -540,7 +472,6 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
     String dateValidation;
     String dateDemande;
     List<String> allDates = getDates(patient, typeScore);
-    print(allDates);
     dateDemande = allDates[0];
     dateCalcul = allDates[1];
     dateValidation = allDates[2];
@@ -611,25 +542,12 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
                       Padding(
                         padding: const EdgeInsets.only(top: 10.0),
                         child: new FlatButton(
-                          onPressed: () {
-                            // if (mounted == true) {
-                            //   setState(() {
-                            //     //action : envoyer requete walla notification
-                            //   });
-                            // }
-                            // Navigator.of(context).pushNamed(
-                            //     DetailsJamar.routeName,
-                            //     arguments: widget?.patient);
-                            // Navigator.of(context).push(MaterialPageRoute(
-                            //     builder: (context) =>
-                            //         (DetailsJamar(patient: widget.patient))));
-                          },
+                          onPressed: () {},
                           focusColor: cyan2,
                           hoverColor: cyan2,
                           splashColor: cyan2,
                           color: cyan2,
                           child: Container(
-                            // width: 80,
                             child: Row(
                               children: <Widget>[
                                 Text(
@@ -654,11 +572,6 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
                         padding: const EdgeInsets.only(top: 10.0),
                         child: new FlatButton(
                           onPressed: () {
-                            // Navigator.of(context).pushNamed(
-                            //     HistoriqueScore.routeName,
-                            //     arguments: HistoriqueArguments(
-                            //         patient: widget?.patient,
-                            //         typeScore: typeScore));
                             Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) => (HistoriqueScore(
                                     historiqueArguments: HistoriqueArguments(
@@ -705,7 +618,6 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
                                         if (mounted == true) {
                                           setState(() {
                                             testDemanded[index] = true;
-                                            //action : envoyer requete walla notification
                                           });
                                         }
                                       });
@@ -715,7 +627,6 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
                                     splashColor: Colors.green,
                                     color: Colors.green,
                                     child: Container(
-                                      // width: 125,
                                       child: Column(
                                         children: [
                                           Row(
@@ -750,7 +661,6 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
                                     disabledColor: Colors.red,
                                     color: Colors.red,
                                     child: Container(
-                                      // width: 125,
                                       child: Column(
                                         children: [
                                           Row(
@@ -792,7 +702,6 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
                                     disabledColor: Colors.lightGreen[800],
                                     color: Colors.green,
                                     child: Container(
-                                      // width: 115,
                                       child: Row(
                                         children: <Widget>[
                                           Text(
@@ -824,7 +733,6 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
                                     splashColor: Colors.green,
                                     color: Colors.green,
                                     child: Container(
-                                      // width: 115,
                                       child: Row(
                                         children: <Widget>[
                                           Text(
@@ -849,7 +757,6 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
                               height: 0,
                               width: 0,
                             ),
-                      // Spacer(),
                     ],
                   )
                 ],
@@ -873,7 +780,6 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
       case "JADAS":
         List<Jadas> testsJadas = patient.jadas;
         if (testsJadas != null) {
-          print("jadassss " + testsJadas.toString());
           DateFormat formatter;
           initializeDateFormatting('fr');
           formatter = DateFormat('d MMMM yyyy  hh:mm', 'fr');
@@ -914,7 +820,6 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
             dateValidation = "Pas encore validé";
           }
           allDates.addAll([dateDemande, dateCalcul, dateValidation]);
-          // return allDates;
         } else {
           allDates.addAll(
               ["Pas encore demandé", "Pas encore rempli", "Pas encore validé"]);
@@ -972,8 +877,6 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
       case "CHAQ":
         List<Chaq> testsChaq = patient.chaq;
         if (testsChaq != null) {
-          print("chaqqqqq " + testsChaq.toString());
-
           DateFormat formatter;
           initializeDateFormatting('fr');
           formatter = DateFormat('d MMMM yyyy  hh:mm', 'fr');
@@ -1068,7 +971,6 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
         }
         break;
     }
-    print("all date " + allDates.toString());
     return allDates;
   }
 
@@ -1136,12 +1038,26 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
                   RichText(
                     text: TextSpan(
                       text: "Résultat : ",
-                      style: cyan16Bold,
+                      style: cyan18Bold,
                       children: <TextSpan>[
-                        TextSpan(text: score, style: black14Normal),
+                        TextSpan(text: score, style: black16Bold),
                       ],
                     ),
                   ),
+                  (typeScore == "JSPADA")
+                      ? RichText(
+                          text: TextSpan(
+                            text: "NB : ",
+                            style: black16Bold,
+                            children: <TextSpan>[
+                              TextSpan(
+                                  text:
+                                      "VSouCP n\' était pas prise en considération.",
+                                  style: black14Normal),
+                            ],
+                          ),
+                        )
+                      : Container(),
                   Row(
                     children: [
                       Flexible(
@@ -1151,11 +1067,6 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
                           child: new FlatButton(
                             padding: EdgeInsets.only(left: 10.0, right: 10.0),
                             onPressed: () {
-                              // Navigator.of(context).pushNamed(
-                              //     HistoriqueScore.routeName,
-                              //     arguments: HistoriqueArguments(
-                              //         patient: widget?.patient,
-                              //         typeScore: typeScore));
                               Navigator.of(context).push(MaterialPageRoute(
                                   builder: (context) => (HistoriqueScore(
                                       historiqueArguments: HistoriqueArguments(
@@ -1187,7 +1098,6 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
                           ),
                         ),
                       ),
-                      // Spacer(),
                       (!testRempli[index] && !testValidated[index])
                           ? ((!testDemanded[index])
                               ? Flexible(
@@ -1205,7 +1115,6 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
                                             if (mounted == true) {
                                               setState(() {
                                                 testDemanded[index] = true;
-                                                //action : envoyer requete walla notification
                                               });
                                             }
                                           });
@@ -1216,9 +1125,6 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
                                         splashColor: Colors.green,
                                         color: Colors.green,
                                         child: Container(
-                                          // width: 116,
-                                          // child: Column(
-                                          //   children: [
                                           child: Row(
                                             children: <Widget>[
                                               Text(
@@ -1235,8 +1141,6 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
                                                 ),
                                               ),
                                             ],
-                                            //   ),
-                                            // ],
                                           ),
                                         ),
                                       ),
@@ -1259,9 +1163,6 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
                                         disabledColor: Colors.red,
                                         color: Colors.red,
                                         child: Container(
-                                          // width: 112,
-                                          // child: Column(
-                                          //   children: [
                                           child: Row(
                                             children: <Widget>[
                                               Text(
@@ -1279,8 +1180,6 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
                                               ),
                                             ],
                                           ),
-                                          //   ],
-                                          // ),
                                         ),
                                       ),
                                     ),
@@ -1290,7 +1189,6 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
                               height: 0,
                               width: 0,
                             ),
-                      // Spacer(),
                       (testDemanded[index] && testRempli[index])
                           ? ((testValidated[index])
                               ? Flexible(
@@ -1309,7 +1207,6 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
                                         disabledColor: Colors.lightGreen[800],
                                         color: Colors.green,
                                         child: Container(
-                                          // width: 115,
                                           child: Row(
                                             children: <Widget>[
                                               Text(
@@ -1352,7 +1249,6 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
                                         splashColor: Colors.green,
                                         color: Colors.green,
                                         child: Container(
-                                          // width: 115,
                                           child: Row(
                                             children: <Widget>[
                                               Text(
@@ -1390,53 +1286,8 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
     );
   }
 
-  // Card createOrdonnance(index) {
-  //   // print("index " + index.toString());
-  //   textfield1.add(controller1);
-  //   textfield2.add(controller2);
-  //   textfield3.add(controller3);
-  //   textfield4.add(controller4);
-  //   textfield5.add(controller5);
-
-  //   return Card(
-  //       shadowColor: null,
-  //       shape: null,
-  //       elevation: 0.0,
-  //       child: Container(
-  //         margin: EdgeInsets.only(bottom: 2.0, top: 2.0, right: 5.0, left: 5.0),
-  //         padding: EdgeInsets.only(right: 10.0, left: 10.0),
-  //         decoration: BoxDecoration(
-  //           border: Border.all(color: cyan2, width: 2.0),
-  //           borderRadius: BorderRadius.all(Radius.circular(8)),
-  //         ),
-  //         child: TextFormField(
-  //           maxLines: 1,
-  //           cursorColor: cyan2,
-  //           controller: _chooseController(index),
-  //           onChanged: (text) {
-  //             print("TextField ${index + 1} :   $text");
-  //           },
-  //           decoration: InputDecoration(
-  //             border: InputBorder.none,
-  //             hintText: "Veuillez préscrire un traitement",
-  //             prefixIcon: Padding(
-  //               padding: const EdgeInsetsDirectional.only(end: 12.0),
-  //               child: Icon(
-  //                 FontAwesomeIcons.pills,
-  //                 size: 25.0,
-  //                 color: cyan2,
-  //               ),
-  //             ),
-  //           ),
-  //           style: black18Normal,
-  //         ),
-  //       ));
-  // }
-
   @override
   Widget build(BuildContext context) {
-    // final Patient patient = ModalRoute.of(context).settings.arguments;
-
     return Scaffold(
       backgroundColor: gris1,
       resizeToAvoidBottomPadding: false,
@@ -1459,680 +1310,593 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
           ],
         ),
       ),
-      body: new SingleChildScrollView(
-        child: Container(
-          color: gris1,
-          padding: EdgeInsets.all(10),
-          width: MediaQuery.of(context).size.width,
+      body: Scrollbar(
+        radius: Radius.circular(15.0),
+        isAlwaysShown: true,
+        controller: scrollController,
+        child: new SingleChildScrollView(
+          controller: scrollController,
           child: Container(
-            margin: const EdgeInsets.only(
-                left: 5.0, right: 5.0, top: 5.0, bottom: 5.0),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.all(Radius.circular(15)),
-            ),
+            color: gris1,
+            padding: EdgeInsets.all(10),
+            width: MediaQuery.of(context).size.width,
             child: Container(
+              margin: const EdgeInsets.only(
+                  left: 5.0, right: 5.0, top: 5.0, bottom: 5.0),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.all(Radius.circular(15)),
               ),
-              child: Padding(
-                padding: const EdgeInsets.only(
-                    left: 15.0, right: 15.0, top: 10.0, bottom: 10.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 10, bottom: 8.0),
-                          child: Text(
-                            "Patient",
-                            style: cyan19Bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 8.0),
-                      child: Container(
-                        margin: EdgeInsets.only(
-                            bottom: 10.0, top: 10.0, right: 5.0, left: 5.0),
-                        padding: EdgeInsets.only(right: 10.0, left: 10.0),
-                        decoration: BoxDecoration(
-                          border: Border.all(color: cyan2, width: 2.0),
-                          borderRadius: BorderRadius.all(Radius.circular(8)),
-                        ),
-                        child: Container(
-                          width: MediaQuery.of(context).size.width,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                RichText(
-                                  text: TextSpan(
-                                    text: "Nom :  ",
-                                    style: black16Bold,
-                                    children: <TextSpan>[
-                                      TextSpan(
-                                          text: "${widget.patient?.nom}",
-                                          style: black16Normal),
-                                    ],
-                                  ),
-                                ),
-                                RichText(
-                                  text: TextSpan(
-                                    text: "Prénom :  ",
-                                    style: black16Bold,
-                                    children: <TextSpan>[
-                                      TextSpan(
-                                          text: "${widget.patient?.prenom}",
-                                          style: black16Normal),
-                                    ],
-                                  ),
-                                ),
-                                RichText(
-                                  text: TextSpan(
-                                    text: "N° dossier :  ",
-                                    style: black16Bold,
-                                    children: <TextSpan>[
-                                      TextSpan(
-                                          text: "${widget.patient.numDossier}",
-                                          style: black16Normal),
-                                      // TextSpan(
-                                      //     text: ' vous a préscrit ces médicaments : '),
-                                    ],
-                                  ),
-                                ),
-                                RichText(
-                                  text: TextSpan(
-                                    text: "Age :  ",
-                                    style: black16Bold,
-                                    children: <TextSpan>[
-                                      TextSpan(
-                                          text: "${widget.patient?.age}",
-                                          style: black16Normal),
-                                      // TextSpan(
-                                      //     text: ' vous a préscrit ces médicaments : '),
-                                    ],
-                                  ),
-                                ),
-                                RichText(
-                                  text: TextSpan(
-                                    text: "Diagnostic :  ",
-                                    style: black16Bold,
-                                    children: <TextSpan>[
-                                      TextSpan(
-                                          text: "${widget.patient?.diagnostic}",
-                                          style: black16Normal),
-                                      // TextSpan(
-                                      //     text: ' vous a préscrit ces médicaments : '),
-                                    ],
-                                  ),
-                                ),
-                                RichText(
-                                  text: TextSpan(
-                                    text: "Téléphone :  ",
-                                    style: black16Bold,
-                                    children: <TextSpan>[
-                                      TextSpan(
-                                          text: "${widget.patient?.telephone}",
-                                          style: black16Normal),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    // (haveScores == true)
-                    // ?
-                    Padding(
-                      padding: const EdgeInsets.only(left: 10, bottom: 8.0),
-                      child: Text(
-                        "Résultat du dernier diagnostic",
-                        style: cyan19Bold,
-                      ),
-                    ),
-                    // : SizedBox(height: 0.0),
-                    // (haveScores == true)
-                    //     ?
-                    Column(
-                      children: [createAllScores()],
-                    ),
-                    // : SizedBox(height: 0.0),
-                    // createScore('JADAS','40/60'),
-                    Container(
-                      margin: const EdgeInsets.only(top: 5.0),
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 10, bottom: 8.0),
-                        child: Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(bottom: 16.0),
-                              child: Text(
-                                "Evaluation globale faite par le médecin ?",
-                                style: cyan19Bold,
-                              ),
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Flexible(child: sliderLimit(0.0), flex: 1),
-                                Flexible(
-                                  flex: 6,
-                                  child: Container(
-                                    width: 250,
-                                    child: Padding(
-                                      padding:
-                                          const EdgeInsets.only(bottom: 5.0),
-                                      child: SliderTheme(
-                                        data: SliderTheme.of(context).copyWith(
-                                          activeTrackColor: cyan3,
-                                          inactiveTrackColor: cyan2,
-                                          showValueIndicator:
-                                              ShowValueIndicator.always,
-                                          thumbColor: Colors.blueAccent,
-                                          overlayColor:
-                                              Colors.purple.withAlpha(32),
-                                          overlayShape: RoundSliderOverlayShape(
-                                              overlayRadius: 16.0),
-                                          activeTickMarkColor: cyan2,
-                                          inactiveTickMarkColor: cyan2,
-                                          valueIndicatorShape:
-                                              PaddleSliderValueIndicatorShape(),
-                                          valueIndicatorColor:
-                                              Colors.blueAccent,
-                                          valueIndicatorTextStyle: white16Bold,
-                                        ),
-                                        child: Slider(
-                                          value:
-                                              evaluationGlobaleFaiteParMedecin,
-                                          min: 0.0,
-                                          max: 10.0,
-                                          divisions: 10,
-                                          label:
-                                              '$evaluationGlobaleFaiteParMedecin',
-                                          onChanged: (value) {
-                                            if (mounted == true) {
-                                              setState(
-                                                () {
-                                                  evaluationGlobaleFaiteParMedecin =
-                                                      value;
-                                                },
-                                              );
-                                            }
-                                          },
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Flexible(child: sliderLimit(10.0), flex: 1),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 10),
-                      child: Row(
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(Radius.circular(15)),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                      left: 15.0, right: 15.0, top: 10.0, bottom: 10.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Row(
                         children: [
                           Padding(
-                            padding: const EdgeInsets.only(bottom: 8.0),
+                            padding:
+                                const EdgeInsets.only(left: 10, bottom: 8.0),
                             child: Text(
-                              "Ordonnance",
+                              "Patient",
                               style: cyan19Bold,
                             ),
                           ),
-                          Spacer(),
-                          // Container(
-                          //   margin: EdgeInsets.only(right: 15.0),
-                          //   child: FlatButton(
-                          //       autofocus: true,
-                          //       focusColor: Colors.green,
-                          //       splashColor: Colors.green,
-                          //       highlightColor: Colors.green,
-                          //       color: Colors.green,
-                          //       child: Row(
-                          //         children: [
-                          //           Text(
-                          //             'Ajouter',
-                          //             style: white16Bold,
-                          //           ),
-                          //           Padding(
-                          //             padding: const EdgeInsets.only(left: 6.0),
-                          //             child: Icon(
-                          //               FontAwesomeIcons.plusCircle,
-                          //               size: 16.0,
-                          //               color: Colors.white,
-                          //             ),
-                          //           ),
-                          //         ],
-                          //       ),
-                          //       onPressed: _isAddOrdonnanceButtonDisabled
-                          //           ? null
-                          //           : () {
-                          //               print(nbrCards);
-                          //               if (nbrCards == 4) {
-                          //                 if (mounted == true) {
-                          //                   setState(() {
-                          //                     _isAddOrdonnanceButtonDisabled =
-                          //                         true;
-                          //                   });
-                          //                 }
-                          //               }
-                          //               if (nbrCards < 5) {
-                          //                 if (this.mounted) {
-                          //                   setState(() {
-                          //                     nbrCards++;
-                          //                     cardsOrdonnance.add(
-                          //                         createOrdonnance(
-                          //                             nbrCards - 1));
-                          //                   });
-                          //                 }
-                          //               }
-                          //             }),
-                          // ),
                         ],
                       ),
-                    ),
-                    Column(children: [
-                      textFormFieldTextWithoutValidator(
-                          controller1,
-                          'Entrez un médicament',
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 8.0),
-                            child: Icon(
-                              FontAwesomeIcons.pills,
-                              color: gris2,
-                              size: 18,
-                            ),
-                          )),
-                      textFormFieldTextWithoutValidator(
-                          controller2,
-                          'Entrez un médicament',
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 8.0),
-                            child: Icon(
-                              FontAwesomeIcons.pills,
-                              color: gris2,
-                              size: 18,
-                            ),
-                          )),
-                      textFormFieldTextWithoutValidator(
-                          controller3,
-                          'Entrez un médicament',
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 8.0),
-                            child: Icon(
-                              FontAwesomeIcons.pills,
-                              color: gris2,
-                              size: 18,
-                            ),
-                          )),
-                      textFormFieldTextWithoutValidator(
-                          controller4,
-                          'Entrez un médicament',
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 8.0),
-                            child: Icon(
-                              FontAwesomeIcons.pills,
-                              color: gris2,
-                              size: 18,
-                            ),
-                          )),
-                      textFormFieldTextWithoutValidator(
-                          controller5,
-                          'Entrez un médicament',
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 8.0),
-                            child: Icon(
-                              FontAwesomeIcons.pills,
-                              color: gris2,
-                              size: 18,
-                            ),
-                          )),
-                    ]),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
-                      child: Row(
-                        children: [
-                          Flexible(
-                            flex: 4,
-                            child: Align(
-                              alignment: Alignment.centerLeft,
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 10, bottom: 8.0, top: 5.0),
-                                child: Text(
-                                  "Biologie",
-                                  style: cyan19Bold,
-                                ),
-                              ),
-                            ),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 8.0),
+                        child: Container(
+                          margin: EdgeInsets.only(
+                              bottom: 10.0, top: 10.0, right: 5.0, left: 5.0),
+                          padding: EdgeInsets.only(right: 10.0, left: 10.0),
+                          decoration: BoxDecoration(
+                            border: Border.all(color: cyan2, width: 2.0),
+                            borderRadius: BorderRadius.all(Radius.circular(8)),
                           ),
-                          // Flexible(flex: 3, child: Spacer()),
-                          Spacer(),
-                          existeBilanNonValide
-                              ? Flexible(
-                                  flex: 8,
-                                  child: Align(
-                                    alignment: Alignment.centerRight,
-                                    child: FlatButton(
-                                      padding:
-                                          EdgeInsets.only(left: 10, right: 10),
-                                      onPressed: () {
-                                        // Navigator.of(context).pushNamed(
-                                        //   ValiderBilans.routeName,
-                                        //   arguments: widget.patient,
-                                        // );
-
-                                        Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    ValiderBilans(
-                                                        doctor: widget.doctor,
-                                                        token: widget.token,
-                                                        patient:
-                                                            widget.patient)));
-                                      },
-                                      focusColor: cyan2,
-                                      hoverColor: cyan2,
-                                      splashColor: cyan2,
-                                      color: cyan2,
-                                      child: Container(
-                                        // width: 210,
-                                        child: Row(
-                                          children: <Widget>[
-                                            Text(
-                                              'Voir les bilans demandés',
-                                              style: white12Bold,
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 6.0),
-                                              child: Icon(
-                                                FontAwesomeIcons.fileAlt,
-                                                size: 14.0,
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
+                          child: Container(
+                            width: MediaQuery.of(context).size.width,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  RichText(
+                                    text: TextSpan(
+                                      text: "Nom :  ",
+                                      style: black16Bold,
+                                      children: <TextSpan>[
+                                        TextSpan(
+                                            text: "${widget.patient?.nom}",
+                                            style: black16Normal),
+                                      ],
                                     ),
                                   ),
-                                )
-                              : Container(),
-                        ],
-                      ),
-                    ),
-                    !existeBilanNonValide
-                        ? Column(
-                            children: [
-                              flatButtonMultipleChoice(
-                                  title: 'Hémoglobine',
-                                  initValue: hemoglobine,
-                                  onChanged: (newValue) {
-                                    if (this.mounted) {
-                                      setState(() {
-                                        hemoglobine = newValue;
-                                      });
-                                    }
-                                  }),
-                              flatButtonMultipleChoice(
-                                  title: 'VGM',
-                                  initValue: vgm,
-                                  onChanged: (newValue) {
-                                    if (this.mounted) {
-                                      setState(() {
-                                        vgm = newValue;
-                                      });
-                                    }
-                                  }),
-                              flatButtonMultipleChoice(
-                                  title: 'TCMH',
-                                  initValue: tcmh,
-                                  onChanged: (newValue) {
-                                    if (this.mounted) {
-                                      setState(() {
-                                        tcmh = newValue;
-                                      });
-                                    }
-                                  }),
-                              flatButtonMultipleChoice(
-                                  title: 'Globules blancs',
-                                  initValue: globulesBlancs,
-                                  onChanged: (newValue) {
-                                    if (this.mounted) {
-                                      setState(() {
-                                        globulesBlancs = newValue;
-                                      });
-                                    }
-                                  }),
-                              flatButtonMultipleChoice(
-                                  title: 'Polynucléaires neutrophiles',
-                                  initValue: polynucleairesNeutrophiles,
-                                  onChanged: (newValue) {
-                                    if (this.mounted) {
-                                      setState(() {
-                                        polynucleairesNeutrophiles = newValue;
-                                      });
-                                    }
-                                  }),
-                              flatButtonMultipleChoice(
-                                  title: 'Lymphocyte',
-                                  initValue: lymphocyte,
-                                  onChanged: (newValue) {
-                                    if (this.mounted) {
-                                      setState(() {
-                                        lymphocyte = newValue;
-                                      });
-                                    }
-                                  }),
-                              flatButtonMultipleChoice(
-                                  title: 'Plaquettes',
-                                  initValue: plaquettes,
-                                  onChanged: (newValue) {
-                                    if (this.mounted) {
-                                      setState(() {
-                                        plaquettes = newValue;
-                                      });
-                                    }
-                                  }),
-                              flatButtonMultipleChoice(
-                                  title: 'Vitesse de sédimentation',
-                                  initValue: vitesseDeSedimentation,
-                                  onChanged: (newValue) {
-                                    if (this.mounted) {
-                                      setState(() {
-                                        vitesseDeSedimentation = newValue;
-                                      });
-                                    }
-                                  }),
-                              flatButtonMultipleChoice(
-                                  title: 'Protéine C réactive',
-                                  initValue: proteineCReactive,
-                                  onChanged: (newValue) {
-                                    if (this.mounted) {
-                                      setState(() {
-                                        proteineCReactive = newValue;
-                                      });
-                                    }
-                                  }),
-                              flatButtonMultipleChoice(
-                                  title: 'ASAT',
-                                  initValue: asat,
-                                  onChanged: (newValue) {
-                                    if (this.mounted) {
-                                      setState(() {
-                                        asat = newValue;
-                                      });
-                                    }
-                                  }),
-                              flatButtonMultipleChoice(
-                                  title: 'ALAT',
-                                  initValue: alat,
-                                  onChanged: (newValue) {
-                                    if (this.mounted) {
-                                      setState(() {
-                                        alat = newValue;
-                                      });
-                                    }
-                                  }),
-                              flatButtonMultipleChoice(
-                                  title: 'GGT',
-                                  initValue: ggt,
-                                  onChanged: (newValue) {
-                                    if (this.mounted) {
-                                      setState(() {
-                                        ggt = newValue;
-                                      });
-                                    }
-                                  }),
-                              flatButtonMultipleChoice(
-                                  title: 'PAL',
-                                  initValue: pal,
-                                  onChanged: (newValue) {
-                                    if (this.mounted) {
-                                      setState(() {
-                                        pal = newValue;
-                                      });
-                                    }
-                                  }),
-                              flatButtonMultipleChoice(
-                                  title: 'Créatinine',
-                                  initValue: creatinine,
-                                  onChanged: (newValue) {
-                                    if (this.mounted) {
-                                      setState(() {
-                                        creatinine = newValue;
-                                      });
-                                    }
-                                  }),
-                              flatButtonMultipleChoice(
-                                  title: 'Ferritinémie',
-                                  initValue: ferritinemie,
-                                  onChanged: (newValue) {
-                                    if (this.mounted) {
-                                      setState(() {
-                                        ferritinemie = newValue;
-                                      });
-                                    }
-                                  }),
-                              flatButtonMultipleChoice(
-                                  title: 'ECBU',
-                                  initValue: ecbu,
-                                  onChanged: (newValue) {
-                                    if (this.mounted) {
-                                      setState(() {
-                                        ecbu = newValue;
-                                      });
-                                    }
-                                  }),
-                              flatButtonMultipleChoice(
-                                  title: 'Sérologie hépatite C',
-                                  initValue: serologieHepatiteC,
-                                  onChanged: (newValue) {
-                                    if (this.mounted) {
-                                      setState(() {
-                                        serologieHepatiteC = newValue;
-                                      });
-                                    }
-                                  }),
-                              flatButtonMultipleChoice(
-                                  title: 'Sérologie hépatite B',
-                                  initValue: serologieHepatiteB,
-                                  onChanged: (newValue) {
-                                    if (this.mounted) {
-                                      setState(() {
-                                        serologieHepatiteB = newValue;
-                                      });
-                                    }
-                                  }),
-                            ],
-                          )
-                        : Container(),
-                    Row(
-                      children: [
-                        Spacer(),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 10.0),
-                          child: new FlatButton(
-                            minWidth: 60.0,
-                            onPressed: () {
-                              saveOrdonnanceAndEvaluationAndBilan(
-                                  widget.patient.id.toString());
-                              // showDialog(
-                              //   context: context,
-                              //   builder: (context) {
-                              //     return AlertDialog(
-                              //         // content: Text(myController.text),
-                              //         shape: RoundedRectangleBorder(
-                              //             borderRadius: BorderRadius.all(
-                              //                 Radius.circular(10.0))),
-                              //         content: Container(
-                              //           height: 60,
-                              //           child: Column(
-                              //             children: [
-                              //               Text(
-                              //                 "Enregistré avec succès",
-                              //                 style: GoogleFonts.oxygen(
-                              //                     fontWeight: FontWeight.w600,
-                              //                     color: Colors.green,
-                              //                     fontSize: 18.0),
-                              //               ),
-                              //               Icon(
-                              //                 FontAwesomeIcons.checkCircle,
-                              //                 color: Colors.green,
-                              //               )
-                              //             ],
-                              //           ),
-                              //         ));
-                              //   },
-                              // );
-                              // Future.delayed(Duration(seconds: 2), () {
-                              //   Navigator.pushNamedAndRemoveUntil(context,
-                              //       HomeDoctor.routeName, (_) => false);
-                              // });
-                            },
-                            padding: EdgeInsets.only(left: 10, right: 10),
-                            focusColor: cyan2,
-                            hoverColor: cyan2,
-                            splashColor: cyan2,
-                            color: cyan2,
-                            child: Container(
-                              // width: 126,
-                              child: Row(
-                                children: <Widget>[
-                                  existeBilanNonValide
-                                      ? Text(
-                                          'Enregistrer l\'ordonnance',
-                                          style: white14Bold,
-                                        )
-                                      : Text(
-                                          'Enregistrer l\'ordonnance et les bilans',
-                                          style: white14Bold,
-                                        ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 12.0),
-                                    child: Icon(Icons.save,
-                                        color: Colors.white, size: 18.0),
+                                  RichText(
+                                    text: TextSpan(
+                                      text: "Prénom :  ",
+                                      style: black16Bold,
+                                      children: <TextSpan>[
+                                        TextSpan(
+                                            text: "${widget.patient?.prenom}",
+                                            style: black16Normal),
+                                      ],
+                                    ),
+                                  ),
+                                  RichText(
+                                    text: TextSpan(
+                                      text: "N° dossier :  ",
+                                      style: black16Bold,
+                                      children: <TextSpan>[
+                                        TextSpan(
+                                            text:
+                                                "${widget.patient.numDossier}",
+                                            style: black16Normal),
+                                      ],
+                                    ),
+                                  ),
+                                  RichText(
+                                    text: TextSpan(
+                                      text: "Age :  ",
+                                      style: black16Bold,
+                                      children: <TextSpan>[
+                                        TextSpan(
+                                            text: "${widget.patient?.age}",
+                                            style: black16Normal),
+                                      ],
+                                    ),
+                                  ),
+                                  RichText(
+                                    text: TextSpan(
+                                      text: "Diagnostic :  ",
+                                      style: black16Bold,
+                                      children: <TextSpan>[
+                                        TextSpan(
+                                            text:
+                                                "${widget.patient?.diagnostic}",
+                                            style: black16Normal),
+                                      ],
+                                    ),
+                                  ),
+                                  RichText(
+                                    text: TextSpan(
+                                      text: "Téléphone :  ",
+                                      style: black16Bold,
+                                      children: <TextSpan>[
+                                        TextSpan(
+                                            text:
+                                                "${widget.patient?.telephone}",
+                                            style: black16Normal),
+                                      ],
+                                    ),
                                   ),
                                 ],
                               ),
                             ),
                           ),
                         ),
-                        Spacer()
-                      ],
-                    ),
-                  ],
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10, bottom: 8.0),
+                        child: Text(
+                          "Résultat du dernier diagnostic",
+                          style: cyan19Bold,
+                        ),
+                      ),
+                      Column(
+                        children: [createAllScores()],
+                      ),
+                      Container(
+                        margin: const EdgeInsets.only(top: 5.0),
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 10, bottom: 8.0),
+                          child: Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 16.0),
+                                child: Text(
+                                  "Evaluation globale faite par le médecin ?",
+                                  style: cyan19Bold,
+                                ),
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Flexible(child: sliderLimit(0.0), flex: 1),
+                                  Flexible(
+                                    flex: 6,
+                                    child: Container(
+                                      width: 250,
+                                      child: Padding(
+                                        padding:
+                                            const EdgeInsets.only(bottom: 5.0),
+                                        child: SliderTheme(
+                                          data:
+                                              SliderTheme.of(context).copyWith(
+                                            activeTrackColor: cyan3,
+                                            inactiveTrackColor: cyan2,
+                                            showValueIndicator:
+                                                ShowValueIndicator.always,
+                                            thumbColor: Colors.blueAccent,
+                                            overlayColor:
+                                                Colors.purple.withAlpha(32),
+                                            overlayShape:
+                                                RoundSliderOverlayShape(
+                                                    overlayRadius: 16.0),
+                                            activeTickMarkColor: cyan2,
+                                            inactiveTickMarkColor: cyan2,
+                                            valueIndicatorShape:
+                                                PaddleSliderValueIndicatorShape(),
+                                            valueIndicatorColor:
+                                                Colors.blueAccent,
+                                            valueIndicatorTextStyle:
+                                                white16Bold,
+                                          ),
+                                          child: Slider(
+                                            value:
+                                                evaluationGlobaleFaiteParMedecin,
+                                            min: 0.0,
+                                            max: 10.0,
+                                            divisions: 10,
+                                            label:
+                                                '$evaluationGlobaleFaiteParMedecin',
+                                            onChanged: (value) {
+                                              if (mounted == true) {
+                                                setState(
+                                                  () {
+                                                    evaluationGlobaleFaiteParMedecin =
+                                                        value;
+                                                  },
+                                                );
+                                              }
+                                            },
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Flexible(child: sliderLimit(10.0), flex: 1),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10),
+                        child: Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 8.0),
+                              child: Text(
+                                "Ordonnance",
+                                style: cyan19Bold,
+                              ),
+                            ),
+                            Spacer(),
+                          ],
+                        ),
+                      ),
+                      Column(children: [
+                        textFormFieldTextWithoutValidator(
+                            controller1,
+                            'Entrez un médicament',
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 8.0),
+                              child: Icon(
+                                FontAwesomeIcons.pills,
+                                color: gris2,
+                                size: 18,
+                              ),
+                            )),
+                        textFormFieldTextWithoutValidator(
+                            controller2,
+                            'Entrez un médicament',
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 8.0),
+                              child: Icon(
+                                FontAwesomeIcons.pills,
+                                color: gris2,
+                                size: 18,
+                              ),
+                            )),
+                        textFormFieldTextWithoutValidator(
+                            controller3,
+                            'Entrez un médicament',
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 8.0),
+                              child: Icon(
+                                FontAwesomeIcons.pills,
+                                color: gris2,
+                                size: 18,
+                              ),
+                            )),
+                        textFormFieldTextWithoutValidator(
+                            controller4,
+                            'Entrez un médicament',
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 8.0),
+                              child: Icon(
+                                FontAwesomeIcons.pills,
+                                color: gris2,
+                                size: 18,
+                              ),
+                            )),
+                        textFormFieldTextWithoutValidator(
+                            controller5,
+                            'Entrez un médicament',
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 8.0),
+                              child: Icon(
+                                FontAwesomeIcons.pills,
+                                color: gris2,
+                                size: 18,
+                              ),
+                            )),
+                      ]),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Row(
+                          children: [
+                            Flexible(
+                              flex: 4,
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 10, bottom: 8.0, top: 5.0),
+                                  child: Text(
+                                    "Biologie",
+                                    style: cyan19Bold,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Spacer(),
+                            existeBilanNonValide
+                                ? Flexible(
+                                    flex: 8,
+                                    child: Align(
+                                      alignment: Alignment.centerRight,
+                                      child: FlatButton(
+                                        padding: EdgeInsets.only(
+                                            left: 10, right: 10),
+                                        onPressed: () {
+                                          Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      ValiderBilans(
+                                                          doctor: widget.doctor,
+                                                          token: widget.token,
+                                                          patient:
+                                                              widget.patient)));
+                                        },
+                                        focusColor: cyan2,
+                                        hoverColor: cyan2,
+                                        splashColor: cyan2,
+                                        color: cyan2,
+                                        child: Container(
+                                          child: Row(
+                                            children: <Widget>[
+                                              Text(
+                                                'Voir les bilans demandés',
+                                                style: white12Bold,
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 6.0),
+                                                child: Icon(
+                                                  FontAwesomeIcons.fileAlt,
+                                                  size: 14.0,
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                : Container(),
+                          ],
+                        ),
+                      ),
+                      !existeBilanNonValide
+                          ? Column(
+                              children: [
+                                flatButtonMultipleChoice(
+                                    title: 'Hémoglobine',
+                                    initValue: hemoglobine,
+                                    onChanged: (newValue) {
+                                      if (this.mounted) {
+                                        setState(() {
+                                          hemoglobine = newValue;
+                                        });
+                                      }
+                                    }),
+                                flatButtonMultipleChoice(
+                                    title: 'VGM',
+                                    initValue: vgm,
+                                    onChanged: (newValue) {
+                                      if (this.mounted) {
+                                        setState(() {
+                                          vgm = newValue;
+                                        });
+                                      }
+                                    }),
+                                flatButtonMultipleChoice(
+                                    title: 'TCMH',
+                                    initValue: tcmh,
+                                    onChanged: (newValue) {
+                                      if (this.mounted) {
+                                        setState(() {
+                                          tcmh = newValue;
+                                        });
+                                      }
+                                    }),
+                                flatButtonMultipleChoice(
+                                    title: 'Globules blancs',
+                                    initValue: globulesBlancs,
+                                    onChanged: (newValue) {
+                                      if (this.mounted) {
+                                        setState(() {
+                                          globulesBlancs = newValue;
+                                        });
+                                      }
+                                    }),
+                                flatButtonMultipleChoice(
+                                    title: 'Polynucléaires neutrophiles',
+                                    initValue: polynucleairesNeutrophiles,
+                                    onChanged: (newValue) {
+                                      if (this.mounted) {
+                                        setState(() {
+                                          polynucleairesNeutrophiles = newValue;
+                                        });
+                                      }
+                                    }),
+                                flatButtonMultipleChoice(
+                                    title: 'Lymphocyte',
+                                    initValue: lymphocyte,
+                                    onChanged: (newValue) {
+                                      if (this.mounted) {
+                                        setState(() {
+                                          lymphocyte = newValue;
+                                        });
+                                      }
+                                    }),
+                                flatButtonMultipleChoice(
+                                    title: 'Plaquettes',
+                                    initValue: plaquettes,
+                                    onChanged: (newValue) {
+                                      if (this.mounted) {
+                                        setState(() {
+                                          plaquettes = newValue;
+                                        });
+                                      }
+                                    }),
+                                flatButtonMultipleChoice(
+                                    title: 'Vitesse de sédimentation',
+                                    initValue: vitesseDeSedimentation,
+                                    onChanged: (newValue) {
+                                      if (this.mounted) {
+                                        setState(() {
+                                          vitesseDeSedimentation = newValue;
+                                        });
+                                      }
+                                    }),
+                                flatButtonMultipleChoice(
+                                    title: 'Protéine C réactive',
+                                    initValue: proteineCReactive,
+                                    onChanged: (newValue) {
+                                      if (this.mounted) {
+                                        setState(() {
+                                          proteineCReactive = newValue;
+                                        });
+                                      }
+                                    }),
+                                flatButtonMultipleChoice(
+                                    title: 'ASAT',
+                                    initValue: asat,
+                                    onChanged: (newValue) {
+                                      if (this.mounted) {
+                                        setState(() {
+                                          asat = newValue;
+                                        });
+                                      }
+                                    }),
+                                flatButtonMultipleChoice(
+                                    title: 'ALAT',
+                                    initValue: alat,
+                                    onChanged: (newValue) {
+                                      if (this.mounted) {
+                                        setState(() {
+                                          alat = newValue;
+                                        });
+                                      }
+                                    }),
+                                flatButtonMultipleChoice(
+                                    title: 'GGT',
+                                    initValue: ggt,
+                                    onChanged: (newValue) {
+                                      if (this.mounted) {
+                                        setState(() {
+                                          ggt = newValue;
+                                        });
+                                      }
+                                    }),
+                                flatButtonMultipleChoice(
+                                    title: 'PAL',
+                                    initValue: pal,
+                                    onChanged: (newValue) {
+                                      if (this.mounted) {
+                                        setState(() {
+                                          pal = newValue;
+                                        });
+                                      }
+                                    }),
+                                flatButtonMultipleChoice(
+                                    title: 'Créatinine',
+                                    initValue: creatinine,
+                                    onChanged: (newValue) {
+                                      if (this.mounted) {
+                                        setState(() {
+                                          creatinine = newValue;
+                                        });
+                                      }
+                                    }),
+                                flatButtonMultipleChoice(
+                                    title: 'Ferritinémie',
+                                    initValue: ferritinemie,
+                                    onChanged: (newValue) {
+                                      if (this.mounted) {
+                                        setState(() {
+                                          ferritinemie = newValue;
+                                        });
+                                      }
+                                    }),
+                                flatButtonMultipleChoice(
+                                    title: 'ECBU',
+                                    initValue: ecbu,
+                                    onChanged: (newValue) {
+                                      if (this.mounted) {
+                                        setState(() {
+                                          ecbu = newValue;
+                                        });
+                                      }
+                                    }),
+                                flatButtonMultipleChoice(
+                                    title: 'Sérologie hépatite C',
+                                    initValue: serologieHepatiteC,
+                                    onChanged: (newValue) {
+                                      if (this.mounted) {
+                                        setState(() {
+                                          serologieHepatiteC = newValue;
+                                        });
+                                      }
+                                    }),
+                                flatButtonMultipleChoice(
+                                    title: 'Sérologie hépatite B',
+                                    initValue: serologieHepatiteB,
+                                    onChanged: (newValue) {
+                                      if (this.mounted) {
+                                        setState(() {
+                                          serologieHepatiteB = newValue;
+                                        });
+                                      }
+                                    }),
+                              ],
+                            )
+                          : Container(),
+                      Row(
+                        children: [
+                          Spacer(),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 10.0),
+                            child: new FlatButton(
+                              minWidth: 60.0,
+                              onPressed: () {
+                                saveOrdonnanceAndEvaluationAndBilan(
+                                    widget.patient.id.toString());
+                              },
+                              padding: EdgeInsets.only(left: 10, right: 10),
+                              focusColor: cyan2,
+                              hoverColor: cyan2,
+                              splashColor: cyan2,
+                              color: cyan2,
+                              child: Container(
+                                child: Row(
+                                  children: <Widget>[
+                                    existeBilanNonValide
+                                        ? Text(
+                                            'Enregistrer l\'ordonnance',
+                                            style: white14Bold,
+                                          )
+                                        : Text(
+                                            'Enregistrer l\'ordonnance et les bilans',
+                                            style: white14Bold,
+                                          ),
+                                    Padding(
+                                      padding:
+                                          const EdgeInsets.only(left: 12.0),
+                                      child: Icon(Icons.save,
+                                          color: Colors.white, size: 18.0),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          Spacer()
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

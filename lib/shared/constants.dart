@@ -15,7 +15,8 @@ final black18Bold = GoogleFonts.oxygen(
 
 final black16Bold = GoogleFonts.oxygen(
     fontWeight: FontWeight.w600, color: Colors.black, fontSize: 16.0);
-
+final black14Bold = GoogleFonts.oxygen(
+    fontWeight: FontWeight.w600, color: Colors.black, fontSize: 14.0);
 final black16Normal = GoogleFonts.oxygen(
     color: Colors.black,
     fontWeight: FontWeight.normal,
@@ -31,14 +32,14 @@ final black12Normal = GoogleFonts.oxygen(
 final cyan13Normal = GoogleFonts.oxygen(
     color: cyan2, fontWeight: FontWeight.normal, fontSize: 13.0);
 
-final red18Normal = GoogleFonts.oxygen(
+final red16Normal = GoogleFonts.oxygen(
     color: Colors.red,
     fontWeight: FontWeight.normal,
-    fontSize: 18.0,
+    fontSize: 16.0,
     height: 1.4);
 
 final resultNotFound = GoogleFonts.oxygen(
-    color: Colors.black, fontWeight: FontWeight.normal, fontSize: 14.0);
+    color: Colors.black, fontWeight: FontWeight.bold, fontSize: 16.0);
 
 final black18Normal = GoogleFonts.oxygen(
     color: Colors.black,
@@ -67,7 +68,8 @@ final white12Bold = GoogleFonts.oxygen(
 
 final cyan16Bold = GoogleFonts.oxygen(
     fontWeight: FontWeight.w600, color: cyan2, fontSize: 16.0);
-
+final cyan17Bold = GoogleFonts.oxygen(
+    fontWeight: FontWeight.w600, color: cyan2, fontSize: 17.0);
 final cyan18Bold = GoogleFonts.oxygen(
     fontWeight: FontWeight.w600, color: cyan2, fontSize: 18.0);
 

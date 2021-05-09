@@ -2,7 +2,6 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:grouped_buttons/grouped_buttons.dart';
-import 'package:rhumatologie/screens/scores_pages/score%20de%20jamar/page_3_jamar.dart';
 import 'package:rhumatologie/shared/constants.dart';
 import 'package:rhumatologie/shared/utils.dart';
 
@@ -47,8 +46,6 @@ class _Page2JamarState extends State<Page2Jamar> {
     nbrOfItems += allQuestionsAutresActivites.length;
 
     sommeScore += allQuestionsAutresActivites.reduce(max);
-    print("nbrOfItems " + nbrOfItems.toString());
-    print("sommeScore " + sommeScore.toString());
   }
 
   @override
@@ -69,7 +66,6 @@ class _Page2JamarState extends State<Page2Jamar> {
       body: new SingleChildScrollView(
         child: Container(
           color: gris1,
-          // height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
           child: Container(
             margin: const EdgeInsets.only(
@@ -154,7 +150,6 @@ class _Page2JamarState extends State<Page2Jamar> {
                                           question_9 = selected;
                                         }),
                                       ),
-
                                       questionChaq(
                                           "10. Ouvrir et fermer un robinet ou ouvrir un bocal qui a déja été ouvert "),
                                       CheckboxGroup(
@@ -543,12 +538,12 @@ class _Page2JamarState extends State<Page2Jamar> {
                                             minWidth: 60.0,
                                             onPressed: () {
                                               calculEtEnvoiSomme();
-                                              Navigator.of(context).pushNamed(
-                                                Page3Jamar.routeName,
-                                                // arguments: Chaq3Arguments(
-                                                //     nbrOfItems: nbrOfItems,
-                                                //     sommeScore: sommeScore)
-                                              );
+                                              // Navigator.of(context).pushNamed(
+                                              //   Page3Jamar.routeName,
+                                              //   // arguments: Chaq3Arguments(
+                                              //   //     nbrOfItems: nbrOfItems,
+                                              //   //     sommeScore: sommeScore)
+                                              // );
                                             },
                                             focusColor: cyan2,
                                             hoverColor: cyan2,
@@ -578,62 +573,6 @@ class _Page2JamarState extends State<Page2Jamar> {
                                           ),
                                         ),
                                       ),
-                                      // Padding(
-                                      //   padding: const EdgeInsets.only(
-                                      //       bottom: 10.0, top: 10.0),
-                                      //   child: Text(
-                                      //     "Combien de fois text test test?",
-                                      //     style: cyan20Bold,
-                                      //   ),
-                                      // ),
-                                      // flatButtonMultipleChoice(
-                                      //     title: 'test',
-                                      //     initValue: isChecked1,
-                                      //     onChanged: (newValue) {
-                                      //       if (this.mounted) {
-                                      //         setState(() {
-                                      //           isChecked1 = newValue;
-                                      //         });
-                                      //       }
-                                      //     }),
-                                      // flatButtonMultipleChoice(
-                                      //     title: 'test',
-                                      //     initValue: isChecked2,
-                                      //     onChanged: (newValue) {
-                                      //       if (this.mounted) {
-                                      //         setState(() {
-                                      //           isChecked2 = newValue;
-                                      //         });
-                                      //       }
-                                      //     }),
-                                      // Padding(
-                                      //   padding: const EdgeInsets.only(
-                                      //       bottom: 10.0, top: 10.0),
-                                      //   child: Text(
-                                      //     "Combien de fois text test test?",
-                                      //     style: cyan20Bold,
-                                      //   ),
-                                      // ),
-                                      // Container(
-                                      //   margin: EdgeInsets.only(
-                                      //       bottom: 10.0,
-                                      //       top: 15.0,
-                                      //       right: 20.0,
-                                      //       left: 20.0),
-                                      //   padding: EdgeInsets.only(
-                                      //       right: 10.0, left: 10.0),
-                                      //   decoration: BoxDecoration(
-                                      //     border: Border.all(
-                                      //         color: cyan2, width: 2.0),
-                                      //     borderRadius: BorderRadius.all(
-                                      //         Radius.circular(8)),
-                                      //   ),
-                                      //   child: TextFormField(
-                                      //       cursorColor: cyan2,
-                                      //       decoration: InputDecoration(
-                                      //           border: InputBorder.none),
-                                      //       style: black18Normal),
-                                      // ),
                                     ],
                                   )
                                 : RichText(

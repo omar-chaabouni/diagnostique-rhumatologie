@@ -88,7 +88,6 @@ FlatButton flatButtonMultipleChoice(
                 value: initValue,
                 onChanged: (b) {
                   onChanged(b);
-                  // print(b.toString());
                 }),
           ),
         ),
@@ -418,10 +417,6 @@ Card createRequestedScoreCard(
                               builder: (context) =>
                                   Page1Jamar(token: token, patient: patient)));
                           break;
-                        // default:
-                        //   return Navigator.of(context).pushNamed(
-                        //       Page1Jadas.routeName,
-                        //       arguments: nomPatient);
                       }
                     },
                     focusColor: Colors.green,
@@ -429,7 +424,6 @@ Card createRequestedScoreCard(
                     splashColor: Colors.green,
                     color: Colors.green,
                     child: Container(
-                      // width: 150,
                       child: Row(
                         children: <Widget>[
                           Text(
@@ -487,56 +481,56 @@ Card historiqueCard(BuildContext context, String dateDemande,
                     RichText(
                       text: TextSpan(
                         text: "Date demandé :  ",
-                        style: black18Bold,
+                        style: black16Bold,
                         children: <TextSpan>[
                           (dateDemande == "Pas encore demandé")
-                              ? TextSpan(text: dateDemande, style: red18Normal)
+                              ? TextSpan(text: dateDemande, style: red16Normal)
                               : TextSpan(
-                                  text: dateDemande, style: black18Normal),
+                                  text: dateDemande, style: black16Normal),
                         ],
                       ),
                     ),
                     RichText(
                       text: TextSpan(
                         text: "Date rempli :  ",
-                        style: black18Bold,
+                        style: black16Bold,
                         children: <TextSpan>[
                           (dateRempli == "Pas encore rempli")
-                              ? TextSpan(text: dateRempli, style: red18Normal)
+                              ? TextSpan(text: dateRempli, style: red16Normal)
                               : TextSpan(
-                                  text: dateRempli, style: black18Normal),
+                                  text: dateRempli, style: black16Normal),
                         ],
                       ),
                     ),
                     RichText(
                       text: TextSpan(
                         text: "Date validation :  ",
-                        style: black18Bold,
+                        style: black16Bold,
                         children: <TextSpan>[
                           (dateValidation == "Pas encore validé")
                               ? TextSpan(
-                                  text: dateValidation, style: red18Normal)
+                                  text: dateValidation, style: red16Normal)
                               : TextSpan(
-                                  text: dateValidation, style: black18Normal),
+                                  text: dateValidation, style: black16Normal),
                         ],
                       ),
                     ),
                     RichText(
                       text: TextSpan(
                         text: "Etat :  ",
-                        style: black18Bold,
+                        style: black16Bold,
                         children: <TextSpan>[
-                          TextSpan(text: state, style: black18Normal),
+                          TextSpan(text: state, style: black16Normal),
                         ],
                       ),
                     ),
-                    (state != "Demandé")
+                    ((state != "Demandé") && (resultat != null))
                         ? RichText(
                             text: TextSpan(
                               text: "Résultat : ",
-                              style: black18Bold,
+                              style: black16Bold,
                               children: <TextSpan>[
-                                TextSpan(text: resultat, style: black18Normal),
+                                TextSpan(text: resultat, style: black16Normal),
                               ],
                             ),
                           )
@@ -558,7 +552,7 @@ Card historiqueNExistePas() {
   return Card(
     elevation: 0,
     child: Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.only(top: 8.0),
       child: Column(
         children: [
           RichText(

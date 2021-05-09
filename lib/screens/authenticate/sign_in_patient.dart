@@ -20,12 +20,11 @@ class SignInPatient extends StatefulWidget {
 
 class _SignInPatientState extends State<SignInPatient> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  // text field state
   bool loading = false;
-  // String telephone = '';
-  // String password = '';
   String error = '';
   Patient patient;
+  TextEditingController telephoneController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
 
   signIn(int telephone, String password) async {
     Doctor result;
@@ -33,149 +32,30 @@ class _SignInPatientState extends State<SignInPatient> {
     String getPatientURL = 'http://192.168.1.16:4000/patients/me';
 
     try {
-      // print(json.encode({"telephone": telephone, "password": password}));
       var loginResponse = await http.post("$loginURL",
           body: json.encode({"telephone": telephone, "password": password}),
           headers: {
             'Content-Type': 'application/json',
           });
-      // print(loginResponse.body.toString());
       if (loginResponse.statusCode == 200) {
         var getPatientResponse = await http.get("$getPatientURL", headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ${json.decode(loginResponse.body)["token"]}'
         });
-        // print(getPatientResponse);
         if (getPatientResponse.statusCode == 200) {
-          // print(getPatientResponse.body.toString());
-          // print(getPatientResponse.body);
-          // print((json.decode(getPatientResponse.body)["patient"]).toString());
-          // patient = Patient.fromRawJson(
-          //     json.decode(getPatientResponse.body)["patient"].toString());
-          // print(json.decode(getPatientResponse.body)["patient"]);
           patient =
               Patient.fromJson(json.decode(getPatientResponse.body)["patient"]);
-          print(" ppp  " + patient.bilan[0].typeBilan.toString());
-          // Navigator.of(context)
-          //     .pushNamed(HomePatient.routeName, arguments: patient);
           Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => HomePatient(
                   patient: patient,
                   token: json.decode(loginResponse.body)["token"])));
         }
-        // if (mounted == true) {
-        //   setState(() {
-        //     // filteredPatients = patientList;
-        //   });
-        // }
       }
     } catch (e) {
       print(e.toString());
     }
     return result;
   }
-
-  TextEditingController telephoneController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-  // @override
-  // Widget build(BuildContext context) {
-  //   return loading
-  //       ? Loading()
-  //       : Scaffold(
-  //           body: Padding(
-  //               padding: EdgeInsets.all(10),
-  //               child: ListView(
-  //                 children: <Widget>[
-  //                   Container(
-  //                       alignment: Alignment.center,
-  //                       padding: EdgeInsets.all(10),
-  //                       child: Text(
-  //                         'TutorialKart',
-  //                         style: TextStyle(
-  //                             color: Colors.blue,
-  //                             fontWeight: FontWeight.w500,
-  //                             fontSize: 30),
-  //                       )),
-  //                   Container(
-  //                       alignment: Alignment.center,
-  //                       padding: EdgeInsets.all(10),
-  //                       child: Text(
-  //                         'Sign in',
-  //                         style: TextStyle(fontSize: 20),
-  //                       )),
-  //                   Container(
-  //                     padding: EdgeInsets.all(10),
-  //                     child: TextField(
-  //                       controller: telephoneController,
-  //                       decoration: InputDecoration(
-  //                         border: OutlineInputBorder(),
-  //                         labelText: 'User Name',
-  //                       ),
-  //                     ),
-  //                   ),
-  //                   Container(
-  //                     padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
-  //                     child: TextField(
-  //                       obscureText: true,
-  //                       controller: passwordController,
-  //                       decoration: InputDecoration(
-  //                         border: OutlineInputBorder(),
-  //                         labelText: 'Password',
-  //                       ),
-  //                     ),
-  //                   ),
-  //                   FlatButton(
-  //                     onPressed: () {
-  //                       //forgot password screen
-  //                     },
-  //                     textColor: Colors.blue,
-  //                     child: Text('Forgot Password'),
-  //                   ),
-  //                   Container(
-  //                       height: 50,
-  //                       padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-  //                       child: RaisedButton(
-  //                         textColor: Colors.white,
-  //                         color: Colors.blue,
-  //                         child: Text('Login'),
-  //                         onPressed: () {
-  //                           // print(telephoneController.text);
-  //                           // print(passwordController.text);
-  //                           dynamic result = signIn(
-  //                               telephoneController.text, passwordController.text);
-  //                           // dynamic result =
-  //                           //     await _auth.signInWithTelephoneAndPassword(telephone, password);
-  //                           if (result == null) {
-  //                             if (mounted == true) {
-  //                               setState(() {
-  //                                 error =
-  //                                     'Could not sign in with those credentials';
-  //                                 loading = false;
-  //                               });
-  //                             }
-  //                           }
-  //                         },
-  //                       )),
-  //                   Container(
-  //                       child: Row(
-  //                     children: <Widget>[
-  //                       Text('Does not have account?'),
-  //                       FlatButton(
-  //                         textColor: Colors.blue,
-  //                         child: Text(
-  //                           'Sign in',
-  //                           style: TextStyle(fontSize: 20),
-  //                         ),
-  //                         onPressed: () {
-  //                           //signup screen
-  //                         },
-  //                       )
-  //                     ],
-  //                     mainAxisAlignment: MainAxisAlignment.center,
-  //                   ))
-  //                 ],
-  //               )));
-  // }
 
   Widget _buildTelephoneTF() {
     return Form(
@@ -193,7 +73,6 @@ class _SignInPatientState extends State<SignInPatient> {
             decoration: kBoxDecorationStyle,
             height: 60.0,
             child: TextFormField(
-              // validator: (val)=>val.isEmpty ? print('Entrez un telephone valide'):null,
               textInputAction: TextInputAction.next,
               keyboardType: TextInputType.number,
               style: GoogleFonts.oxygen(
@@ -235,7 +114,6 @@ class _SignInPatientState extends State<SignInPatient> {
           decoration: kBoxDecorationStyle,
           height: 60.0,
           child: TextFormField(
-            // validator: (val)=>val.length<6 ? 'Le mot de passe doit contenir au moins 6 caractères':null,
             onChanged: (val) {
               if (mounted == true) {
                 setState(() => passwordController.text = val);
@@ -276,8 +154,6 @@ class _SignInPatientState extends State<SignInPatient> {
             }
             dynamic result = await signIn(
                 int.parse(telephoneController.text), passwordController.text);
-            // dynamic result =
-            //     await _auth.signInWithTelephoneAndPassword(telephone, password);
             if (result == null) {
               if (mounted == true) {
                 setState(() {

@@ -19,159 +19,40 @@ class SignInDoctor extends StatefulWidget {
 
 class _SignInDoctorState extends State<SignInDoctor> {
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  // text field state
   bool loading = false;
-  // String email = '';
-  // String password = '';
   String error = '';
   Doctor doctor;
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
 
   signIn(String email, String password) async {
     Doctor result;
     String loginURL = 'http://192.168.1.16:4000/doctors/login';
     String getDoctorURL = 'http://192.168.1.16:4000/doctors/me';
-
     try {
-      // print(json.encode({"mail": email, "password": password}));
       var loginResponse = await http.post("$loginURL",
           body: json.encode({"mail": email, "password": password}),
           headers: {
             'Content-Type': 'application/json',
           });
-      // print(loginResponse.body.toString());
       if (loginResponse.statusCode == 200) {
         var getDoctorResponse = await http.get("$getDoctorURL", headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ${json.decode(loginResponse.body)["token"]}'
         });
         if (getDoctorResponse.statusCode == 200) {
-          // print(getDoctorResponse.body.toString());
           doctor = Doctor.fromRawJson(getDoctorResponse.body);
-          print(doctor.toJson());
-
-          // Navigator.of(context).pushNamed(HomeDoctor.routeName,
-          //     arguments: DoctorLoginArguments(
-          //         doctor: doctor,
-          //         token: json.decode(loginResponse.body)["token"]));
           Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => HomeDoctor(
                   doctor: doctor,
                   token: json.decode(loginResponse.body)["token"])));
         }
-
-        // if (mounted == true) {
-        //   setState(() {
-        //     // filteredPatients = patientList;
-        //   });
-        // }
       }
     } catch (e) {
       print(e.toString());
     }
     return result;
   }
-
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-  // @override
-  // Widget build(BuildContext context) {
-  //   return loading
-  //       ? Loading()
-  //       : Scaffold(
-  //           body: Padding(
-  //               padding: EdgeInsets.all(10),
-  //               child: ListView(
-  //                 children: <Widget>[
-  //                   Container(
-  //                       alignment: Alignment.center,
-  //                       padding: EdgeInsets.all(10),
-  //                       child: Text(
-  //                         'TutorialKart',
-  //                         style: TextStyle(
-  //                             color: Colors.blue,
-  //                             fontWeight: FontWeight.w500,
-  //                             fontSize: 30),
-  //                       )),
-  //                   Container(
-  //                       alignment: Alignment.center,
-  //                       padding: EdgeInsets.all(10),
-  //                       child: Text(
-  //                         'Sign in',
-  //                         style: TextStyle(fontSize: 20),
-  //                       )),
-  //                   Container(
-  //                     padding: EdgeInsets.all(10),
-  //                     child: TextField(
-  //                       controller: emailController,
-  //                       decoration: InputDecoration(
-  //                         border: OutlineInputBorder(),
-  //                         labelText: 'User Name',
-  //                       ),
-  //                     ),
-  //                   ),
-  //                   Container(
-  //                     padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
-  //                     child: TextField(
-  //                       obscureText: true,
-  //                       controller: passwordController,
-  //                       decoration: InputDecoration(
-  //                         border: OutlineInputBorder(),
-  //                         labelText: 'Password',
-  //                       ),
-  //                     ),
-  //                   ),
-  //                   FlatButton(
-  //                     onPressed: () {
-  //                       //forgot password screen
-  //                     },
-  //                     textColor: Colors.blue,
-  //                     child: Text('Forgot Password'),
-  //                   ),
-  //                   Container(
-  //                       height: 50,
-  //                       padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-  //                       child: RaisedButton(
-  //                         textColor: Colors.white,
-  //                         color: Colors.blue,
-  //                         child: Text('Login'),
-  //                         onPressed: () {
-  //                           // print(emailController.text);
-  //                           // print(passwordController.text);
-  //                           dynamic result = signIn(
-  //                               emailController.text, passwordController.text);
-  //                           // dynamic result =
-  //                           //     await _auth.signInWithEmailAndPassword(email, password);
-  //                           if (result == null) {
-  //                             if (mounted == true) {
-  //                               setState(() {
-  //                                 error =
-  //                                     'Could not sign in with those credentials';
-  //                                 loading = false;
-  //                               });
-  //                             }
-  //                           }
-  //                         },
-  //                       )),
-  //                   Container(
-  //                       child: Row(
-  //                     children: <Widget>[
-  //                       Text('Does not have account?'),
-  //                       FlatButton(
-  //                         textColor: Colors.blue,
-  //                         child: Text(
-  //                           'Sign in',
-  //                           style: TextStyle(fontSize: 20),
-  //                         ),
-  //                         onPressed: () {
-  //                           //signup screen
-  //                         },
-  //                       )
-  //                     ],
-  //                     mainAxisAlignment: MainAxisAlignment.center,
-  //                   ))
-  //                 ],
-  //               )));
-  // }
 
   Widget _buildEmailTF() {
     return Form(
@@ -189,7 +70,6 @@ class _SignInDoctorState extends State<SignInDoctor> {
             decoration: kBoxDecorationStyle,
             height: 60.0,
             child: TextFormField(
-              // validator: (val)=>val.isEmpty ? print('Entrez un email valide'):null,
               textInputAction: TextInputAction.next,
               keyboardType: TextInputType.emailAddress,
               style: GoogleFonts.oxygen(
@@ -231,7 +111,6 @@ class _SignInDoctorState extends State<SignInDoctor> {
           decoration: kBoxDecorationStyle,
           height: 60.0,
           child: TextFormField(
-            // validator: (val)=>val.length<6 ? 'Le mot de passe doit contenir au moins 6 caractères':null,
             onChanged: (val) {
               if (mounted == true) {
                 setState(() => passwordController.text = val);
@@ -272,8 +151,6 @@ class _SignInDoctorState extends State<SignInDoctor> {
             }
             dynamic result =
                 await signIn(emailController.text, passwordController.text);
-            // dynamic result =
-            //     await _auth.signInWithEmailAndPassword(email, password);
             if (result == null) {
               if (mounted == true) {
                 setState(() {

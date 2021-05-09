@@ -25,11 +25,11 @@ class _PatientsEnAttenteState extends State<PatientsEnAttente> {
   bool isSearching = false;
   List<Patient> filteredPatients = [];
   List<Patient> patientList = [];
-
+  bool finished = false;
+  ScrollController scrollController = ScrollController();
   @override
   void initState() {
     super.initState();
-    print("Consulataions en attente " + widget.doctor.toString());
     _getDoctorsAllPatients(widget.doctor.id);
   }
 
@@ -53,12 +53,11 @@ class _PatientsEnAttenteState extends State<PatientsEnAttente> {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ${widget.token}'
       });
-      // print(operationResponse.body);
       if (operationResponse.statusCode == 200) {
+        finished = true;
         if (json.decode(operationResponse.body)["patients"].isEmpty) {
           patientList = [];
         } else {
-          // print(json.encode(json.decode(operationResponse.body)["patients"]));
           patientList = Patient.patientsFromJson(
               json.encode(json.decode(operationResponse.body)["patients"]));
         }
@@ -67,6 +66,8 @@ class _PatientsEnAttenteState extends State<PatientsEnAttente> {
             filteredPatients = patientList;
           });
         }
+      } else {
+        finished = true;
       }
     } catch (e) {
       print(e.toString());
@@ -142,127 +143,127 @@ class _PatientsEnAttenteState extends State<PatientsEnAttente> {
               color: Colors.white,
             ),
             onPressed: () async {
-              // await _auth.signOut();
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                  '/wrapper', (Route<dynamic> route) => false);
             },
           ),
         ],
       ),
       body: Container(
         padding: EdgeInsets.all(10),
-        child:
-            // (filteredPatients.length == 0)
-            //     ? Center(
-            //         child: Text("Aucun résultat trouvé !".toUpperCase(),
-            //             style: resultNotFound))
-            //     :
-            (filteredPatients.length > 0
-                ? ListView.builder(
-                    itemCount: filteredPatients.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => EditUserPrescription(
-                                  doctor: widget.doctor,
-                                  token: widget.token,
-                                  patient: filteredPatients[index])));
-                        },
-                        child: Card(
-                          shape: RoundedRectangleBorder(
-                            side: BorderSide(color: cyan2, width: 2),
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 10, horizontal: 8),
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 8.0, top: 2, bottom: 2),
-                              child: Column(
-                                children: [
-                                  Row(
+        child: (!finished)
+            ? Center(
+                child: CircularProgressIndicator(
+                valueColor: new AlwaysStoppedAnimation<Color>(cyan2),
+              ))
+            : (filteredPatients.length > 0
+                ? Scrollbar(
+                    radius: Radius.circular(15.0),
+                    controller: scrollController,
+                    child: ListView.builder(
+                        itemCount: filteredPatients.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => EditUserPrescription(
+                                      doctor: widget.doctor,
+                                      token: widget.token,
+                                      patient: filteredPatients[index])));
+                            },
+                            child: Card(
+                              shape: RoundedRectangleBorder(
+                                side: BorderSide(color: cyan2, width: 2),
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 10, horizontal: 8),
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 8.0, top: 2, bottom: 2),
+                                  child: Column(
                                     children: [
-                                      RichText(
-                                        text: TextSpan(
-                                          children: <TextSpan>[
-                                            TextSpan(
-                                                text: filteredPatients[index]
-                                                    .prenom,
-                                                style: black18Bold),
-                                            TextSpan(
-                                                text:
-                                                    filteredPatients[index].nom,
-                                                style: black18Bold)
-                                          ],
-                                        ),
+                                      Row(
+                                        children: [
+                                          RichText(
+                                            text: TextSpan(
+                                              children: <TextSpan>[
+                                                TextSpan(
+                                                    text:
+                                                        filteredPatients[index]
+                                                            .prenom,
+                                                    style: black18Bold),
+                                                TextSpan(
+                                                    text:
+                                                        filteredPatients[index]
+                                                            .nom,
+                                                    style: black18Bold)
+                                              ],
+                                            ),
+                                          ),
+                                          Spacer(),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                right: 10),
+                                            child: Icon(
+                                              FontAwesomeIcons.edit,
+                                              size: 25.0,
+                                              color: cyan2,
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                      Spacer(),
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.only(right: 10),
-                                        child: Icon(
-                                          FontAwesomeIcons.edit,
-                                          size: 25.0,
-                                          color: cyan2,
-                                          // onPressed: (){print('test');},
-                                        ),
+                                      Row(
+                                        children: [
+                                          RichText(
+                                            text: TextSpan(
+                                              text: "N° dossier :  ",
+                                              style: cyan16Bold,
+                                              children: <TextSpan>[
+                                                TextSpan(
+                                                    // text: "aa",
+                                                    text:
+                                                        filteredPatients[index]
+                                                                .numDossier
+                                                                .toString() ??
+                                                            'null',
+                                                    style: black16Normal),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Row(
+                                        children: [
+                                          RichText(
+                                            text: TextSpan(
+                                              text: "Diagnostic :  ",
+                                              style: cyan16Bold,
+                                              children: <TextSpan>[
+                                                TextSpan(
+                                                    // text: "aa"
+                                                    text:
+                                                        filteredPatients[index]
+                                                                .diagnostic ??
+                                                            'null',
+                                                    style: black16Normal),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ],
                                   ),
-                                  Row(
-                                    children: [
-                                      RichText(
-                                        text: TextSpan(
-                                          text: "N° dossier :  ",
-                                          style: cyan16Bold,
-                                          children: <TextSpan>[
-                                            TextSpan(
-                                                // text: "aa",
-                                                text: filteredPatients[index]
-                                                        .numDossier
-                                                        .toString() ??
-                                                    'null',
-                                                style: black16Normal),
-                                            // TextSpan(
-                                            //     text: ' vous a préscrit ces médicaments : '),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  Row(
-                                    children: [
-                                      RichText(
-                                        text: TextSpan(
-                                          text: "Diagnostic :  ",
-                                          style: cyan16Bold,
-                                          children: <TextSpan>[
-                                            TextSpan(
-                                                // text: "aa"
-                                                text: filteredPatients[index]
-                                                        .diagnostic ??
-                                                    'null',
-                                                style: black16Normal),
-                                            // TextSpan(
-                                            //     text: ' vous a préscrit ces médicaments : '),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
+                                ),
                               ),
                             ),
-                          ),
-                        ),
-                      );
-                    })
+                          );
+                        }),
+                  )
                 : Center(
-                    child: CircularProgressIndicator(
-                      valueColor: new AlwaysStoppedAnimation<Color>(cyan2),
-                    ),
-                    // child: Text("Aucun résultat trouvé !".toUpperCase(),
-                    //     style: resultNotFound),
+                    child: Text("Aucun résultat trouvé !".toUpperCase(),
+                        style: resultNotFound),
                   )),
       ),
     );

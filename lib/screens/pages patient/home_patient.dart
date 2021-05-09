@@ -7,9 +7,8 @@ import 'package:rhumatologie/screens/pages%20patient/user_drugs.dart';
 import 'package:rhumatologie/screens/scores_pages/choose_score.dart';
 import 'package:rhumatologie/shared/constants.dart';
 
-// Diagnostic PAGE
+// ignore: must_be_immutable
 class HomePatient extends StatefulWidget {
-  static const routeName = '/home_patient';
   Patient patient;
   String token;
   HomePatient({Key key, this.patient, this.token}) : super(key: key);
