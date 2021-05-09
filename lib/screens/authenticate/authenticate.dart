@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-// import 'package:rhumatologie/screens/authenticate/register.dart';
-// import 'package:rhumatologie/screens/authenticate/sign_in.dart';
 import 'package:rhumatologie/screens/authenticate/sign_in_doctor.dart';
 import 'package:rhumatologie/screens/authenticate/sign_in_patient.dart';
 

@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:rhumatologie/screens/scores_pages/score%20de%20jamar/page_5_jamar.dart';
 import 'package:rhumatologie/shared/constants.dart';
 import 'package:rhumatologie/shared/utils.dart';
 
 class Page4Jamar extends StatefulWidget {
-  static const routeName = '/jamar_4';
-
   @override
   _Page4JamarState createState() => _Page4JamarState();
 }
@@ -83,17 +80,8 @@ class _Page4JamarState extends State<Page4Jamar> {
   double nbrOfItems = 0;
   List<int> allQuestionsAutresActivites = [];
   void calculEtEnvoiSomme() {
-    var contenuControllerMedicament = controllerMedicament.text;
-    var contenuControllerEffetIndesirable = controllerEffetIndesirable.text;
-
-    // allQuestionsAutresActivites
-    //     .addAll([index_9, index_10, index_11, index_12, index_13, index_14]);
-    // allQuestionsAutresActivites.removeWhere((item) => item == 4);
-    // nbrOfItems += allQuestionsAutresActivites.length;
-
-    // sommeScore += allQuestionsAutresActivites.reduce(max);
-    // print("nbrOfItems " + nbrOfItems.toString());
-    // print("sommeScore " + sommeScore.toString());
+    // var contenuControllerMedicament = controllerMedicament.text;
+    // var contenuControllerEffetIndesirable = controllerEffetIndesirable.text;
   }
 
   @override
@@ -791,12 +779,12 @@ class _Page4JamarState extends State<Page4Jamar> {
                                             minWidth: 60.0,
                                             onPressed: () {
                                               calculEtEnvoiSomme();
-                                              Navigator.of(context).pushNamed(
-                                                Page5Jamar.routeName,
-                                                // arguments: Chaq3Arguments(
-                                                //     nbrOfItems: nbrOfItems,
-                                                //     sommeScore: sommeScore)
-                                              );
+                                              // Navigator.of(context).pushNamed(
+                                              //   Page5Jamar.routeName,
+                                              //   // arguments: Chaq3Arguments(
+                                              //   //     nbrOfItems: nbrOfItems,
+                                              //   //     sommeScore: sommeScore)
+                                              // );
                                             },
                                             focusColor: cyan2,
                                             hoverColor: cyan2,

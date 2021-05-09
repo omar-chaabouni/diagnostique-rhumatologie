@@ -5,6 +5,7 @@ import 'package:rhumatologie/shared/constants.dart';
 import 'package:rhumatologie/shared/utils.dart';
 
 // ignore: camel_case_types
+// ignore: must_be_immutable
 class ChooseScore extends StatefulWidget {
   Patient patient;
   String token;
@@ -17,7 +18,7 @@ class ChooseScore extends StatefulWidget {
 class _ChooseScoreState extends State<ChooseScore> {
   bool scores = false;
   var scoresCards = <Card>[];
-
+  ScrollController scrollController = ScrollController();
   List<String> listOfTiltlesOfScores = [
     "Test de score JADAS",
     "Test de score JSPADA",
@@ -89,149 +90,157 @@ class _ChooseScoreState extends State<ChooseScore> {
           ),
         ),
       ),
-      body: new SingleChildScrollView(
-        child: Container(
-          color: gris1,
-          child: scores
-              ? Builder(
-                  builder: (BuildContext context) {
-                    return Container(
-                      child: Container(
-                        margin: const EdgeInsets.only(
-                            left: 15.0, right: 15.0, top: 15.0, bottom: 15.0),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.all(Radius.circular(20)),
-                        ),
+      body: Scrollbar(
+        radius: Radius.circular(15.0),
+        isAlwaysShown: true,
+        controller: scrollController,
+        child: new SingleChildScrollView(
+          controller: scrollController,
+          child: Container(
+            color: gris1,
+            child: scores
+                ? Builder(
+                    builder: (BuildContext context) {
+                      return Container(
                         child: Container(
+                          margin: const EdgeInsets.only(
+                              left: 15.0, right: 15.0, top: 15.0, bottom: 15.0),
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.all(Radius.circular(20)),
                           ),
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                                left: 15.0,
-                                right: 15.0,
-                                top: 10.0,
-                                bottom: 10.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Padding(
-                                  padding: const EdgeInsets.only(bottom: 8.0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      scores
-                                          ? RichText(
-                                              text: TextSpan(
-                                                text: 'Votre docteur ',
-                                                style: black18Normal,
-                                                children: <TextSpan>[
-                                                  TextSpan(
-                                                      text: "Dr. ",
-                                                      style: cyan18Bold1_6),
-                                                  TextSpan(
-                                                      text:
-                                                          "${widget.patient.docteur.prenom} ${widget.patient.docteur.nom} ",
-                                                      style: cyan18Bold1_6),
-                                                  TextSpan(
-                                                      text:
-                                                          ' vous demande de faire ces tests de score :'),
-                                                ],
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20)),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 15.0,
+                                  right: 15.0,
+                                  top: 10.0,
+                                  bottom: 10.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Padding(
+                                    padding: const EdgeInsets.only(bottom: 8.0),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        scores
+                                            ? RichText(
+                                                text: TextSpan(
+                                                  text: 'Votre docteur ',
+                                                  style: black18Normal,
+                                                  children: <TextSpan>[
+                                                    TextSpan(
+                                                        text: "Dr. ",
+                                                        style: cyan18Bold1_6),
+                                                    TextSpan(
+                                                        text:
+                                                            "${widget.patient.docteur.prenom} ${widget.patient.docteur.nom} ",
+                                                        style: cyan18Bold1_6),
+                                                    TextSpan(
+                                                        text:
+                                                            ' vous demande de faire ces tests de score :'),
+                                                  ],
+                                                ),
+                                              )
+                                            : RichText(
+                                                text: TextSpan(
+                                                  text: 'Votre docteur ',
+                                                  style: black18Normal,
+                                                  children: <TextSpan>[
+                                                    TextSpan(
+                                                        text: "Dr. ",
+                                                        style: cyan18Bold1_6),
+                                                    TextSpan(
+                                                        text:
+                                                            "${widget.patient.docteur.prenom} ${widget.patient.docteur.nom} ",
+                                                        style: cyan18Bold1_6),
+                                                    TextSpan(
+                                                        text:
+                                                            ' n\' a rien demandé.'),
+                                                  ],
+                                                ),
                                               ),
-                                            )
-                                          : RichText(
-                                              text: TextSpan(
-                                                text: 'Votre docteur ',
-                                                style: black18Normal,
-                                                children: <TextSpan>[
-                                                  TextSpan(
-                                                      text: "Dr. ",
-                                                      style: cyan18Bold1_6),
-                                                  TextSpan(
-                                                      text:
-                                                          "${widget.patient.docteur.prenom} ${widget.patient.docteur.nom} ",
-                                                      style: cyan18Bold1_6),
-                                                  TextSpan(
-                                                      text:
-                                                          ' n\' a rien demandé.'),
-                                                ],
-                                              ),
-                                            ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
-                                ),
-                                scores
-                                    ? Column(
-                                        children: scoresCards,
-                                      )
-                                    : SizedBox(height: 0),
-                                SizedBox(height: 15.0),
-                              ],
+                                  scores
+                                      ? Column(
+                                          children: scoresCards,
+                                        )
+                                      : SizedBox(height: 0),
+                                  SizedBox(height: 15.0),
+                                ],
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    );
-                  },
-                )
-              : Container(
-                  child: Container(
-                    margin: const EdgeInsets.only(
-                        left: 15.0, right: 15.0, top: 15.0, bottom: 15.0),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                    ),
+                      );
+                    },
+                  )
+                : Container(
                     child: Container(
+                      margin: const EdgeInsets.only(
+                          left: 15.0, right: 15.0, top: 15.0, bottom: 15.0),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.all(Radius.circular(20)),
                       ),
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                            left: 15.0, right: 15.0, top: 10.0, bottom: 10.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Padding(
-                              padding: const EdgeInsets.only(bottom: 8.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  RichText(
-                                    text: TextSpan(
-                                      text: 'Votre docteur ',
-                                      style: black18Normal,
-                                      children: <TextSpan>[
-                                        TextSpan(
-                                            text: "Dr. ", style: cyan18Bold1_6),
-                                        TextSpan(
-                                            text: "Hanene Lassoued Ferjani ",
-                                            style: cyan18Bold1_6),
-                                        TextSpan(
-                                            text:
-                                                ' n\'a rien demandé pour le moment.')
-                                      ],
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              left: 15.0, right: 15.0, top: 10.0, bottom: 10.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 8.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    RichText(
+                                      text: TextSpan(
+                                        text: 'Votre docteur ',
+                                        style: black18Normal,
+                                        children: <TextSpan>[
+                                          TextSpan(
+                                              text: "Dr. ",
+                                              style: cyan18Bold1_6),
+                                          TextSpan(
+                                              text: "Hanene Lassoued Ferjani ",
+                                              style: cyan18Bold1_6),
+                                          TextSpan(
+                                              text:
+                                                  ' n\'a rien demandé pour le moment.')
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
-                            ),
-                            scores
-                                ? Column(
-                                    children: scoresCards,
-                                  )
-                                : SizedBox(height: 0),
-                            SizedBox(height: 15.0),
-                          ],
+                              scores
+                                  ? Column(
+                                      children: scoresCards,
+                                    )
+                                  : SizedBox(height: 0),
+                              SizedBox(height: 15.0),
+                            ],
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
+          ),
         ),
       ),
     );

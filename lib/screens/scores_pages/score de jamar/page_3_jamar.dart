@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:grouped_buttons/grouped_buttons.dart';
-import 'package:rhumatologie/screens/scores_pages/score%20de%20jamar/page_4_jamar.dart';
 import 'package:rhumatologie/shared/constants.dart';
 import 'package:rhumatologie/shared/utils.dart';
 
 class Page3Jamar extends StatefulWidget {
-  static const routeName = '/jamar_3';
-
   @override
   _Page3JamarState createState() => _Page3JamarState();
 }
@@ -67,16 +64,7 @@ class _Page3JamarState extends State<Page3Jamar> {
   double sommeScore = 0;
   double nbrOfItems = 0;
   List<int> allQuestionsAutresActivites = [];
-  void calculEtEnvoiSomme() {
-    // allQuestionsAutresActivites
-    //     .addAll([index_9, index_10, index_11, index_12, index_13, index_14]);
-    // allQuestionsAutresActivites.removeWhere((item) => item == 4);
-    // nbrOfItems += allQuestionsAutresActivites.length;
-
-    // sommeScore += allQuestionsAutresActivites.reduce(max);
-    // print("nbrOfItems " + nbrOfItems.toString());
-    // print("sommeScore " + sommeScore.toString());
-  }
+  void calculEtEnvoiSomme() {}
 
   @override
   Widget build(BuildContext context) {
@@ -300,7 +288,6 @@ class _Page3JamarState extends State<Page3Jamar> {
                                               });
                                             }
                                           }),
-
                                       flatButtonMultipleChoice(
                                         title:
                                             'mon enfant n\'a pas d\' articulation douleureuse ni gonflée',
@@ -400,7 +387,6 @@ class _Page3JamarState extends State<Page3Jamar> {
                                               ],
                                             )
                                           : SizedBox(height: 0),
-
                                       questionChaq(
                                           "20. Fièvre plus haute que 38° C (si l\'arthrite en cause)"),
                                       flatButtonMultipleChoice(
@@ -517,13 +503,13 @@ class _Page3JamarState extends State<Page3Jamar> {
                                             minWidth: 60.0,
                                             onPressed: () {
                                               calculEtEnvoiSomme();
-                                              Navigator.of(context).pushNamed(
-                                                Page4Jamar.routeName,
-                                                // arguments:
-                                                // Chaq3Arguments(
-                                                //     nbrOfItems: nbrOfItems,
-                                                //     sommeScore: sommeScore)
-                                              );
+                                              // Navigator.of(context).pushNamed(
+                                              //   Page4Jamar.routeName,
+                                              //   // arguments:
+                                              //   // Chaq3Arguments(
+                                              //   //     nbrOfItems: nbrOfItems,
+                                              //   //     sommeScore: sommeScore)
+                                              // );
                                             },
                                             focusColor: cyan2,
                                             hoverColor: cyan2,
@@ -553,62 +539,6 @@ class _Page3JamarState extends State<Page3Jamar> {
                                           ),
                                         ),
                                       ),
-                                      // Padding(
-                                      //   padding: const EdgeInsets.only(
-                                      //       bottom: 10.0, top: 10.0),
-                                      //   child: Text(
-                                      //     "Combien de fois text test test?",
-                                      //     style: cyan20Bold,
-                                      //   ),
-                                      // ),
-                                      // flatButtonMultipleChoice(
-                                      //     title: 'test',
-                                      //     initValue: isChecked1,
-                                      //     onChanged: (newValue) {
-                                      //       if (this.mounted) {
-                                      //         setState(() {
-                                      //           isChecked1 = newValue;
-                                      //         });
-                                      //       }
-                                      //     }),
-                                      // flatButtonMultipleChoice(
-                                      //     title: 'test',
-                                      //     initValue: isChecked2,
-                                      //     onChanged: (newValue) {
-                                      //       if (this.mounted) {
-                                      //         setState(() {
-                                      //           isChecked2 = newValue;
-                                      //         });
-                                      //       }
-                                      //     }),
-                                      // Padding(
-                                      //   padding: const EdgeInsets.only(
-                                      //       bottom: 10.0, top: 10.0),
-                                      //   child: Text(
-                                      //     "Combien de fois text test test?",
-                                      //     style: cyan20Bold,
-                                      //   ),
-                                      // ),
-                                      // Container(
-                                      //   margin: EdgeInsets.only(
-                                      //       bottom: 10.0,
-                                      //       top: 15.0,
-                                      //       right: 20.0,
-                                      //       left: 20.0),
-                                      //   padding: EdgeInsets.only(
-                                      //       right: 10.0, left: 10.0),
-                                      //   decoration: BoxDecoration(
-                                      //     border: Border.all(
-                                      //         color: cyan2, width: 2.0),
-                                      //     borderRadius: BorderRadius.all(
-                                      //         Radius.circular(8)),
-                                      //   ),
-                                      //   child: TextFormField(
-                                      //       cursorColor: cyan2,
-                                      //       decoration: InputDecoration(
-                                      //           border: InputBorder.none),
-                                      //       style: black18Normal),
-                                      // ),
                                     ],
                                   )
                                 : RichText(

@@ -8,8 +8,8 @@ import 'package:rhumatologie/screens/scores_pages/score%20de%20jamar/page_2_jama
 import 'package:rhumatologie/shared/constants.dart';
 import 'package:rhumatologie/shared/utils.dart';
 
+// ignore: must_be_immutable
 class Page1Jamar extends StatefulWidget {
-  static const routeName = '/jamar_1';
   Patient patient;
   String token;
   Page1Jamar({this.patient, this.token});
@@ -52,8 +52,6 @@ class _Page1JamarState extends State<Page1Jamar> {
     nbrOfItems += allQuestionsAutresActivites.length;
 
     sommeScore += allQuestionsAutresActivites.reduce(max);
-    print("nbrOfItems " + nbrOfItems.toString());
-    print("sommeScore " + sommeScore.toString());
   }
 
   @override
@@ -167,7 +165,6 @@ class _Page1JamarState extends State<Page1Jamar> {
                                           question_1 = selected;
                                         }),
                                       ),
-
                                       questionChaq("2. Monter 5 marches "),
                                       CheckboxGroup(
                                         orientation: GroupedButtonsOrientation
@@ -579,62 +576,6 @@ class _Page1JamarState extends State<Page1Jamar> {
                                           ),
                                         ),
                                       ),
-                                      // Padding(
-                                      //   padding: const EdgeInsets.only(
-                                      //       bottom: 10.0, top: 10.0),
-                                      //   child: Text(
-                                      //     "Combien de fois text test test?",
-                                      //     style: cyan20Bold,
-                                      //   ),
-                                      // ),
-                                      // flatButtonMultipleChoice(
-                                      //     title: 'test',
-                                      //     initValue: isChecked1,
-                                      //     onChanged: (newValue) {
-                                      //       if (this.mounted) {
-                                      //         setState(() {
-                                      //           isChecked1 = newValue;
-                                      //         });
-                                      //       }
-                                      //     }),
-                                      // flatButtonMultipleChoice(
-                                      //     title: 'test',
-                                      //     initValue: isChecked2,
-                                      //     onChanged: (newValue) {
-                                      //       if (this.mounted) {
-                                      //         setState(() {
-                                      //           isChecked2 = newValue;
-                                      //         });
-                                      //       }
-                                      //     }),
-                                      // Padding(
-                                      //   padding: const EdgeInsets.only(
-                                      //       bottom: 10.0, top: 10.0),
-                                      //   child: Text(
-                                      //     "Combien de fois text test test?",
-                                      //     style: cyan20Bold,
-                                      //   ),
-                                      // ),
-                                      // Container(
-                                      //   margin: EdgeInsets.only(
-                                      //       bottom: 10.0,
-                                      //       top: 15.0,
-                                      //       right: 20.0,
-                                      //       left: 20.0),
-                                      //   padding: EdgeInsets.only(
-                                      //       right: 10.0, left: 10.0),
-                                      //   decoration: BoxDecoration(
-                                      //     border: Border.all(
-                                      //         color: cyan2, width: 2.0),
-                                      //     borderRadius: BorderRadius.all(
-                                      //         Radius.circular(8)),
-                                      //   ),
-                                      //   child: TextFormField(
-                                      //       cursorColor: cyan2,
-                                      //       decoration: InputDecoration(
-                                      //           border: InputBorder.none),
-                                      //       style: black18Normal),
-                                      // ),
                                     ],
                                   )
                                 : RichText(

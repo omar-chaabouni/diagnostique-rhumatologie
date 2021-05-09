@@ -24,16 +24,15 @@ class AddPatient extends StatefulWidget {
 class _AddPatientState extends State<AddPatient> {
   var controllerNom = TextEditingController();
   var controllerPrenom = TextEditingController();
-  // var controllerCIN = TextEditingController();
   var controllerTelephone = TextEditingController();
   var controllerNumeroDossier = TextEditingController();
-  // var controllerAge = TextEditingController();
   var controllerDiagnostic = TextEditingController();
   var controllerOrdonnance1 = TextEditingController();
   var controllerOrdonnance2 = TextEditingController();
   var controllerOrdonnance3 = TextEditingController();
   var controllerOrdonnance4 = TextEditingController();
   var controllerOrdonnance5 = TextEditingController();
+  ScrollController scrollController = ScrollController();
   final _formKey = GlobalKey<FormState>();
   String birthday = '';
   DateTime dateDeNaissance;
@@ -51,8 +50,6 @@ class _AddPatientState extends State<AddPatient> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-
-    print("AddPatient " + widget.doctor.toString());
   }
 
   void _onDone() async {
@@ -91,7 +88,6 @@ class _AddPatientState extends State<AddPatient> {
       listOrdonnance.add(contenucontrollerOrdonnance5);
     }
     patient.ordonnance = listOrdonnance;
-    print(json.encode(patient.toJson()));
     String addPatientURL =
         'http://192.168.1.16:4000/doctors/${widget.doctor.id}/patients/add';
     try {
@@ -101,7 +97,6 @@ class _AddPatientState extends State<AddPatient> {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ${widget.token}',
           });
-      print("status code : " + addPatientResponse.statusCode.toString());
 
       Future.delayed(Duration(milliseconds: 1000), () {
         if (addPatientResponse.statusCode == 200 ||
@@ -131,7 +126,6 @@ class _AddPatientState extends State<AddPatient> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // resizeToAvoidBottomInset: false,
       backgroundColor: gris1,
       resizeToAvoidBottomPadding: false,
       appBar: AppBar(
@@ -161,321 +155,323 @@ class _AddPatientState extends State<AddPatient> {
               color: Colors.white,
             ),
             onPressed: () async {
-              // await _auth.signOut();
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                  '/wrapper', (Route<dynamic> route) => false);
             },
           ),
         ],
       ),
-      body: new SingleChildScrollView(
-        child: Container(
-          color: gris1,
-          padding: EdgeInsets.all(10),
-          width: MediaQuery.of(context).size.width,
+      body: Scrollbar(
+        radius: Radius.circular(15.0),
+        isAlwaysShown: true,
+        controller: scrollController,
+        child: new SingleChildScrollView(
+          controller: scrollController,
           child: Container(
-            margin: const EdgeInsets.only(
-                left: 5.0, right: 5.0, top: 5.0, bottom: 5.0),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.all(Radius.circular(15)),
-            ),
+            color: gris1,
+            padding: EdgeInsets.all(10),
+            width: MediaQuery.of(context).size.width,
             child: Container(
+              margin: const EdgeInsets.only(
+                  left: 5.0, right: 5.0, top: 5.0, bottom: 5.0),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.all(Radius.circular(15)),
               ),
-              child: Padding(
-                padding: const EdgeInsets.only(
-                    left: 15.0, right: 15.0, top: 10.0, bottom: 10.0),
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      addPatientTitle("Nom : "),
-                      textFormFieldText(
-                        controllerNom,
-                        'Nom  du patient ',
-                        Icon(Icons.account_circle_rounded,
-                            color: gris2, size: 20),
-                      ),
-                      addPatientTitle("Prénom : "),
-                      textFormFieldText(
-                        controllerPrenom,
-                        'Prénom  du patient ',
-                        Icon(Icons.account_circle_rounded,
-                            color: gris2, size: 20),
-                      ),
-                      addPatientTitle("N° Dossier : "),
-                      textFormFieldText(
-                        controllerNumeroDossier,
-                        'Entrez son n° de dossier ',
-                        Icon(Icons.folder_shared_rounded,
-                            color: gris2, size: 20),
-                      ),
-                      addPatientTitle("Numéro de téléphone : "),
-                      textFormFieldText(
-                        controllerTelephone,
-                        'Entrez son n° de téléphone ',
-                        Icon(FontAwesome.phone_square, color: gris2, size: 18),
-                      ),
-                      addPatientTitle("Date de naissance : "),
-                      Container(
-                        margin: EdgeInsets.only(
-                            bottom: 8.0, top: 8.0, right: 10.0, left: 10.0),
-                        padding: EdgeInsets.only(
-                            right: 10.0, left: 10.0, bottom: 2.0),
-                        decoration: BoxDecoration(
-                          border: Border.all(color: cyan2, width: 2.0),
-                          borderRadius: BorderRadius.all(Radius.circular(8)),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(Radius.circular(15)),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                      left: 15.0, right: 15.0, top: 10.0, bottom: 10.0),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        addPatientTitle("Nom : "),
+                        textFormFieldText(
+                          controllerNom,
+                          'Nom  du patient ',
+                          Icon(Icons.account_circle_rounded,
+                              color: gris2, size: 20),
                         ),
-                        child: FlatButton(
-                          onPressed: () {
-                            DatePicker.showDatePicker(context,
-                                theme: DatePickerTheme(
-                                  containerHeight: 210.0,
-                                ),
-                                showTitleActions: true,
-                                minTime: DateTime(1925, 1, 1),
-                                maxTime: DateTime.now(), onConfirm: (date) {
-                              print('confirm $date');
-                              dateDeNaissance = date;
-                              // birthday =
-                              //     '${date.month}/${date.day}/${date.year}';
-                              // print('confirm $birthday');
-                              birthday =
-                                  '${date.year} - ${date.month} - ${date.day}';
-                              setState(() {});
-                            },
-                                currentTime: DateTime.now(),
-                                locale: LocaleType.fr);
-                          },
-                          child: Container(
-                            alignment: Alignment.center,
-                            // height: 50.0,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Row(
-                                  children: <Widget>[
-                                    Container(
-                                      child: Row(
-                                        children: <Widget>[
-                                          Text(
-                                            " $birthday",
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 16.0),
-                                          ),
-                                        ],
-                                      ),
-                                    )
-                                  ],
-                                ),
-                                Text(
-                                  "  Changer",
-                                  style:
-                                      TextStyle(color: cyan2, fontSize: 16.0),
-                                ),
-                              ],
-                            ),
+                        addPatientTitle("Prénom : "),
+                        textFormFieldText(
+                          controllerPrenom,
+                          'Prénom  du patient ',
+                          Icon(Icons.account_circle_rounded,
+                              color: gris2, size: 20),
+                        ),
+                        addPatientTitle("N° Dossier : "),
+                        textFormFieldText(
+                          controllerNumeroDossier,
+                          'Entrez son n° de dossier ',
+                          Icon(Icons.folder_shared_rounded,
+                              color: gris2, size: 20),
+                        ),
+                        addPatientTitle("Numéro de téléphone : "),
+                        textFormFieldText(
+                          controllerTelephone,
+                          'Entrez son n° de téléphone ',
+                          Icon(FontAwesome.phone_square,
+                              color: gris2, size: 18),
+                        ),
+                        addPatientTitle("Date de naissance : "),
+                        Container(
+                          margin: EdgeInsets.only(
+                              bottom: 8.0, top: 8.0, right: 10.0, left: 10.0),
+                          padding: EdgeInsets.only(
+                              right: 10.0, left: 10.0, bottom: 2.0),
+                          decoration: BoxDecoration(
+                            border: Border.all(color: cyan2, width: 2.0),
+                            borderRadius: BorderRadius.all(Radius.circular(8)),
                           ),
-                          color: Colors.white,
-                        ),
-                      ),
-                      addPatientTitle("Diagnostic : "),
-                      textFormFieldText(
-                        controllerDiagnostic,
-                        'Entrez son diagnostic ',
-                        Icon(FontAwesomeIcons.stethoscope,
-                            color: gris2, size: 16),
-                      ),
-                      Container(
-                        margin: const EdgeInsets.only(top: 5.0),
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 10, bottom: 8.0),
-                          child: Column(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(bottom: 16.0),
-                                child: Text(
-                                  "Evaluation globale faite par le médecin?",
-                                  style: cyan18Bold,
-                                ),
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                // crossAxisAlignment: CrossAxisAlignment.center,
+                          child: FlatButton(
+                            onPressed: () {
+                              DatePicker.showDatePicker(context,
+                                  theme: DatePickerTheme(
+                                    containerHeight: 210.0,
+                                  ),
+                                  showTitleActions: true,
+                                  minTime: DateTime(1925, 1, 1),
+                                  maxTime: DateTime.now(), onConfirm: (date) {
+                                dateDeNaissance = date;
+                                // birthday =
+                                //     '${date.month}/${date.day}/${date.year}';
+                                // print('confirm $birthday');
+                                birthday =
+                                    '${date.year} - ${date.month} - ${date.day}';
+                                setState(() {});
+                              },
+                                  currentTime: DateTime.now(),
+                                  locale: LocaleType.fr);
+                            },
+                            child: Container(
+                              alignment: Alignment.center,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
-                                  Flexible(child: sliderLimit(0.0), flex: 1),
-                                  Flexible(
-                                    flex: 6,
-                                    child: Container(
-                                      // width: 250,
-                                      child: Padding(
-                                        padding:
-                                            const EdgeInsets.only(bottom: 5.0),
-                                        child: SliderTheme(
-                                          data:
-                                              SliderTheme.of(context).copyWith(
-                                            activeTrackColor: cyan3,
-                                            inactiveTrackColor: cyan2,
-                                            showValueIndicator:
-                                                ShowValueIndicator.always,
-                                            thumbColor: Colors.blueAccent,
-                                            overlayColor:
-                                                Colors.purple.withAlpha(32),
-                                            overlayShape:
-                                                RoundSliderOverlayShape(
-                                                    overlayRadius: 16.0),
-                                            activeTickMarkColor: cyan2,
-                                            inactiveTickMarkColor: cyan2,
-                                            valueIndicatorShape:
-                                                PaddleSliderValueIndicatorShape(),
-                                            valueIndicatorColor:
-                                                Colors.blueAccent,
-                                            valueIndicatorTextStyle:
-                                                white16Bold,
-                                          ),
-                                          child: Slider(
-                                            value:
-                                                evaluationGlobaleFaiteParMedecin,
-                                            min: 0.0,
-                                            max: 10.0,
-                                            divisions: 10,
-                                            label:
-                                                '$evaluationGlobaleFaiteParMedecin',
-                                            onChanged: (value) {
-                                              if (mounted == true) {
-                                                setState(
-                                                  () {
-                                                    evaluationGlobaleFaiteParMedecin =
-                                                        value;
-                                                  },
-                                                );
-                                              }
-                                            },
+                                  Row(
+                                    children: <Widget>[
+                                      Container(
+                                        child: Row(
+                                          children: <Widget>[
+                                            Text(
+                                              " $birthday",
+                                              style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 16.0),
+                                            ),
+                                          ],
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                  Text(
+                                    "  Changer",
+                                    style:
+                                        TextStyle(color: cyan2, fontSize: 16.0),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            color: Colors.white,
+                          ),
+                        ),
+                        addPatientTitle("Diagnostic : "),
+                        textFormFieldText(
+                          controllerDiagnostic,
+                          'Entrez son diagnostic ',
+                          Icon(FontAwesomeIcons.stethoscope,
+                              color: gris2, size: 16),
+                        ),
+                        Container(
+                          margin: const EdgeInsets.only(top: 5.0),
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.only(left: 10, bottom: 8.0),
+                            child: Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(bottom: 16.0),
+                                  child: Text(
+                                    "Evaluation globale faite par le médecin?",
+                                    style: cyan18Bold,
+                                  ),
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    Flexible(child: sliderLimit(0.0), flex: 1),
+                                    Flexible(
+                                      flex: 6,
+                                      child: Container(
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(
+                                              bottom: 5.0),
+                                          child: SliderTheme(
+                                            data: SliderTheme.of(context)
+                                                .copyWith(
+                                              activeTrackColor: cyan3,
+                                              inactiveTrackColor: cyan2,
+                                              showValueIndicator:
+                                                  ShowValueIndicator.always,
+                                              thumbColor: Colors.blueAccent,
+                                              overlayColor:
+                                                  Colors.purple.withAlpha(32),
+                                              overlayShape:
+                                                  RoundSliderOverlayShape(
+                                                      overlayRadius: 16.0),
+                                              activeTickMarkColor: cyan2,
+                                              inactiveTickMarkColor: cyan2,
+                                              valueIndicatorShape:
+                                                  PaddleSliderValueIndicatorShape(),
+                                              valueIndicatorColor:
+                                                  Colors.blueAccent,
+                                              valueIndicatorTextStyle:
+                                                  white16Bold,
+                                            ),
+                                            child: Slider(
+                                              value:
+                                                  evaluationGlobaleFaiteParMedecin,
+                                              min: 0.0,
+                                              max: 10.0,
+                                              divisions: 10,
+                                              label:
+                                                  '$evaluationGlobaleFaiteParMedecin',
+                                              onChanged: (value) {
+                                                if (mounted == true) {
+                                                  setState(
+                                                    () {
+                                                      evaluationGlobaleFaiteParMedecin =
+                                                          value;
+                                                    },
+                                                  );
+                                                }
+                                              },
+                                            ),
                                           ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                  Flexible(
-                                    child: sliderLimit(10.0),
-                                    flex: 1,
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      addPatientTitle("Ordonnance : "),
-                      textFormFieldTextWithoutValidator(
-                        controllerOrdonnance1,
-                        'Entrez un médicament',
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 8.0),
-                          child: Icon(
-                            FontAwesomeIcons.pills,
-                            color: gris2,
-                            size: 18,
-                          ),
-                        ),
-                      ),
-                      textFormFieldTextWithoutValidator(
-                        controllerOrdonnance2,
-                        'Entrez un médicament',
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 8.0),
-                          child: Icon(
-                            FontAwesomeIcons.pills,
-                            color: gris2,
-                            size: 18,
-                          ),
-                        ),
-                      ),
-                      textFormFieldTextWithoutValidator(
-                        controllerOrdonnance3,
-                        'Entrez un médicament',
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 8.0),
-                          child: Icon(
-                            FontAwesomeIcons.pills,
-                            color: gris2,
-                            size: 18,
-                          ),
-                        ),
-                      ),
-                      textFormFieldTextWithoutValidator(
-                        controllerOrdonnance4,
-                        'Entrez un médicament',
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 8.0),
-                          child: Icon(
-                            FontAwesomeIcons.pills,
-                            color: gris2,
-                            size: 18,
-                          ),
-                        ),
-                      ),
-                      textFormFieldTextWithoutValidator(
-                        controllerOrdonnance5,
-                        'Entrez un médicament',
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 8.0),
-                          child: Icon(
-                            FontAwesomeIcons.pills,
-                            color: gris2,
-                            size: 18,
-                          ),
-                        ),
-                      ),
-                      Align(
-                        alignment: Alignment.bottomRight,
-                        child: Padding(
-                          padding: const EdgeInsets.only(bottom: 8.0),
-                          child: new FlatButton(
-                            minWidth: 60.0,
-                            onPressed: () {
-                              if (_formKey.currentState.validate()) {
-                                _onDone();
-
-                                // Future.delayed(Duration(seconds: 2), () {
-                                //   Navigator.pushNamedAndRemoveUntil(context,
-                                //       HomeDoctor.routeName, (_) => false);
-                                // });
-                              }
-                            },
-                            focusColor: cyan2,
-                            hoverColor: cyan2,
-                            splashColor: cyan2,
-                            color: cyan2,
-                            child: Container(
-                              width: 120,
-                              child: Row(
-                                children: <Widget>[
-                                  Text(
-                                    'Enregistrer',
-                                    style: GoogleFonts.oxygen(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white,
-                                      fontSize: 16,
+                                    Flexible(
+                                      child: sliderLimit(10.0),
+                                      flex: 1,
                                     ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 12.0),
-                                    child: Icon(
-                                      Icons.save,
-                                      color: Colors.white,
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        addPatientTitle("Ordonnance : "),
+                        textFormFieldTextWithoutValidator(
+                          controllerOrdonnance1,
+                          'Entrez un médicament',
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 8.0),
+                            child: Icon(
+                              FontAwesomeIcons.pills,
+                              color: gris2,
+                              size: 18,
+                            ),
+                          ),
+                        ),
+                        textFormFieldTextWithoutValidator(
+                          controllerOrdonnance2,
+                          'Entrez un médicament',
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 8.0),
+                            child: Icon(
+                              FontAwesomeIcons.pills,
+                              color: gris2,
+                              size: 18,
+                            ),
+                          ),
+                        ),
+                        textFormFieldTextWithoutValidator(
+                          controllerOrdonnance3,
+                          'Entrez un médicament',
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 8.0),
+                            child: Icon(
+                              FontAwesomeIcons.pills,
+                              color: gris2,
+                              size: 18,
+                            ),
+                          ),
+                        ),
+                        textFormFieldTextWithoutValidator(
+                          controllerOrdonnance4,
+                          'Entrez un médicament',
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 8.0),
+                            child: Icon(
+                              FontAwesomeIcons.pills,
+                              color: gris2,
+                              size: 18,
+                            ),
+                          ),
+                        ),
+                        textFormFieldTextWithoutValidator(
+                          controllerOrdonnance5,
+                          'Entrez un médicament',
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 8.0),
+                            child: Icon(
+                              FontAwesomeIcons.pills,
+                              color: gris2,
+                              size: 18,
+                            ),
+                          ),
+                        ),
+                        Align(
+                          alignment: Alignment.bottomRight,
+                          child: Padding(
+                            padding: const EdgeInsets.only(bottom: 8.0),
+                            child: new FlatButton(
+                              minWidth: 60.0,
+                              onPressed: () {
+                                if (_formKey.currentState.validate()) {
+                                  _onDone();
+                                }
+                              },
+                              focusColor: cyan2,
+                              hoverColor: cyan2,
+                              splashColor: cyan2,
+                              color: cyan2,
+                              child: Container(
+                                width: 120,
+                                child: Row(
+                                  children: <Widget>[
+                                    Text(
+                                      'Enregistrer',
+                                      style: GoogleFonts.oxygen(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                        fontSize: 16,
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                    Padding(
+                                      padding:
+                                          const EdgeInsets.only(left: 12.0),
+                                      child: Icon(
+                                        Icons.save,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),

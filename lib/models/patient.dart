@@ -5,7 +5,6 @@ import 'package:rhumatologie/models/doctor.dart';
 import 'package:rhumatologie/models/jadas.dart';
 import 'package:rhumatologie/models/jamar.dart';
 import 'package:rhumatologie/models/jspada.dart';
-// import 'package:rhumatologie/models/ordonnance.dart';
 
 class Patient {
   static List<Patient> patientsFromJson(String str) =>
@@ -58,7 +57,6 @@ class Patient {
   factory Patient.fromJson(Map<String, dynamic> jsonn) => Patient(
         docteur: jsonn["docteur"] == null
             ? null
-            // :Docteur.fromJson(jsonn["doctoor"]),
             : Doctor.fromRawJson(json.encode(jsonn["docteur"])),
         bilan: jsonn["Bilan"] == null
             ? null

@@ -4,6 +4,7 @@ import 'package:rhumatologie/models/patient.dart';
 import 'package:rhumatologie/shared/constants.dart';
 import 'package:rhumatologie/shared/utils.dart';
 
+// ignore: must_be_immutable
 class Profile extends StatefulWidget {
   Patient patient;
   String token;
@@ -14,11 +15,10 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   int selectedIndex = 0;
-
+  ScrollController scrollController = ScrollController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // resizeToAvoidBottomInset: false,
       backgroundColor: gris1,
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -40,45 +40,51 @@ class _ProfileState extends State<Profile> {
               style: disconnectStyle,
             ),
             onPressed: () async {
-              // await _auth.signOut();
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                  '/wrapper', (Route<dynamic> route) => false);
             },
           ),
         ],
       ),
-      body: new SingleChildScrollView(
-        child: Container(
-          color: gris1,
-          // height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
+      body: Scrollbar(
+        radius: Radius.circular(15.0),
+        isAlwaysShown: true,
+        controller: scrollController,
+        child: new SingleChildScrollView(
+          controller: scrollController,
           child: Container(
-            margin: const EdgeInsets.only(
-                left: 15.0, right: 15.0, top: 15.0, bottom: 15.0),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.all(Radius.circular(20)),
-            ),
+            color: gris1,
+            width: MediaQuery.of(context).size.width,
             child: Container(
+              margin: const EdgeInsets.only(
+                  left: 15.0, right: 15.0, top: 15.0, bottom: 15.0),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.all(Radius.circular(20)),
               ),
-              child: Padding(
-                padding: const EdgeInsets.only(
-                    left: 15.0, right: 15.0, top: 10.0, bottom: 10.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    SizedBox(height: 8),
-                    elementProfile("Nom", "${widget.patient.nom}"),
-                    elementProfile("Prénom", "${widget.patient.prenom}"),
-                    elementProfile("Age", "${widget.patient.age}"),
-                    elementProfile(
-                        "N° Dossier", "${widget.patient.numDossier}"),
-                    elementProfile(
-                        "Diagnostic", "${widget.patient.diagnostic}"),
-                    elementProfile(
-                        "N° téléphone", "${widget.patient.telephone}"),
-                  ],
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(Radius.circular(20)),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                      left: 15.0, right: 15.0, top: 10.0, bottom: 10.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      SizedBox(height: 8),
+                      elementProfile("Nom", "${widget.patient.nom}"),
+                      elementProfile("Prénom", "${widget.patient.prenom}"),
+                      elementProfile("Age", "${widget.patient.age}"),
+                      elementProfile(
+                          "N° Dossier", "${widget.patient.numDossier}"),
+                      elementProfile(
+                          "Diagnostic", "${widget.patient.diagnostic}"),
+                      elementProfile(
+                          "N° téléphone", "${widget.patient.telephone}"),
+                    ],
+                  ),
                 ),
               ),
             ),
