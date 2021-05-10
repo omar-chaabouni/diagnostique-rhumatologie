@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:rhumatologie/screens/authenticate/register.dart';
-import 'package:rhumatologie/screens/authenticate/sign_in.dart';
+import 'package:rhumatologie/screens/authenticate/sign_in_doctor.dart';
+import 'package:rhumatologie/screens/authenticate/sign_in_patient.dart';
 
 class Authenticate extends StatefulWidget {
   @override
@@ -18,9 +18,9 @@ class _AuthenticateState extends State<Authenticate> {
   @override
   Widget build(BuildContext context) {
     if (showSignIn) {
-      return SignIn(toggleView: toggleView);
+      return SignInPatient(toggleView: toggleView);
     } else {
-      return Register(toggleView: toggleView);
+      return SignInDoctor(toggleView: toggleView);
     }
   }
 }

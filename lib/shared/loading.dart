@@ -5,11 +5,6 @@ import 'package:rhumatologie/shared/constants.dart';
 class Loading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // const Color blue1 = Color(0xFF73AEF5);
-    // const Color blue2 = Color(0xFF61A4F1);
-    // const Color blue3 = Color(0xFF478DE0);
-    // const Color blue4 = Color(0xFF398AE5);
-
     return Container(
       height: double.infinity,
       width: double.infinity,

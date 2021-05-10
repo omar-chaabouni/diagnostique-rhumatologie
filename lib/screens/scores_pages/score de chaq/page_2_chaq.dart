@@ -1,43 +1,61 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:grouped_buttons/grouped_buttons.dart';
 import 'package:rhumatologie/models/chaq_arguments.dart';
 import 'package:rhumatologie/models/patient.dart';
-import 'package:rhumatologie/screens/scores_pages/score%20de%20chaq/page_2_chaq.dart';
+import 'package:rhumatologie/screens/scores_pages/score%20de%20chaq/page_3_chaq.dart';
 import 'package:rhumatologie/shared/constants.dart';
 import 'package:rhumatologie/shared/utils.dart';
+import 'dart:math';
 
 // ignore: must_be_immutable
-class Page1Chaq extends StatefulWidget {
+class Page2Chaq extends StatefulWidget {
   Patient patient;
   String token;
-  Page1Chaq({this.patient, this.token});
+  Chaq1Arguments chaq1Args;
+  Page2Chaq({this.patient, this.token, this.chaq1Args});
   @override
-  _Page1ChaqState createState() => _Page1ChaqState();
+  _Page2ChaqState createState() => _Page2ChaqState();
 }
 
-class _Page1ChaqState extends State<Page1Chaq> {
+class _Page2ChaqState extends State<Page2Chaq> {
   bool testDemanded = true;
   ScrollController scrollController = ScrollController();
-  List<String> question_1 = [];
-  List<String> question_2 = [];
-  List<String> question_3 = [];
-  List<String> question_4 = [];
-  List<String> question_5 = [];
-  List<String> question_6 = [];
-  List<String> question_7 = [];
-  List<String> question_8 = [];
-  List<String> question_9 = [];
-  int index_1 = 0;
-  int index_2 = 0;
-  int index_3 = 0;
-  int index_4 = 0;
-  int index_5 = 0;
-  int index_6 = 0;
-  int index_7 = 0;
-  int index_8 = 0;
-  int index_9 = 0;
+  List<String> question_10 = [];
+  List<String> question_11 = [];
+  List<String> question_12 = []; // 8 checkboxes question
+  List<String> question_13 = [];
+  List<String> question_14 = [];
+  List<String> question_15 = [];
+  List<String> question_16 = [];
+  List<String> question_17 = [];
+  List<String> question_18 = [];
+
+  int index_10 = 0;
+  int index_11 = 0;
+  int index_12 = 0;
+  int index_13 = 0;
+  int index_14 = 0;
+  int index_15 = 0;
+  int index_16 = 0;
+  int index_17 = 0;
+  int index_18 = 0;
+
+  bool canne = false;
+  bool deambulateur = false;
+  bool bequilles = false;
+  bool fauteuilRoulant = false;
+  bool accessoiresPourShabiller = false;
+  bool grosCrayons = false;
+  bool siegeSpecialementAdapte = false;
+  bool autre = false;
+
+  List typesAide = <String>[
+    "S\'habiller et se préparer",
+    "Se lever",
+    "Manger",
+    "Marcher",
+  ];
   List categories = <String>[
     "Sans difficulté",
     "Avec quelque difficulté",
@@ -47,23 +65,31 @@ class _Page1ChaqState extends State<Page1Chaq> {
   ];
   double sommeScore = 0;
   double nbrOfItems = 0;
-  List<int> allQuestionsHabillerSepreparer = [];
-  List<int> allQuestionsManger = [];
-  List<int> allQuestionsSeLever = [];
+  List<int> allQuestionsMarcher = [];
+  List<int> allQuestionsHygiene = [];
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   void calculEtEnvoiSomme() {
-    allQuestionsHabillerSepreparer.addAll([index_1, index_2, index_3, index_4]);
-    allQuestionsSeLever.addAll([index_5, index_6]);
-    allQuestionsManger.addAll([index_7, index_8, index_9]);
-    allQuestionsHabillerSepreparer.removeWhere((item) => item == 4);
-    allQuestionsSeLever.removeWhere((item) => item == 4);
-    allQuestionsManger.removeWhere((item) => item == 4);
-    nbrOfItems += allQuestionsHabillerSepreparer.length +
-        allQuestionsSeLever.length +
-        allQuestionsManger.length;
-    sommeScore += allQuestionsHabillerSepreparer.reduce(max);
-    sommeScore += allQuestionsSeLever.reduce(max);
-    sommeScore += allQuestionsManger.reduce(max);
+    allQuestionsMarcher.addAll([
+      index_10,
+      index_11,
+    ]);
+    allQuestionsHygiene.addAll([index_14, index_15, index_17, index_18]);
+    allQuestionsMarcher.removeWhere((item) => item == 4);
+    allQuestionsHygiene.removeWhere((item) => item == 4);
+
+    nbrOfItems += allQuestionsMarcher.length + allQuestionsHygiene.length;
+    sommeScore += allQuestionsMarcher.reduce(max);
+    sommeScore += allQuestionsHygiene.reduce(max);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
   }
 
   @override
@@ -71,12 +97,13 @@ class _Page1ChaqState extends State<Page1Chaq> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: cyan2,
         title: FlatButton.icon(
           onPressed: (null),
           icon: Icon(FontAwesomeIcons.fileAlt, color: Colors.white, size: 20.0),
           label: Text(
-            "Score CHAQ   Page 1/4",
+            "Score CHAQ   Page 2/4",
             style: white20Bold,
           ),
         ),
@@ -118,20 +145,19 @@ class _Page1ChaqState extends State<Page1Chaq> {
                                     padding: const EdgeInsets.only(
                                         bottom: 10.0, top: 10.0),
                                     child: Text(
-                                      "S\'habiller et se préparer "
-                                          .toUpperCase(),
+                                      "Marcher ".toUpperCase(),
                                       style: cyan20Bold,
                                     ),
                                   ),
                                   questionChaq(
                                       "Votre enfant est-il capable de"),
                                   questionChaq(
-                                      "1. S\'habiller, y compris nouer ces lacets et boutonner ses vêtements ?"),
+                                      "1. Marcher dehors sur terrain plat ?"),
                                   CheckboxGroup(
                                     orientation:
                                         GroupedButtonsOrientation.HORIZONTAL,
                                     labels: categories,
-                                    checked: question_1,
+                                    checked: question_10,
                                     itemBuilder:
                                         (Checkbox cb, Text txt, int i) {
                                       return Flexible(
@@ -156,25 +182,25 @@ class _Page1ChaqState extends State<Page1Chaq> {
                                       );
                                     },
                                     onChange: (bool isChecked, String label,
-                                        int index_1) {
-                                      this.index_1 = index_1;
+                                        int index_10) {
+                                      this.index_10 = index_10;
                                       if (isChecked == false) {
-                                        this.index_1 = 0;
+                                        this.index_10 = 0;
                                       }
                                     },
                                     onSelected: (List selected) => setState(() {
                                       if (selected.length > 1) {
                                         selected.removeAt(0);
                                       }
-                                      question_1 = selected;
+                                      question_10 = selected;
                                     }),
                                   ),
-                                  questionChaq("2. Se laver les chevaux ?"),
+                                  questionChaq("2. Monter quelques marches ?"),
                                   CheckboxGroup(
                                     orientation:
                                         GroupedButtonsOrientation.HORIZONTAL,
                                     labels: categories,
-                                    checked: question_2,
+                                    checked: question_11,
                                     itemBuilder:
                                         (Checkbox cb, Text txt, int i) {
                                       return Flexible(
@@ -199,25 +225,198 @@ class _Page1ChaqState extends State<Page1Chaq> {
                                       );
                                     },
                                     onChange: (bool isChecked, String label,
-                                        int index_2) {
-                                      this.index_2 = index_2;
+                                        int index_11) {
+                                      this.index_11 = index_11;
                                       if (isChecked == false) {
-                                        this.index_2 = 0;
+                                        this.index_11 = 0;
                                       }
                                     },
                                     onSelected: (List selected) => setState(() {
                                       if (selected.length > 1) {
                                         selected.removeAt(0);
                                       }
-                                      question_2 = selected;
+                                      question_11 = selected;
                                     }),
                                   ),
-                                  questionChaq("3. Enlever ses chaussettes ?"),
+                                  questionChaq(
+                                      "3. Veuillez indiquer d\'une croix si votre enfant utilise habituellement un des ces appareils ou accessoires pour effectuer ces activités ?"),
+                                  flatButtonMultipleChoice(
+                                      title: 'canne',
+                                      initValue: canne,
+                                      onChanged: (newValue) {
+                                        if (this.mounted) {
+                                          setState(() {
+                                            canne = newValue;
+                                            if (canne == true) {
+                                              fauteuilRoulant = !newValue;
+                                              bequilles = !newValue;
+                                              deambulateur = !newValue;
+                                              accessoiresPourShabiller =
+                                                  !newValue;
+                                              grosCrayons = !newValue;
+                                              siegeSpecialementAdapte =
+                                                  !newValue;
+                                              autre = !newValue;
+                                            }
+                                          });
+                                        }
+                                      }),
+                                  flatButtonMultipleChoice(
+                                      title: 'déambulateur',
+                                      initValue: deambulateur,
+                                      onChanged: (newValue) {
+                                        if (this.mounted) {
+                                          setState(() {
+                                            deambulateur = newValue;
+                                            if (deambulateur == true) {
+                                              fauteuilRoulant = !newValue;
+                                              bequilles = !newValue;
+                                              canne = !newValue;
+                                              accessoiresPourShabiller =
+                                                  !newValue;
+                                              grosCrayons = !newValue;
+                                              siegeSpecialementAdapte =
+                                                  !newValue;
+                                              autre = !newValue;
+                                            }
+                                          });
+                                        }
+                                      }),
+                                  flatButtonMultipleChoice(
+                                      title: 'béquilles',
+                                      initValue: bequilles,
+                                      onChanged: (newValue) {
+                                        if (this.mounted) {
+                                          setState(() {
+                                            bequilles = newValue;
+                                            if (bequilles == true) {
+                                              fauteuilRoulant = !newValue;
+                                              deambulateur = !newValue;
+                                              canne = !newValue;
+                                              accessoiresPourShabiller =
+                                                  !newValue;
+                                              grosCrayons = !newValue;
+                                              siegeSpecialementAdapte =
+                                                  !newValue;
+                                              autre = !newValue;
+                                            }
+                                          });
+                                        }
+                                      }),
+                                  flatButtonMultipleChoice(
+                                      title: 'fauteuil roulant',
+                                      initValue: fauteuilRoulant,
+                                      onChanged: (newValue) {
+                                        if (this.mounted) {
+                                          setState(() {
+                                            fauteuilRoulant = newValue;
+                                            if (fauteuilRoulant == true) {
+                                              bequilles = !newValue;
+                                              deambulateur = !newValue;
+                                              canne = !newValue;
+                                              accessoiresPourShabiller =
+                                                  !newValue;
+                                              grosCrayons = !newValue;
+                                              siegeSpecialementAdapte =
+                                                  !newValue;
+                                              autre = !newValue;
+                                            }
+                                          });
+                                        }
+                                      }),
+                                  flatButtonMultipleChoice(
+                                      title:
+                                          'accessoires pour s\'habiller (crochet enfile bouton, anneau pour fermeture éclair, chausse pied à long manches ... ',
+                                      initValue: accessoiresPourShabiller,
+                                      onChanged: (newValue) {
+                                        if (this.mounted) {
+                                          setState(() {
+                                            accessoiresPourShabiller = newValue;
+                                            if (accessoiresPourShabiller ==
+                                                true) {
+                                              bequilles = !newValue;
+                                              deambulateur = !newValue;
+                                              canne = !newValue;
+                                              fauteuilRoulant = !newValue;
+                                              grosCrayons = !newValue;
+                                              siegeSpecialementAdapte =
+                                                  !newValue;
+                                              autre = !newValue;
+                                            }
+                                          });
+                                        }
+                                      }),
+                                  flatButtonMultipleChoice(
+                                      title:
+                                          'gros crayons ou autres objects spécialement adaptés ',
+                                      initValue: grosCrayons,
+                                      onChanged: (newValue) {
+                                        if (this.mounted) {
+                                          setState(() {
+                                            grosCrayons = newValue;
+                                            if (grosCrayons == true) {
+                                              bequilles = !newValue;
+                                              deambulateur = !newValue;
+                                              canne = !newValue;
+                                              fauteuilRoulant = !newValue;
+                                              accessoiresPourShabiller =
+                                                  !newValue;
+                                              siegeSpecialementAdapte =
+                                                  !newValue;
+                                              autre = !newValue;
+                                            }
+                                          });
+                                        }
+                                      }),
+                                  flatButtonMultipleChoice(
+                                      title: 'siège spécialement_adapté ',
+                                      initValue: siegeSpecialementAdapte,
+                                      onChanged: (newValue) {
+                                        if (this.mounted) {
+                                          setState(() {
+                                            siegeSpecialementAdapte = newValue;
+                                            if (siegeSpecialementAdapte ==
+                                                true) {
+                                              bequilles = !newValue;
+                                              deambulateur = !newValue;
+                                              canne = !newValue;
+                                              fauteuilRoulant = !newValue;
+                                              grosCrayons = !newValue;
+                                              accessoiresPourShabiller =
+                                                  !newValue;
+                                              autre = !newValue;
+                                            }
+                                          });
+                                        }
+                                      }),
+                                  flatButtonMultipleChoice(
+                                      title: 'autres ..',
+                                      initValue: autre,
+                                      onChanged: (newValue) {
+                                        if (this.mounted) {
+                                          setState(() {
+                                            autre = newValue;
+                                            if (autre == true) {
+                                              bequilles = !newValue;
+                                              deambulateur = !newValue;
+                                              canne = !newValue;
+                                              fauteuilRoulant = !newValue;
+                                              grosCrayons = !newValue;
+                                              siegeSpecialementAdapte =
+                                                  !newValue;
+                                              accessoiresPourShabiller =
+                                                  !newValue;
+                                            }
+                                          });
+                                        }
+                                      }),
+                                  questionChaq(
+                                      "4. Veuillez indiquer d\'une croix les activités pour lesquelles votre enfant a besoin de l'aide de quelqu\'un à cause de la maladie ?"),
                                   CheckboxGroup(
                                     orientation:
                                         GroupedButtonsOrientation.HORIZONTAL,
-                                    labels: categories,
-                                    checked: question_3,
+                                    labels: typesAide,
+                                    checked: question_13,
                                     itemBuilder:
                                         (Checkbox cb, Text txt, int i) {
                                       return Flexible(
@@ -231,90 +430,49 @@ class _Page1ChaqState extends State<Page1Chaq> {
                                                 ),
                                               ),
                                               Container(
-                                                child: Text(txt.data,
-                                                    maxLines: 4,
-                                                    textAlign: TextAlign.center,
-                                                    style: black12Normal),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                    onChange: (bool isChecked, String label,
-                                        int index_3) {
-                                      this.index_3 = index_3;
-                                      if (isChecked == false) {
-                                        this.index_3 = 0;
-                                      }
-                                    },
-                                    onSelected: (List selected) => setState(() {
-                                      if (selected.length > 1) {
-                                        selected.removeAt(0);
-                                      }
-                                      question_3 = selected;
-                                    }),
-                                  ),
-                                  questionChaq("4. Se couper les ongles ?"),
-                                  CheckboxGroup(
-                                    orientation:
-                                        GroupedButtonsOrientation.HORIZONTAL,
-                                    labels: categories,
-                                    checked: question_4,
-                                    itemBuilder:
-                                        (Checkbox cb, Text txt, int i) {
-                                      return Flexible(
-                                        child: SizedBox(
-                                          height: 120,
-                                          child: Column(
-                                            children: <Widget>[
-                                              Container(
-                                                child: Center(
-                                                  child: cb,
+                                                child: Text(
+                                                  txt.data,
+                                                  maxLines: 2,
+                                                  textAlign: TextAlign.center,
+                                                  style: black15Normal,
                                                 ),
                                               ),
-                                              Container(
-                                                child: Text(txt.data,
-                                                    maxLines: 4,
-                                                    textAlign: TextAlign.center,
-                                                    style: black12Normal),
-                                              ),
                                             ],
                                           ),
                                         ),
                                       );
                                     },
                                     onChange: (bool isChecked, String label,
-                                        int index_4) {
-                                      this.index_4 = index_4;
+                                        int index_13) {
+                                      this.index_13 = index_13;
                                       if (isChecked == false) {
-                                        this.index_4 = 0;
+                                        this.index_13 = 0;
                                       }
                                     },
                                     onSelected: (List selected) => setState(() {
                                       if (selected.length > 1) {
                                         selected.removeAt(0);
                                       }
-                                      question_4 = selected;
+                                      question_13 = selected;
                                     }),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.only(
                                         bottom: 10.0, top: 10.0),
                                     child: Text(
-                                      "Se lever ".toUpperCase(),
+                                      "Hygiène".toUpperCase(),
                                       style: cyan20Bold,
                                     ),
                                   ),
                                   questionChaq(
                                       "Votre enfant est-il capable de"),
                                   questionChaq(
-                                      "1. Se lever d\'une chaise basse ou du sol ?"),
+                                      "1. Se laver et se sécher complètement ?"),
                                   CheckboxGroup(
                                     orientation:
                                         GroupedButtonsOrientation.HORIZONTAL,
                                     labels: categories,
-                                    checked: question_5,
+                                    checked: question_14,
                                     itemBuilder:
                                         (Checkbox cb, Text txt, int i) {
                                       return Flexible(
@@ -339,26 +497,26 @@ class _Page1ChaqState extends State<Page1Chaq> {
                                       );
                                     },
                                     onChange: (bool isChecked, String label,
-                                        int index_5) {
-                                      this.index_5 = index_5;
+                                        int index_14) {
+                                      this.index_14 = index_14;
                                       if (isChecked == false) {
-                                        this.index_5 = 0;
+                                        this.index_14 = 0;
                                       }
                                     },
                                     onSelected: (List selected) => setState(() {
                                       if (selected.length > 1) {
                                         selected.removeAt(0);
                                       }
-                                      question_5 = selected;
+                                      question_14 = selected;
                                     }),
                                   ),
                                   questionChaq(
-                                      "2. Se mettre au lit et en sortir ou se mettre debout dans son lit ?"),
+                                      "2. Prendre un bain (entre dans la baignoire et en sortir) ?"),
                                   CheckboxGroup(
                                     orientation:
                                         GroupedButtonsOrientation.HORIZONTAL,
                                     labels: categories,
-                                    checked: question_6,
+                                    checked: question_15,
                                     itemBuilder:
                                         (Checkbox cb, Text txt, int i) {
                                       return Flexible(
@@ -383,79 +541,26 @@ class _Page1ChaqState extends State<Page1Chaq> {
                                       );
                                     },
                                     onChange: (bool isChecked, String label,
-                                        int index_6) {
-                                      this.index_6 = index_6;
+                                        int index_15) {
+                                      this.index_15 = index_15;
                                       if (isChecked == false) {
-                                        this.index_6 = 0;
+                                        this.index_15 = 0;
                                       }
                                     },
                                     onSelected: (List selected) => setState(() {
                                       if (selected.length > 1) {
                                         selected.removeAt(0);
                                       }
-                                      question_6 = selected;
-                                    }),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        bottom: 10.0, top: 10.0),
-                                    child: Text(
-                                      "Manger ".toUpperCase(),
-                                      style: cyan20Bold,
-                                    ),
-                                  ),
-                                  questionChaq(
-                                      "Votre enfant est-il capable de"),
-                                  questionChaq("1. Couper sa viande ?"),
-                                  CheckboxGroup(
-                                    orientation:
-                                        GroupedButtonsOrientation.HORIZONTAL,
-                                    labels: categories,
-                                    checked: question_7,
-                                    itemBuilder:
-                                        (Checkbox cb, Text txt, int i) {
-                                      return Flexible(
-                                        child: SizedBox(
-                                          height: 120,
-                                          child: Column(
-                                            children: <Widget>[
-                                              Container(
-                                                child: Center(
-                                                  child: cb,
-                                                ),
-                                              ),
-                                              Container(
-                                                child: Text(txt.data,
-                                                    maxLines: 4,
-                                                    textAlign: TextAlign.center,
-                                                    style: black12Normal),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                    onChange: (bool isChecked, String label,
-                                        int index_7) {
-                                      this.index_7 = index_7;
-                                      if (isChecked == false) {
-                                        this.index_7 = 0;
-                                      }
-                                    },
-                                    onSelected: (List selected) => setState(() {
-                                      if (selected.length > 1) {
-                                        selected.removeAt(0);
-                                      }
-                                      question_7 = selected;
+                                      question_15 = selected;
                                     }),
                                   ),
                                   questionChaq(
-                                      "2. Porter une tasse ou un verre à la bouche ?"),
+                                      "3. S\'asseoir et se relever des toilettes ou du pot ?"),
                                   CheckboxGroup(
                                     orientation:
                                         GroupedButtonsOrientation.HORIZONTAL,
                                     labels: categories,
-                                    checked: question_8,
+                                    checked: question_16,
                                     itemBuilder:
                                         (Checkbox cb, Text txt, int i) {
                                       return Flexible(
@@ -480,25 +585,25 @@ class _Page1ChaqState extends State<Page1Chaq> {
                                       );
                                     },
                                     onChange: (bool isChecked, String label,
-                                        int index_8) {
-                                      this.index_8 = index_8;
+                                        int index_16) {
+                                      this.index_16 = index_16;
                                       if (isChecked == false) {
-                                        this.index_8 = 0;
+                                        this.index_16 = 0;
                                       }
                                     },
                                     onSelected: (List selected) => setState(() {
                                       if (selected.length > 1) {
                                         selected.removeAt(0);
                                       }
-                                      question_8 = selected;
+                                      question_16 = selected;
                                     }),
                                   ),
-                                  questionChaq("3. Ouvrir un pot de yaourt ?"),
+                                  questionChaq("4. Se brosser les dents ?"),
                                   CheckboxGroup(
                                     orientation:
                                         GroupedButtonsOrientation.HORIZONTAL,
                                     labels: categories,
-                                    checked: question_9,
+                                    checked: question_17,
                                     itemBuilder:
                                         (Checkbox cb, Text txt, int i) {
                                       return Flexible(
@@ -523,17 +628,61 @@ class _Page1ChaqState extends State<Page1Chaq> {
                                       );
                                     },
                                     onChange: (bool isChecked, String label,
-                                        int index_9) {
-                                      this.index_9 = index_9;
+                                        int index_17) {
+                                      this.index_17 = index_17;
                                       if (isChecked == false) {
-                                        this.index_9 = 0;
+                                        this.index_17 = 0;
                                       }
                                     },
                                     onSelected: (List selected) => setState(() {
                                       if (selected.length > 1) {
                                         selected.removeAt(0);
                                       }
-                                      question_9 = selected;
+                                      question_17 = selected;
+                                    }),
+                                  ),
+                                  questionChaq(
+                                      "5. Se peigner, se brosser les cheveux ?"),
+                                  CheckboxGroup(
+                                    orientation:
+                                        GroupedButtonsOrientation.HORIZONTAL,
+                                    labels: categories,
+                                    checked: question_18,
+                                    itemBuilder:
+                                        (Checkbox cb, Text txt, int i) {
+                                      return Flexible(
+                                        child: SizedBox(
+                                          height: 120,
+                                          child: Column(
+                                            children: <Widget>[
+                                              Container(
+                                                child: Center(
+                                                  child: cb,
+                                                ),
+                                              ),
+                                              Container(
+                                                child: Text(txt.data,
+                                                    maxLines: 4,
+                                                    textAlign: TextAlign.center,
+                                                    style: black12Normal),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    onChange: (bool isChecked, String label,
+                                        int index_18) {
+                                      this.index_18 = index_18;
+                                      if (isChecked == false) {
+                                        this.index_18 = 0;
+                                      }
+                                    },
+                                    onSelected: (List selected) => setState(() {
+                                      if (selected.length > 1) {
+                                        selected.removeAt(0);
+                                      }
+                                      question_18 = selected;
                                     }),
                                   ),
                                   Align(
@@ -547,12 +696,16 @@ class _Page1ChaqState extends State<Page1Chaq> {
 
                                           Navigator.of(context)
                                               .push(MaterialPageRoute(
-                                            builder: (context) => Page2Chaq(
+                                            builder: (context) => Page3Chaq(
                                               patient: widget.patient,
                                               token: widget.token,
-                                              chaq1Args: Chaq1Arguments(
-                                                  nbrOfItems: nbrOfItems,
-                                                  sommeScore: sommeScore),
+                                              chaq2Args: Chaq2Arguments(
+                                                  nbrOfItems: nbrOfItems +
+                                                      widget
+                                                          .chaq1Args.nbrOfItems,
+                                                  sommeScore: sommeScore +
+                                                      widget.chaq1Args
+                                                          .sommeScore),
                                             ),
                                           ));
                                         },

@@ -1,36 +1,69 @@
+import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:rhumatologie/services/auth.dart';
+import 'package:rhumatologie/models/doctor.dart';
+import 'package:rhumatologie/models/patient.dart';
+import 'package:rhumatologie/screens/pages%20patient/home_patient.dart';
 import 'package:rhumatologie/shared/constants.dart';
 import 'package:rhumatologie/shared/loading.dart';
 import 'package:rhumatologie/shared/theme_container.dart';
+import 'package:http/http.dart' as http;
 
-class SignIn extends StatefulWidget {
+class SignInPatient extends StatefulWidget {
   final Function toggleView;
-  SignIn({this.toggleView});
+  SignInPatient({this.toggleView});
   @override
-  _SignInState createState() => _SignInState();
+  _SignInPatientState createState() => _SignInPatientState();
 }
 
-class _SignInState extends State<SignIn> {
-  final AuthService _auth = AuthService();
-  final _formKey = GlobalKey<FormState>();
-  // text field state
+class _SignInPatientState extends State<SignInPatient> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool loading = false;
-  String email = '';
-  String password = '';
   String error = '';
+  Patient patient;
+  TextEditingController telephoneController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
 
-  Widget _buildEmailTF() {
+  signIn(int telephone, String password) async {
+    Doctor result;
+    String loginURL = 'http://192.168.1.16:4000/patients/login';
+    String getPatientURL = 'http://192.168.1.16:4000/patients/me';
+
+    try {
+      var loginResponse = await http.post("$loginURL",
+          body: json.encode({"telephone": telephone, "password": password}),
+          headers: {
+            'Content-Type': 'application/json',
+          });
+      if (loginResponse.statusCode == 200) {
+        var getPatientResponse = await http.get("$getPatientURL", headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ${json.decode(loginResponse.body)["token"]}'
+        });
+        if (getPatientResponse.statusCode == 200) {
+          patient =
+              Patient.fromJson(json.decode(getPatientResponse.body)["patient"]);
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => HomePatient(
+                  patient: patient,
+                  token: json.decode(loginResponse.body)["token"])));
+        }
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+    return result;
+  }
+
+  Widget _buildTelephoneTF() {
     return Form(
       key: _formKey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            'Email',
+            'Téléphone',
             style: kLabelStyle,
           ),
           SizedBox(height: 10.0),
@@ -39,25 +72,22 @@ class _SignInState extends State<SignIn> {
             decoration: kBoxDecorationStyle,
             height: 60.0,
             child: TextFormField(
-              // validator: (val)=>val.isEmpty ? print('Entrez un email valide'):null,
               textInputAction: TextInputAction.next,
-              keyboardType: TextInputType.emailAddress,
-              style: GoogleFonts.oxygen(
-                color: Colors.white,
-              ),
+              keyboardType: TextInputType.number,
+              style: whiteNormal,
               decoration: InputDecoration(
                 border: InputBorder.none,
                 contentPadding: EdgeInsets.only(top: 14.0),
                 prefixIcon: Icon(
-                  Icons.email,
+                  Icons.phone,
                   color: Colors.white,
                 ),
-                hintText: 'Entez votre email',
+                hintText: 'Entez votre téléphone',
                 hintStyle: kHintTextStyle,
               ),
               onChanged: (val) {
                 if (mounted == true) {
-                  setState(() => email = val);
+                  setState(() => telephoneController.text = val);
                 }
               },
             ),
@@ -81,16 +111,13 @@ class _SignInState extends State<SignIn> {
           decoration: kBoxDecorationStyle,
           height: 60.0,
           child: TextFormField(
-            // validator: (val)=>val.length<6 ? 'Le mot de passe doit contenir au moins 6 caractères':null,
             onChanged: (val) {
               if (mounted == true) {
-                setState(() => password = val);
+                setState(() => passwordController.text = val);
               }
             },
             obscureText: true,
-            style: GoogleFonts.oxygen(
-              color: Colors.white,
-            ),
+            style: whiteNormal,
             decoration: InputDecoration(
               border: InputBorder.none,
               contentPadding: EdgeInsets.only(top: 14.0),
@@ -120,8 +147,8 @@ class _SignInState extends State<SignIn> {
                 loading = true;
               });
             }
-            dynamic result =
-                await _auth.signInWithEmailAndPassword(email, password);
+            dynamic result = await signIn(
+                int.parse(telephoneController.text), passwordController.text);
             if (result == null) {
               if (mounted == true) {
                 setState(() {
@@ -138,13 +165,8 @@ class _SignInState extends State<SignIn> {
         ),
         color: Colors.white,
         child: Text(
-          'S\'IDENTIFIER',
-          style: GoogleFonts.oxygen(
-            color: cyan3,
-            letterSpacing: 1.5,
-            fontSize: 18.0,
-            fontWeight: FontWeight.bold,
-          ),
+          'S\' IDENTIFIER',
+          style: cyan318Bold,
         ),
       ),
     );
@@ -157,20 +179,12 @@ class _SignInState extends State<SignIn> {
         text: TextSpan(
           children: [
             TextSpan(
-              text: 'Vous n\' avez pas de compte ? ',
-              style: GoogleFonts.oxygen(
-                color: Colors.white,
-                fontSize: 18.0,
-                fontWeight: FontWeight.w400,
-              ),
+              text: 'Vous êtes un de nos docteurs ?\n',
+              style: white15w400,
             ),
             TextSpan(
-              text: 'S\'inscrire',
-              style: GoogleFonts.oxygen(
-                color: Colors.white,
-                fontSize: 18.0,
-                fontWeight: FontWeight.bold,
-              ),
+              text: 'S\' identifier en tant que docteur',
+              style: white17Bold,
             ),
           ],
         ),
@@ -202,20 +216,23 @@ class _SignInState extends State<SignIn> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             Text(
-                              'S\'IDENTIFIER',
-                              style: GoogleFonts.oxygen(
-                                color: Colors.white,
-                                fontSize: 30.0,
-                                fontWeight: FontWeight.bold,
-                              ),
+                              'BIENVENU PATIENT',
+                              style: white26Bold,
                             ),
                             SizedBox(height: 30.0),
-                            _buildEmailTF(),
+                            Text(
+                              'S\' IDENTIFIER',
+                              style: white22Bold,
+                            ),
+                            SizedBox(height: 30.0),
+                            _buildTelephoneTF(),
                             SizedBox(
                               height: 30.0,
                             ),
                             _buildPasswordTF(),
+                            SizedBox(height: 15.0),
                             _buildLoginBtn(),
+                            SizedBox(height: 15.0),
                             _buildSignupBtn(),
                           ],
                         ),
