@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:grouped_buttons/grouped_buttons.dart';
 import 'package:rhumatologie/models/chaq_arguments.dart';
 import 'package:rhumatologie/models/patient.dart';
@@ -435,12 +434,7 @@ class _Page2ChaqState extends State<Page2Chaq> {
                                                   txt.data,
                                                   maxLines: 2,
                                                   textAlign: TextAlign.center,
-                                                  style: GoogleFonts.oxygen(
-                                                    color: Colors.black,
-                                                    fontWeight:
-                                                        FontWeight.normal,
-                                                    fontSize: 15.0,
-                                                  ),
+                                                  style: black15Normal,
                                                 ),
                                               ),
                                             ],

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:rhumatologie/models/patient.dart';
 import 'package:rhumatologie/screens/scores_pages/score%20de%20chaq/page_1_chaq.dart';
 import 'package:rhumatologie/screens/scores_pages/score%20de%20jadas/page_1_jadas.dart';
@@ -22,13 +21,7 @@ enregistrerAvecSuccess(BuildContext context) {
             height: 60,
             child: Column(
               children: [
-                Text(
-                  "Enregistré avec succès",
-                  style: GoogleFonts.oxygen(
-                      fontWeight: FontWeight.w600,
-                      color: Colors.green,
-                      fontSize: 18.0),
-                ),
+                Text("Enregistré avec succès", style: green18Bold),
                 Icon(
                   FontAwesomeIcons.checkCircle,
                   color: Colors.green,
@@ -56,10 +49,7 @@ erreurEnregistrement(BuildContext context) {
               children: [
                 Text(
                   "L\'opération a échoué !",
-                  style: GoogleFonts.oxygen(
-                      fontWeight: FontWeight.w600,
-                      color: Colors.red,
-                      fontSize: 18.0),
+                  style: red18Bold,
                 ),
                 Icon(
                   FontAwesomeIcons.checkCircle,
@@ -434,11 +424,7 @@ Card createRequestedScoreCard(
                         children: <Widget>[
                           Text(
                             'Prendre le test',
-                            style: GoogleFonts.oxygen(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                              fontSize: 13,
-                            ),
+                            style: white13Bold,
                           ),
                           Padding(
                             padding: const EdgeInsets.only(left: 5.0),
@@ -636,21 +622,9 @@ Padding sliderLimitWithText(double value, String textDouleur) {
     child: Container(
       child: Column(
         children: [
-          Text(
-            "$value",
-            style: GoogleFonts.oxygen(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-                fontSize: 13.0),
-          ),
-          Text(
-            "$textDouleur",
-            textAlign: TextAlign.center,
-            style: GoogleFonts.oxygen(
-                color: Colors.black,
-                fontWeight: FontWeight.normal,
-                fontSize: 11.0),
-          ),
+          Text("$value", style: white13Bold),
+          Text("$textDouleur",
+              textAlign: TextAlign.center, style: black11Normal),
         ],
       ),
     ),
@@ -666,8 +640,6 @@ Padding elementProfile(String champ, String valeur) {
         style: cyan20Bold,
         children: <TextSpan>[
           TextSpan(text: "$valeur", style: black18Bold),
-          // TextSpan(
-          //     text: ' vous a préscrit ces médicaments : '),
         ],
       ),
     ),

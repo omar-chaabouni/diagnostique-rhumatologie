@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:rhumatologie/models/doctor.dart';
 import 'package:rhumatologie/models/patient.dart';
 import 'package:rhumatologie/screens/pages%20patient/home_patient.dart';
@@ -75,9 +74,7 @@ class _SignInPatientState extends State<SignInPatient> {
             child: TextFormField(
               textInputAction: TextInputAction.next,
               keyboardType: TextInputType.number,
-              style: GoogleFonts.oxygen(
-                color: Colors.white,
-              ),
+              style: whiteNormal,
               decoration: InputDecoration(
                 border: InputBorder.none,
                 contentPadding: EdgeInsets.only(top: 14.0),
@@ -120,9 +117,7 @@ class _SignInPatientState extends State<SignInPatient> {
               }
             },
             obscureText: true,
-            style: GoogleFonts.oxygen(
-              color: Colors.white,
-            ),
+            style: whiteNormal,
             decoration: InputDecoration(
               border: InputBorder.none,
               contentPadding: EdgeInsets.only(top: 14.0),
@@ -171,12 +166,7 @@ class _SignInPatientState extends State<SignInPatient> {
         color: Colors.white,
         child: Text(
           'S\' IDENTIFIER',
-          style: GoogleFonts.oxygen(
-            color: cyan3,
-            letterSpacing: 1.5,
-            fontSize: 18.0,
-            fontWeight: FontWeight.bold,
-          ),
+          style: cyan318Bold,
         ),
       ),
     );
@@ -190,19 +180,11 @@ class _SignInPatientState extends State<SignInPatient> {
           children: [
             TextSpan(
               text: 'Vous êtes un de nos docteurs ?\n',
-              style: GoogleFonts.oxygen(
-                color: Colors.white,
-                fontSize: 15.0,
-                fontWeight: FontWeight.w400,
-              ),
+              style: white15w400,
             ),
             TextSpan(
               text: 'S\' identifier en tant que docteur',
-              style: GoogleFonts.oxygen(
-                color: Colors.white,
-                fontSize: 17.0,
-                fontWeight: FontWeight.bold,
-              ),
+              style: white17Bold,
             ),
           ],
         ),
@@ -235,20 +217,12 @@ class _SignInPatientState extends State<SignInPatient> {
                           children: <Widget>[
                             Text(
                               'BIENVENU PATIENT',
-                              style: GoogleFonts.oxygen(
-                                color: Colors.white,
-                                fontSize: 26.0,
-                                fontWeight: FontWeight.bold,
-                              ),
+                              style: white26Bold,
                             ),
                             SizedBox(height: 30.0),
                             Text(
                               'S\' IDENTIFIER',
-                              style: GoogleFonts.oxygen(
-                                color: Colors.white,
-                                fontSize: 22.0,
-                                fontWeight: FontWeight.bold,
-                              ),
+                              style: white22Bold,
                             ),
                             SizedBox(height: 30.0),
                             _buildTelephoneTF(),

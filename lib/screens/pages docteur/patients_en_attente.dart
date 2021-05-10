@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:rhumatologie/models/doctor.dart';
 import 'package:rhumatologie/models/patient.dart';
 import 'package:rhumatologie/screens/pages%20docteur/edit_user_prescription.dart';
@@ -104,7 +103,7 @@ class _PatientsEnAttenteState extends State<PatientsEnAttente> {
                 onChanged: (value) {
                   _filterwaitingPatients(value);
                 },
-                style: GoogleFonts.oxygen(color: Colors.white),
+                style: whiteNormal,
                 decoration: InputDecoration(
                     icon: Icon(
                       Icons.search,
