@@ -90,34 +90,28 @@ class _Page4ChaqState extends State<Page4Chaq> {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ${widget.token}'
           });
-      Future.delayed(Duration(milliseconds: 1000), () {
-        if (fillChaqResponse.statusCode == 200 ||
-            fillChaqResponse.statusCode == 201 ||
-            fillChaqResponse.statusCode == 202 ||
-            fillChaqResponse.statusCode == 203) {
-          enregistrerAvecSuccess(context);
-          Future.delayed(Duration(milliseconds: 1500), () {
-            Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => HomePatient(
-                patient: widget.patient,
-                token: widget.token,
-              ),
-            ));
-          });
-        } else {
-          Future.delayed(Duration(milliseconds: 1000), () {
-            erreurEnregistrement(context);
-          });
-          Future.delayed(Duration(milliseconds: 1500), () {
-            Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => HomePatient(
-                patient: widget.patient,
-                token: widget.token,
-              ),
-            ));
-          });
-        }
-      });
+      if (fillChaqResponse.statusCode == 200 ||
+          fillChaqResponse.statusCode == 201 ||
+          fillChaqResponse.statusCode == 202 ||
+          fillChaqResponse.statusCode == 203) {
+        await enregistrerAvecSuccess(context);
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => HomePatient(
+            patient: widget.patient,
+            token: widget.token,
+          ),
+        ));
+      } else {
+        erreurEnregistrement(context);
+        Future.delayed(Duration(milliseconds: 1000), () {
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => HomePatient(
+              patient: widget.patient,
+              token: widget.token,
+            ),
+          ));
+        });
+      }
     } catch (e) {
       print(e.toString());
     }
@@ -745,33 +739,6 @@ class _Page4ChaqState extends State<Page4Chaq> {
                                         minWidth: 60.0,
                                         onPressed: () {
                                           calculEtEnvoiSomme();
-                                          showDialog(
-                                            context: context,
-                                            builder: (context) {
-                                              return AlertDialog(
-                                                  // content: Text(myController.text),
-                                                  shape: RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.all(
-                                                              Radius.circular(
-                                                                  10.0))),
-                                                  content: Container(
-                                                    height: 60,
-                                                    child: Column(
-                                                      children: [
-                                                        Text(
-                                                            "Test enregistré avec succès",
-                                                            style: green18Bold),
-                                                        Icon(
-                                                          FontAwesomeIcons
-                                                              .checkCircle,
-                                                          color: Colors.green,
-                                                        )
-                                                      ],
-                                                    ),
-                                                  ));
-                                            },
-                                          );
                                         },
                                         focusColor: cyan2,
                                         hoverColor: cyan2,
@@ -813,7 +780,8 @@ class _Page4ChaqState extends State<Page4Chaq> {
                                     TextSpan(
                                         text: "Dr. ", style: cyan18Bold1_6),
                                     TextSpan(
-                                        text: "Hanene Lassoued Ferjani ",
+                                        text:
+                                            "${widget.patient.docteur.prenom} ${widget.patient.docteur.nom}",
                                         style: cyan18Bold1_6),
                                     TextSpan(
                                         text:

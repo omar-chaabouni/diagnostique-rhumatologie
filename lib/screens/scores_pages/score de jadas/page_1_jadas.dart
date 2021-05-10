@@ -62,26 +62,20 @@ class _Page1JadasState extends State<Page1Jadas> {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ${widget.token}'
           });
-      Future.delayed(Duration(milliseconds: 1000), () {
-        if (fillJadasResponse.statusCode == 200 ||
-            fillJadasResponse.statusCode == 201 ||
-            fillJadasResponse.statusCode == 202 ||
-            fillJadasResponse.statusCode == 203) {
-          enregistrerAvecSuccess(context);
-          Future.delayed(Duration(milliseconds: 1500), () {
-            Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => HomePatient(
-                patient: widget.patient,
-                token: widget.token,
-              ),
-            ));
-          });
-        } else {
-          Future.delayed(Duration(milliseconds: 1000), () {
-            erreurEnregistrement(context);
-          });
-        }
-      });
+      if (fillJadasResponse.statusCode == 200 ||
+          fillJadasResponse.statusCode == 201 ||
+          fillJadasResponse.statusCode == 202 ||
+          fillJadasResponse.statusCode == 203) {
+        await enregistrerAvecSuccess(context);
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => HomePatient(
+            patient: widget.patient,
+            token: widget.token,
+          ),
+        ));
+      } else {
+        erreurEnregistrement(context);
+      }
     } catch (e) {
       print(e.toString());
     }

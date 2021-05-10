@@ -794,8 +794,7 @@ class _Page6JamarState extends State<Page6Jamar> {
                                         TextSpan(
                                             text: "Dr. ", style: cyan18Bold1_6),
                                         TextSpan(
-                                            text: "Hanene Lassoued Ferjani ",
-                                            style: cyan18Bold1_6),
+                                            text: "", style: cyan18Bold1_6),
                                         TextSpan(
                                             text:
                                                 ' n\'a rien demandé pour le moment.')

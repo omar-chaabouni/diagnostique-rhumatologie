@@ -186,20 +186,22 @@ class _PatientsEnAttenteState extends State<PatientsEnAttente> {
                                     children: [
                                       Row(
                                         children: [
-                                          RichText(
-                                            text: TextSpan(
-                                              children: <TextSpan>[
-                                                TextSpan(
-                                                    text:
-                                                        filteredPatients[index]
-                                                            .prenom,
-                                                    style: black18Bold),
-                                                TextSpan(
-                                                    text:
-                                                        filteredPatients[index]
-                                                            .nom,
-                                                    style: black18Bold)
-                                              ],
+                                          Expanded(
+                                            child: RichText(
+                                              text: TextSpan(
+                                                children: <TextSpan>[
+                                                  TextSpan(
+                                                      text: filteredPatients[
+                                                              index]
+                                                          .prenom,
+                                                      style: black18Bold),
+                                                  TextSpan(
+                                                      text: filteredPatients[
+                                                              index]
+                                                          .nom,
+                                                      style: black18Bold)
+                                                ],
+                                              ),
                                             ),
                                           ),
                                           Spacer(),
@@ -236,19 +238,20 @@ class _PatientsEnAttenteState extends State<PatientsEnAttente> {
                                       ),
                                       Row(
                                         children: [
-                                          RichText(
-                                            text: TextSpan(
-                                              text: "Diagnostic :  ",
-                                              style: cyan16Bold,
-                                              children: <TextSpan>[
-                                                TextSpan(
-                                                    // text: "aa"
-                                                    text:
-                                                        filteredPatients[index]
-                                                                .diagnostic ??
-                                                            'null',
-                                                    style: black16Normal),
-                                              ],
+                                          Expanded(
+                                            child: RichText(
+                                              text: TextSpan(
+                                                text: "Diagnostic :  ",
+                                                style: cyan16Bold,
+                                                children: <TextSpan>[
+                                                  TextSpan(
+                                                      text: filteredPatients[
+                                                                  index]
+                                                              .diagnostic ??
+                                                          'null',
+                                                      style: black16Normal),
+                                                ],
+                                              ),
                                             ),
                                           ),
                                         ],

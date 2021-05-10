@@ -32,10 +32,10 @@ class _ChooseScoreState extends State<ChooseScore> {
     // "JAMAR",
   ];
   List<bool> existScores = [false, false, false];
-
   @override
   void initState() {
     super.initState();
+
     if (widget.patient.jadas.isNotEmpty) {
       if (widget.patient.jadas[0] != null) {
         if (widget.patient.jadas[0].state == 0) {
@@ -217,7 +217,8 @@ class _ChooseScoreState extends State<ChooseScore> {
                                               text: "Dr. ",
                                               style: cyan18Bold1_6),
                                           TextSpan(
-                                              text: "Hanene Lassoued Ferjani ",
+                                              text:
+                                                  "${widget.patient.docteur.prenom} ${widget.patient.docteur.nom} ",
                                               style: cyan18Bold1_6),
                                           TextSpan(
                                               text:

@@ -72,26 +72,20 @@ class _Page1JspadaState extends State<Page1Jspada> {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ${widget.token}'
           });
-      Future.delayed(Duration(milliseconds: 1000), () {
-        if (fillJspadaResponse.statusCode == 200 ||
-            fillJspadaResponse.statusCode == 201 ||
-            fillJspadaResponse.statusCode == 202 ||
-            fillJspadaResponse.statusCode == 203) {
-          enregistrerAvecSuccess(context);
-          Future.delayed(Duration(milliseconds: 1500), () {
-            Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => HomePatient(
-                patient: widget.patient,
-                token: widget.token,
-              ),
-            ));
-          });
-        } else {
-          Future.delayed(Duration(milliseconds: 1000), () {
-            erreurEnregistrement(context);
-          });
-        }
-      });
+      if (fillJspadaResponse.statusCode == 200 ||
+          fillJspadaResponse.statusCode == 201 ||
+          fillJspadaResponse.statusCode == 202 ||
+          fillJspadaResponse.statusCode == 203) {
+        await enregistrerAvecSuccess(context);
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => HomePatient(
+            patient: widget.patient,
+            token: widget.token,
+          ),
+        ));
+      } else {
+        erreurEnregistrement(context);
+      }
     } catch (e) {
       print(e.toString());
     }
@@ -641,7 +635,8 @@ class _Page1JspadaState extends State<Page1Jspada> {
                                               text: "Dr. ",
                                               style: cyan18Bold1_6),
                                           TextSpan(
-                                              text: "Hanene Lassoued Ferjani ",
+                                              text:
+                                                  "${widget.patient.docteur.prenom} ${widget.patient.docteur.nom} ",
                                               style: cyan18Bold1_6),
                                           TextSpan(
                                               text:

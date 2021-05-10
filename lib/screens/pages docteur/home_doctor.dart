@@ -64,90 +64,96 @@ class _HomeDoctorState extends State<HomeDoctor> {
       ),
       bottomNavigationBar: SizedBox(
         height: 82,
-        child: BottomNavigationBar(
-          currentIndex: 0,
-          onTap: _onItemTapped,
-          type: BottomNavigationBarType.fixed,
-          items: <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Padding(
-                padding: const EdgeInsets.only(bottom: 3.0),
-                child: Icon(
-                  FontAwesomeIcons.userClock,
+        child: Theme(
+          data: ThemeData(
+            splashColor: Colors.transparent,
+            highlightColor: Colors.transparent,
+          ),
+          child: BottomNavigationBar(
+            currentIndex: 0,
+            onTap: _onItemTapped,
+            type: BottomNavigationBarType.fixed,
+            items: <BottomNavigationBarItem>[
+              BottomNavigationBarItem(
+                icon: Padding(
+                  padding: const EdgeInsets.only(bottom: 3.0),
+                  child: Icon(
+                    FontAwesomeIcons.userClock,
+                    size: 14,
+                    color: (_currentIndex == 0) ? cyan2 : gris2,
+                  ),
+                ),
+                // ignore: deprecated_member_use
+                title: SizedBox(
+                  height: 30.0,
+                  child: Center(
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                          right: 8.0, left: 8.0, top: 4.0),
+                      child: Text(
+                        'Patients en attente',
+                        maxLines: 2,
+                        style: GoogleFonts.oxygen(
+                          fontSize: 12,
+                          color: (_currentIndex == 0) ? cyan2 : gris2,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(
+                  FontAwesomeIcons.users,
                   size: 14,
-                  color: (_currentIndex == 0) ? cyan2 : gris2,
+                  color: (_currentIndex == 1) ? cyan2 : gris2,
                 ),
-              ),
-              // ignore: deprecated_member_use
-              title: SizedBox(
-                height: 30.0,
-                child: Center(
-                  child: Padding(
-                    padding:
-                        const EdgeInsets.only(right: 8.0, left: 8.0, top: 4.0),
-                    child: Text(
-                      'Patients en attente',
-                      maxLines: 2,
-                      style: GoogleFonts.oxygen(
-                        fontSize: 12,
-                        color: (_currentIndex == 0) ? cyan2 : gris2,
+                // ignore: deprecated_member_use
+                title: SizedBox(
+                  height: 30.0,
+                  child: Center(
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                          right: 8.0, left: 8.0, top: 4.0),
+                      child: Text(
+                        'Mes patients',
+                        maxLines: 2,
+                        style: GoogleFonts.oxygen(
+                          fontSize: 14,
+                          color: (_currentIndex == 1) ? cyan2 : gris2,
+                        ),
                       ),
                     ),
                   ),
                 ),
               ),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                FontAwesomeIcons.users,
-                size: 14,
-                color: (_currentIndex == 1) ? cyan2 : gris2,
-              ),
-              // ignore: deprecated_member_use
-              title: SizedBox(
-                height: 30.0,
-                child: Center(
-                  child: Padding(
-                    padding:
-                        const EdgeInsets.only(right: 8.0, left: 8.0, top: 4.0),
-                    child: Text(
-                      'Mes patients',
-                      maxLines: 2,
-                      style: GoogleFonts.oxygen(
-                        fontSize: 14,
-                        color: (_currentIndex == 1) ? cyan2 : gris2,
+              BottomNavigationBarItem(
+                icon: Icon(
+                  FontAwesomeIcons.userPlus,
+                  size: 14,
+                  color: (_currentIndex == 2) ? cyan2 : gris2,
+                ),
+                // ignore: deprecated_member_use
+                title: SizedBox(
+                  height: 30.0,
+                  child: Center(
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                          right: 8.0, left: 8.0, top: 4.0),
+                      child: Text(
+                        'Ajouter patient',
+                        maxLines: 2,
+                        style: GoogleFonts.oxygen(
+                          fontSize: 14,
+                          color: (_currentIndex == 2) ? cyan2 : gris2,
+                        ),
                       ),
                     ),
                   ),
                 ),
               ),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                FontAwesomeIcons.userPlus,
-                size: 14,
-                color: (_currentIndex == 2) ? cyan2 : gris2,
-              ),
-              // ignore: deprecated_member_use
-              title: SizedBox(
-                height: 30.0,
-                child: Center(
-                  child: Padding(
-                    padding:
-                        const EdgeInsets.only(right: 8.0, left: 8.0, top: 4.0),
-                    child: Text(
-                      'Ajouter patient',
-                      maxLines: 2,
-                      style: GoogleFonts.oxygen(
-                        fontSize: 14,
-                        color: (_currentIndex == 2) ? cyan2 : gris2,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

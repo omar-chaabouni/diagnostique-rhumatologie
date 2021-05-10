@@ -21,6 +21,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         fontFamily: 'Oxygen',
         highlightColor: cyan2,
+        // canvasColor: Color(0xffddd6cd),
       ),
       home: Wrapper(),
       routes: {
