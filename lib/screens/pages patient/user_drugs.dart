@@ -26,7 +26,6 @@ class _UserDrugsState extends State<UserDrugs> {
   bool telephone = false;
   ScrollController scrollController = ScrollController();
   List<dynamic> listOfDrugs = [];
-
   List<dynamic> listOfBilans = [];
   @override
   void initState() {
@@ -36,7 +35,6 @@ class _UserDrugsState extends State<UserDrugs> {
       if (widget.patient.bilan.isNotEmpty) {
         if (widget.patient.bilan[0].typeBilan.isNotEmpty) {
           listOfBilans = widget.patient.bilan[0].typeBilan;
-          print(listOfBilans);
         }
         if (listOfBilans.length > 0) {
           bilans = true;
@@ -151,7 +149,7 @@ class _UserDrugsState extends State<UserDrugs> {
                                           text: " n'a rien préscrit.",
                                           style: black18Normal,
                                         )
-                                      : Container(),
+                                      : TextSpan(text: ''),
                                 ],
                               ),
                             ),

@@ -12,6 +12,9 @@ enregistrerAvecSuccess(BuildContext context) {
   return showDialog(
     context: context,
     builder: (context) {
+      Future.delayed(Duration(milliseconds: 1000), () {
+        Navigator.of(context).pop(true);
+      });
       return AlertDialog(
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(10.0))),
@@ -41,6 +44,9 @@ erreurEnregistrement(BuildContext context) {
   return showDialog(
     context: context,
     builder: (context) {
+      Future.delayed(Duration(milliseconds: 1000), () {
+        Navigator.of(context).pop(true);
+      });
       return AlertDialog(
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(10.0))),

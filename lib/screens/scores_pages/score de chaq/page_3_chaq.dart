@@ -586,7 +586,8 @@ class _Page3ChaqState extends State<Page3Chaq> {
                                     TextSpan(
                                         text: "Dr. ", style: cyan18Bold1_6),
                                     TextSpan(
-                                        text: "Hanene Lassoued Ferjani ",
+                                        text:
+                                            "${widget.patient.docteur.prenom} ${widget.patient.docteur.nom} ",
                                         style: cyan18Bold1_6),
                                     TextSpan(
                                         text:

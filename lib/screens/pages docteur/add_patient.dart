@@ -10,7 +10,6 @@ import 'package:rhumatologie/models/patient.dart';
 import 'package:rhumatologie/screens/pages%20docteur/home_doctor.dart';
 import 'package:rhumatologie/shared/constants.dart';
 import 'package:rhumatologie/shared/utils.dart';
-import 'dart:async';
 
 // ignore: must_be_immutable
 class AddPatient extends StatefulWidget {
@@ -98,26 +97,20 @@ class _AddPatientState extends State<AddPatient> {
             'Authorization': 'Bearer ${widget.token}',
           });
 
-      Future.delayed(Duration(milliseconds: 1000), () {
-        if (addPatientResponse.statusCode == 200 ||
-            addPatientResponse.statusCode == 201 ||
-            addPatientResponse.statusCode == 202 ||
-            addPatientResponse.statusCode == 203) {
-          enregistrerAvecSuccess(context);
-          Future.delayed(Duration(milliseconds: 1500), () {
-            Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => HomeDoctor(
-                doctor: widget.doctor,
-                token: widget.token,
-              ),
-            ));
-          });
-        } else {
-          Future.delayed(Duration(milliseconds: 1000), () {
-            erreurEnregistrement(context);
-          });
-        }
-      });
+      if (addPatientResponse.statusCode == 200 ||
+          addPatientResponse.statusCode == 201 ||
+          addPatientResponse.statusCode == 202 ||
+          addPatientResponse.statusCode == 203) {
+        await enregistrerAvecSuccess(context);
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => HomeDoctor(
+            doctor: widget.doctor,
+            token: widget.token,
+          ),
+        ));
+      } else {
+        erreurEnregistrement(context);
+      }
     } catch (e) {
       print(e.toString());
     }

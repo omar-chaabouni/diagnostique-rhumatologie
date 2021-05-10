@@ -15,7 +15,6 @@ import 'package:rhumatologie/shared/constants.dart';
 import 'package:rhumatologie/shared/utils.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'dart:async';
 import 'package:http/http.dart' as http;
 
 // ignore: must_be_immutable
@@ -59,13 +58,15 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
   bool serologieHepatiteB = false;
   bool jamarDemanded = true;
   bool jamarDemandedNotRempli = true;
+  List<bool> validerRequestSucceeded = [false, false, false];
+  List<bool> demanderRequestSucceeded = [false, false, false];
+  List<bool> testDemandedSecondTime = [false, false, false];
 
   List<String> scoreNames = ['JADAS', 'JSPADA', 'CHAQ', 'JAMAR'];
   List<String> scoreResults = <String>['  --  ', '  --  ', '  --  ', '  --  '];
   List<bool> testDemanded = [false, false, false, false];
   List<bool> testRempli = [false, false, false, false]; // if true test rempli
   List<bool> testValidated = [false, false, false, false]; //if true test validé
-
   void initState() {
     super.initState();
     fillScoreResults(widget.patient);
@@ -238,7 +239,7 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
     }
   }
 
-  demanderTest(String typeScore) async {
+  demanderTest(String typeScore, int testIndex, int demandAttempt) async {
     String demanderTestURL =
         'http://192.168.1.16:4000/doctors/${widget.doctor.id}/patients/${widget.patient.id}/';
     if (typeScore == "JADAS") {
@@ -255,24 +256,35 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ${widget.token}'
       });
-      Future.delayed(Duration(milliseconds: 1000), () {
-        if (demanderTestResponse.statusCode == 200 ||
-            demanderTestResponse.statusCode == 201 ||
-            demanderTestResponse.statusCode == 202 ||
-            demanderTestResponse.statusCode == 203) {
-          enregistrerAvecSuccess(context);
-        } else {
-          Future.delayed(Duration(milliseconds: 1000), () {
-            erreurEnregistrement(context);
-          });
+      if (demanderTestResponse.statusCode == 200 ||
+          demanderTestResponse.statusCode == 201 ||
+          demanderTestResponse.statusCode == 202 ||
+          demanderTestResponse.statusCode == 203) {
+        setState(() {
+          demanderRequestSucceeded[testIndex] = true;
+        });
+        if (demanderRequestSucceeded[testIndex] == true) {
+          if (mounted == true) {
+            setState(() {
+              testDemanded[testIndex] = true;
+              if (demandAttempt == 1) {
+                setState(() {
+                  testDemandedSecondTime[testIndex] = true;
+                });
+              }
+            });
+          }
         }
-      });
+        enregistrerAvecSuccess(context);
+      } else {
+        erreurEnregistrement(context);
+      }
     } catch (e) {
       print(e.toString());
     }
   }
 
-  validerTest(String typeScore) async {
+  validerTest(String typeScore, int testIndex) async {
     String validerTestURL =
         'http://192.168.1.16:4000/doctors/${widget.doctor.id}/patients/${widget.patient.id}/';
     if (typeScore == "JADAS") {
@@ -289,18 +301,26 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ${widget.token}'
       });
-      Future.delayed(Duration(milliseconds: 1000), () {
-        if (validerTestResponse.statusCode == 200 ||
-            validerTestResponse.statusCode == 201 ||
-            validerTestResponse.statusCode == 202 ||
-            validerTestResponse.statusCode == 203) {
-          enregistrerAvecSuccess(context);
-        } else {
-          Future.delayed(Duration(milliseconds: 1000), () {
-            erreurEnregistrement(context);
-          });
+
+      if (validerTestResponse.statusCode == 200 ||
+          validerTestResponse.statusCode == 201 ||
+          validerTestResponse.statusCode == 202 ||
+          validerTestResponse.statusCode == 203) {
+        setState(() {
+          validerRequestSucceeded[testIndex] = true;
+        });
+        if (validerRequestSucceeded[testIndex] == true) {
+          if (mounted == true) {
+            setState(() {
+              testValidated[testIndex] = true;
+              testDemanded[testIndex] = true;
+            });
+          }
         }
-      });
+        enregistrerAvecSuccess(context);
+      } else {
+        erreurEnregistrement(context);
+      }
     } catch (e) {
       print(e.toString());
     }
@@ -438,23 +458,17 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
         print(e.toString());
       }
     }
-    Future.delayed(Duration(milliseconds: 1000), () {
-      if (success1 && success2 && success3) {
-        enregistrerAvecSuccess(context);
-        Future.delayed(Duration(milliseconds: 1000), () {
-          Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => HomeDoctor(
-              doctor: widget.doctor,
-              token: widget.token,
-            ),
-          ));
-        });
-      } else {
-        Future.delayed(Duration(milliseconds: 1000), () {
-          erreurEnregistrement(context);
-        });
-      }
-    });
+    if (success1 && success2 && success3) {
+      await enregistrerAvecSuccess(context);
+      Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => HomeDoctor(
+          doctor: widget.doctor,
+          token: widget.token,
+        ),
+      ));
+    } else {
+      erreurEnregistrement(context);
+    }
   }
 
   Column createAllScores() {
@@ -464,308 +478,6 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
       createScore(scoreNames[2], scoreResults[2], 2, widget.patient),
       // createScoreJamar(scoreNames[3], scoreResults[3], 3, widget.patient),
     ]);
-  }
-
-  Card createScoreJamar(
-      String typeScore, String score, int index, Patient patient) {
-    String dateCalcul;
-    String dateValidation;
-    String dateDemande;
-    List<String> allDates = getDates(patient, typeScore);
-    dateDemande = allDates[0];
-    dateCalcul = allDates[1];
-    dateValidation = allDates[2];
-    return Card(
-      shadowColor: null,
-      shape: null,
-      elevation: 0.0,
-      child: Padding(
-        padding: const EdgeInsets.only(bottom: 10.0),
-        child: Container(
-          margin: EdgeInsets.only(right: 5.0, left: 5.0),
-          padding: EdgeInsets.only(right: 10.0, left: 10.0),
-          decoration: BoxDecoration(
-            border: Border.all(color: cyan2, width: 2.0),
-            borderRadius: BorderRadius.all(Radius.circular(8)),
-          ),
-          child: Container(
-            width: MediaQuery.of(context).size.width,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  RichText(
-                    text: TextSpan(
-                      text: typeScore + " : ",
-                      style: cyan16Bold,
-                    ),
-                  ),
-                  RichText(
-                    text: TextSpan(
-                      text: "Date demandé :  ",
-                      style: black16Bold,
-                      children: <TextSpan>[
-                        TextSpan(text: "$dateDemande", style: black14Normal),
-                      ],
-                    ),
-                  ),
-                  RichText(
-                    text: TextSpan(
-                      text: "Date rempli :  ",
-                      style: black16Bold,
-                      children: <TextSpan>[
-                        TextSpan(text: "$dateCalcul", style: black14Normal),
-                      ],
-                    ),
-                  ),
-                  RichText(
-                    text: TextSpan(
-                      text: "Date validé :  ",
-                      style: black16Bold,
-                      children: <TextSpan>[
-                        TextSpan(text: "$dateValidation", style: black14Normal),
-                      ],
-                    ),
-                  ),
-                  RichText(
-                    text: TextSpan(
-                      text: "Résultat ",
-                      style: cyan16Bold,
-                      children: <TextSpan>[
-                        TextSpan(text: score, style: black18Normal),
-                      ],
-                    ),
-                  ),
-                  Row(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 10.0),
-                        child: new FlatButton(
-                          onPressed: () {},
-                          focusColor: cyan2,
-                          hoverColor: cyan2,
-                          splashColor: cyan2,
-                          color: cyan2,
-                          child: Container(
-                            child: Row(
-                              children: <Widget>[
-                                Text(
-                                  'Détails',
-                                  style: white16Bold,
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 6.0),
-                                  child: Icon(
-                                    Icons.info,
-                                    size: 20.0,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      Spacer(),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 10.0),
-                        child: new FlatButton(
-                          onPressed: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => (HistoriqueScore(
-                                    historiqueArguments: HistoriqueArguments(
-                                        patient: widget.patient,
-                                        typeScore: typeScore)))));
-                          },
-                          focusColor: cyan2,
-                          hoverColor: cyan2,
-                          splashColor: cyan2,
-                          color: cyan2,
-                          child: Container(
-                            child: Row(
-                              children: <Widget>[
-                                Text(
-                                  'Voir historique',
-                                  style: white16Bold,
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 6.0),
-                                  child: Icon(
-                                    FontAwesomeIcons.history,
-                                    size: 18.0,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Spacer(),
-                      (!testRempli[index] && !testValidated[index])
-                          ? ((!testDemanded[index])
-                              ? Padding(
-                                  padding: const EdgeInsets.only(left: 30),
-                                  child: new FlatButton(
-                                    onPressed: () {
-                                      Future.delayed(
-                                          Duration(milliseconds: 100), () {
-                                        if (mounted == true) {
-                                          setState(() {
-                                            testDemanded[index] = true;
-                                          });
-                                        }
-                                      });
-                                    },
-                                    focusColor: Colors.green,
-                                    hoverColor: Colors.green,
-                                    splashColor: Colors.green,
-                                    color: Colors.green,
-                                    child: Container(
-                                      child: Column(
-                                        children: [
-                                          Row(
-                                            children: <Widget>[
-                                              Text(
-                                                'Demander test',
-                                                style: white14Bold,
-                                              ),
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    left: 5.0),
-                                                child: Icon(
-                                                  FontAwesomeIcons.fileAlt,
-                                                  size: 14.0,
-                                                  color: Colors.white,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                )
-                              : Padding(
-                                  padding: const EdgeInsets.only(left: 30),
-                                  child: new RaisedButton(
-                                    onPressed: null,
-                                    focusColor: Colors.red,
-                                    hoverColor: Colors.red,
-                                    splashColor: Colors.red,
-                                    disabledColor: Colors.red,
-                                    color: Colors.red,
-                                    child: Container(
-                                      child: Column(
-                                        children: [
-                                          Row(
-                                            children: <Widget>[
-                                              Text(
-                                                'Test demandé',
-                                                style: white14Bold,
-                                              ),
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    left: 5.0),
-                                                child: Icon(
-                                                  FontAwesomeIcons.fileAlt,
-                                                  size: 14.0,
-                                                  color: Colors.white,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ))
-                          : Container(
-                              height: 0,
-                              width: 0,
-                            ),
-                      Spacer(),
-                      (testDemanded[index] && testRempli[index])
-                          ? ((testValidated[index])
-                              ? Padding(
-                                  padding: const EdgeInsets.only(top: 10.0),
-                                  child: new RaisedButton(
-                                    onPressed: null,
-                                    focusColor: Colors.green,
-                                    hoverColor: Colors.green,
-                                    splashColor: Colors.green,
-                                    disabledColor: Colors.lightGreen[800],
-                                    color: Colors.green,
-                                    child: Container(
-                                      child: Row(
-                                        children: <Widget>[
-                                          Text(
-                                            'Test validé',
-                                            style: white14Bold,
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 6.0),
-                                            child: Icon(
-                                              FontAwesomeIcons.checkCircle,
-                                              size: 18.0,
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                )
-                              : Padding(
-                                  padding: const EdgeInsets.only(top: 10.0),
-                                  child: new FlatButton(
-                                    onPressed: () {
-                                      validerTest(typeScore);
-                                    },
-                                    focusColor: Colors.green,
-                                    hoverColor: Colors.green,
-                                    splashColor: Colors.green,
-                                    color: Colors.green,
-                                    child: Container(
-                                      child: Row(
-                                        children: <Widget>[
-                                          Text(
-                                            'Valider test',
-                                            style: white14Bold,
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 6.0),
-                                            child: Icon(
-                                              FontAwesomeIcons.checkCircle,
-                                              size: 18.0,
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ))
-                          : Container(
-                              height: 0,
-                              width: 0,
-                            ),
-                    ],
-                  )
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
   }
 
   List<String> getDates(Patient patient, String typeScore) {
@@ -1110,19 +822,12 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
                                         padding: EdgeInsets.only(
                                             left: 9.0, right: 9.0),
                                         onPressed: () {
-                                          Future.delayed(
-                                              Duration(milliseconds: 100), () {
-                                            if (mounted == true) {
-                                              setState(() {
-                                                testDemanded[index] = true;
-                                              });
-                                            }
-                                          });
-                                          demanderTest(typeScore);
+                                          demanderTest(typeScore, index, 0);
                                         },
                                         focusColor: Colors.green,
                                         hoverColor: Colors.green,
                                         splashColor: Colors.green,
+                                        highlightColor: Colors.green,
                                         color: Colors.green,
                                         child: Container(
                                           child: Row(
@@ -1239,14 +944,12 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
                                         padding: EdgeInsets.only(
                                             left: 10.0, right: 10.0),
                                         onPressed: () {
-                                          validerTest(typeScore);
-                                          setState(() {
-                                            testValidated[index] = true;
-                                          });
+                                          validerTest(typeScore, index);
                                         },
                                         focusColor: Colors.green,
                                         hoverColor: Colors.green,
                                         splashColor: Colors.green,
+                                        highlightColor: Colors.green,
                                         color: Colors.green,
                                         child: Container(
                                           child: Row(
@@ -1277,6 +980,95 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
                             ),
                     ],
                   ),
+                  (testValidated[index])
+                      ? ((!testDemandedSecondTime[index])
+                          ? Row(
+                              children: [
+                                Spacer(),
+                                Align(
+                                  alignment: Alignment.center,
+                                  child: Container(
+                                    // margin: EdgeInsets.only(left: 5),
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(top: 0.0),
+                                      child: new FlatButton(
+                                        padding: EdgeInsets.only(
+                                            left: 9.0, right: 9.0),
+                                        onPressed: () {
+                                          demanderTest(typeScore, index, 1);
+                                        },
+                                        focusColor: Colors.green,
+                                        hoverColor: Colors.green,
+                                        splashColor: Colors.green,
+                                        highlightColor: Colors.green,
+                                        color: Colors.green,
+                                        child: Container(
+                                          child: Row(
+                                            children: <Widget>[
+                                              Text(
+                                                'Demander test',
+                                                style: white14Bold,
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 3.0),
+                                                child: Icon(
+                                                  FontAwesomeIcons.fileAlt,
+                                                  size: 12.0,
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Spacer(),
+                              ],
+                            )
+                          : Row(
+                              children: [
+                                Spacer(),
+                                Container(
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(top: 0.0),
+                                    child: new RaisedButton(
+                                      padding: EdgeInsets.only(
+                                          left: 10.0, right: 10.0),
+                                      onPressed: null,
+                                      focusColor: Colors.red,
+                                      hoverColor: Colors.red,
+                                      splashColor: Colors.red,
+                                      disabledColor: Colors.red,
+                                      color: Colors.red,
+                                      child: Container(
+                                        child: Row(
+                                          children: <Widget>[
+                                            Text(
+                                              'Test demandé',
+                                              style: white14Bold,
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 3.0),
+                                              child: Icon(
+                                                FontAwesomeIcons.fileAlt,
+                                                size: 12.0,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Spacer(),
+                              ],
+                            ))
+                      : Container(),
                 ],
               ),
             ),
@@ -1292,6 +1084,16 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
       backgroundColor: gris1,
       resizeToAvoidBottomPadding: false,
       appBar: AppBar(
+        leading: new IconButton(
+            icon: new Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => HomeDoctor(
+                  doctor: widget.doctor,
+                  token: widget.token,
+                ),
+              ));
+            }),
         backgroundColor: cyan2,
         title: Row(
           children: [
@@ -1906,3 +1708,301 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
     );
   }
 }
+
+// Card createScoreJamar(
+//       String typeScore, String score, int index, Patient patient) {
+//     String dateCalcul;
+//     String dateValidation;
+//     String dateDemande;
+//     List<String> allDates = getDates(patient, typeScore);
+//     dateDemande = allDates[0];
+//     dateCalcul = allDates[1];
+//     dateValidation = allDates[2];
+//     return Card(
+//       shadowColor: null,
+//       shape: null,
+//       elevation: 0.0,
+//       child: Padding(
+//         padding: const EdgeInsets.only(bottom: 10.0),
+//         child: Container(
+//           margin: EdgeInsets.only(right: 5.0, left: 5.0),
+//           padding: EdgeInsets.only(right: 10.0, left: 10.0),
+//           decoration: BoxDecoration(
+//             border: Border.all(color: cyan2, width: 2.0),
+//             borderRadius: BorderRadius.all(Radius.circular(8)),
+//           ),
+//           child: Container(
+//             width: MediaQuery.of(context).size.width,
+//             child: Padding(
+//               padding: const EdgeInsets.all(8.0),
+//               child: Column(
+//                 crossAxisAlignment: CrossAxisAlignment.start,
+//                 children: [
+//                   RichText(
+//                     text: TextSpan(
+//                       text: typeScore + " : ",
+//                       style: cyan16Bold,
+//                     ),
+//                   ),
+//                   RichText(
+//                     text: TextSpan(
+//                       text: "Date demandé :  ",
+//                       style: black16Bold,
+//                       children: <TextSpan>[
+//                         TextSpan(text: "$dateDemande", style: black14Normal),
+//                       ],
+//                     ),
+//                   ),
+//                   RichText(
+//                     text: TextSpan(
+//                       text: "Date rempli :  ",
+//                       style: black16Bold,
+//                       children: <TextSpan>[
+//                         TextSpan(text: "$dateCalcul", style: black14Normal),
+//                       ],
+//                     ),
+//                   ),
+//                   RichText(
+//                     text: TextSpan(
+//                       text: "Date validé :  ",
+//                       style: black16Bold,
+//                       children: <TextSpan>[
+//                         TextSpan(text: "$dateValidation", style: black14Normal),
+//                       ],
+//                     ),
+//                   ),
+//                   RichText(
+//                     text: TextSpan(
+//                       text: "Résultat ",
+//                       style: cyan16Bold,
+//                       children: <TextSpan>[
+//                         TextSpan(text: score, style: black18Normal),
+//                       ],
+//                     ),
+//                   ),
+//                   Row(
+//                     children: [
+//                       Padding(
+//                         padding: const EdgeInsets.only(top: 10.0),
+//                         child: new FlatButton(
+//                           onPressed: () {},
+//                           focusColor: cyan2,
+//                           hoverColor: cyan2,
+//                           splashColor: cyan2,
+//                           color: cyan2,
+//                           child: Container(
+//                             child: Row(
+//                               children: <Widget>[
+//                                 Text(
+//                                   'Détails',
+//                                   style: white16Bold,
+//                                 ),
+//                                 Padding(
+//                                   padding: const EdgeInsets.only(left: 6.0),
+//                                   child: Icon(
+//                                     Icons.info,
+//                                     size: 20.0,
+//                                     color: Colors.white,
+//                                   ),
+//                                 ),
+//                               ],
+//                             ),
+//                           ),
+//                         ),
+//                       ),
+//                       Spacer(),
+//                       Padding(
+//                         padding: const EdgeInsets.only(top: 10.0),
+//                         child: new FlatButton(
+//                           onPressed: () {
+//                             Navigator.of(context).push(MaterialPageRoute(
+//                                 builder: (context) => (HistoriqueScore(
+//                                     historiqueArguments: HistoriqueArguments(
+//                                         patient: widget.patient,
+//                                         typeScore: typeScore)))));
+//                           },
+//                           focusColor: cyan2,
+//                           hoverColor: cyan2,
+//                           splashColor: cyan2,
+//                           color: cyan2,
+//                           child: Container(
+//                             child: Row(
+//                               children: <Widget>[
+//                                 Text(
+//                                   'Voir historique',
+//                                   style: white16Bold,
+//                                 ),
+//                                 Padding(
+//                                   padding: const EdgeInsets.only(left: 6.0),
+//                                   child: Icon(
+//                                     FontAwesomeIcons.history,
+//                                     size: 18.0,
+//                                     color: Colors.white,
+//                                   ),
+//                                 ),
+//                               ],
+//                             ),
+//                           ),
+//                         ),
+//                       ),
+//                     ],
+//                   ),
+//                   Row(
+//                     children: [
+//                       Spacer(),
+//                       (!testRempli[index] && !testValidated[index])
+//                           ? ((!testDemanded[index])
+//                               ? Padding(
+//                                   padding: const EdgeInsets.only(left: 30),
+//                                   child: new FlatButton(
+//                                     onPressed: () {
+//                                       if (mounted == true) {
+//                                         setState(() {
+//                                           testDemanded[index] = true;
+//                                         });
+//                                       }
+//                                     },
+//                                     focusColor: Colors.green,
+//                                     hoverColor: Colors.green,
+//                                     splashColor: Colors.green,
+//                                     child: Container(
+//                                       child: Column(
+//                                         children: [
+//                                           Row(
+//                                             children: <Widget>[
+//                                               Text(
+//                                                 'Demander test',
+//                                                 style: white14Bold,
+//                                               ),
+//                                               Padding(
+//                                                 padding: const EdgeInsets.only(
+//                                                     left: 5.0),
+//                                                 child: Icon(
+//                                                   FontAwesomeIcons.fileAlt,
+//                                                   size: 14.0,
+//                                                   color: Colors.white,
+//                                                 ),
+//                                               ),
+//                                             ],
+//                                           ),
+//                                         ],
+//                                       ),
+//                                     ),
+//                                   ),
+//                                 )
+//                               : Padding(
+//                                   padding: const EdgeInsets.only(left: 30),
+//                                   child: new RaisedButton(
+//                                     onPressed: null,
+//                                     focusColor: Colors.red,
+//                                     hoverColor: Colors.red,
+//                                     splashColor: Colors.red,
+//                                     disabledColor: Colors.red,
+//                                     color: Colors.red,
+//                                     child: Container(
+//                                       child: Column(
+//                                         children: [
+//                                           Row(
+//                                             children: <Widget>[
+//                                               Text(
+//                                                 'Test demandé',
+//                                                 style: white14Bold,
+//                                               ),
+//                                               Padding(
+//                                                 padding: const EdgeInsets.only(
+//                                                     left: 5.0),
+//                                                 child: Icon(
+//                                                   FontAwesomeIcons.fileAlt,
+//                                                   size: 14.0,
+//                                                   color: Colors.white,
+//                                                 ),
+//                                               ),
+//                                             ],
+//                                           ),
+//                                         ],
+//                                       ),
+//                                     ),
+//                                   ),
+//                                 ))
+//                           : Container(
+//                               height: 0,
+//                               width: 0,
+//                             ),
+//                       Spacer(),
+//                       (testDemanded[index] && testRempli[index])
+//                           ? ((testValidated[index])
+//                               ? Padding(
+//                                   padding: const EdgeInsets.only(top: 10.0),
+//                                   child: new RaisedButton(
+//                                     onPressed: null,
+//                                     focusColor: Colors.green,
+//                                     hoverColor: Colors.green,
+//                                     splashColor: Colors.green,
+//                                     disabledColor: Colors.lightGreen[800],
+//                                     color: Colors.green,
+//                                     child: Container(
+//                                       child: Row(
+//                                         children: <Widget>[
+//                                           Text(
+//                                             'Test validé',
+//                                             style: white14Bold,
+//                                           ),
+//                                           Padding(
+//                                             padding: const EdgeInsets.only(
+//                                                 left: 6.0),
+//                                             child: Icon(
+//                                               FontAwesomeIcons.checkCircle,
+//                                               size: 18.0,
+//                                               color: Colors.white,
+//                                             ),
+//                                           ),
+//                                         ],
+//                                       ),
+//                                     ),
+//                                   ),
+//                                 )
+//                               : Padding(
+//                                   padding: const EdgeInsets.only(top: 10.0),
+//                                   child: new FlatButton(
+//                                     onPressed: () {
+//                                       validerTest(typeScore);
+//                                     },
+//                                     focusColor: Colors.green,
+//                                     hoverColor: Colors.green,
+//                                     splashColor: Colors.green,
+//                                     color: Colors.green,
+//                                     child: Container(
+//                                       child: Row(
+//                                         children: <Widget>[
+//                                           Text(
+//                                             'Valider test',
+//                                             style: white14Bold,
+//                                           ),
+//                                           Padding(
+//                                             padding: const EdgeInsets.only(
+//                                                 left: 6.0),
+//                                             child: Icon(
+//                                               FontAwesomeIcons.checkCircle,
+//                                               size: 18.0,
+//                                               color: Colors.white,
+//                                             ),
+//                                           ),
+//                                         ],
+//                                       ),
+//                                     ),
+//                                   ),
+//                                 ))
+//                           : Container(
+//                               height: 0,
+//                               width: 0,
+//                             ),
+//                     ],
+//                   )
+//                 ],
+//               ),
+//             ),
+//           ),
+//         ),
+//       ),
+//     );
+//   }

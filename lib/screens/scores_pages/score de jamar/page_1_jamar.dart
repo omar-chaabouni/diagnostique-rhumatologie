@@ -586,7 +586,8 @@ class _Page1JamarState extends State<Page1Jamar> {
                                         TextSpan(
                                             text: "Dr. ", style: cyan18Bold1_6),
                                         TextSpan(
-                                            text: "Hanene Lassoued Ferjani ",
+                                            text:
+                                                "${widget.patient.docteur.prenom} ${widget.patient.docteur.nom} ",
                                             style: cyan18Bold1_6),
                                         TextSpan(
                                             text:
