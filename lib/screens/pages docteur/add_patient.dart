@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:rhumatologie/models/doctor.dart';
 import 'package:rhumatologie/models/patient.dart';
 import 'package:rhumatologie/screens/pages%20docteur/home_doctor.dart';
@@ -443,11 +442,7 @@ class _AddPatientState extends State<AddPatient> {
                                   children: <Widget>[
                                     Text(
                                       'Enregistrer',
-                                      style: GoogleFonts.oxygen(
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white,
-                                        fontSize: 16,
-                                      ),
+                                      style: white16Bold,
                                     ),
                                     Padding(
                                       padding:
