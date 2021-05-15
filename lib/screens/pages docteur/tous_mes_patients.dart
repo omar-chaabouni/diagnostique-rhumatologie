@@ -187,8 +187,9 @@ class _AllMyPatientsState extends State<AllMyPatients> {
                                                   children: <TextSpan>[
                                                     TextSpan(
                                                         text: filteredPatients[
-                                                                index]
-                                                            .prenom,
+                                                                    index]
+                                                                .prenom +
+                                                            " ",
                                                         style: black18Bold),
                                                     TextSpan(
                                                         text: filteredPatients[

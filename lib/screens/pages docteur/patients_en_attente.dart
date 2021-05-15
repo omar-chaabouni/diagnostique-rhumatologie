@@ -191,8 +191,9 @@ class _PatientsEnAttenteState extends State<PatientsEnAttente> {
                                                 children: <TextSpan>[
                                                   TextSpan(
                                                       text: filteredPatients[
-                                                              index]
-                                                          .prenom,
+                                                                  index]
+                                                              .prenom +
+                                                          " ",
                                                       style: black18Bold),
                                                   TextSpan(
                                                       text: filteredPatients[
