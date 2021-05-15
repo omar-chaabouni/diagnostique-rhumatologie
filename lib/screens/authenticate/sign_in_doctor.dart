@@ -213,7 +213,7 @@ class _SignInDoctorState extends State<SignInDoctor> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             Text(
-                              'BIENVENU DOCTEUR',
+                              'BIENVENUE DOCTEUR',
                               style: white26Bold,
                             ),
                             SizedBox(height: 30.0),

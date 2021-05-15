@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
@@ -225,6 +226,11 @@ class _AddPatientState extends State<AddPatient> {
                             onPressed: () {
                               DatePicker.showDatePicker(context,
                                   theme: DatePickerTheme(
+                                    cancelStyle: GoogleFonts.oxygen(
+                                        color: gris2, fontSize: 18.0),
+                                    doneStyle: GoogleFonts.oxygen(
+                                        color: cyan2, fontSize: 18.0),
+                                    itemStyle: GoogleFonts.oxygen(color: cyan2),
                                     containerHeight: 210.0,
                                   ),
                                   showTitleActions: true,
