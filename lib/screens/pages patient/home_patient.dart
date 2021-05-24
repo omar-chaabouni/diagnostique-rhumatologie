@@ -55,7 +55,7 @@ class _HomePatientState extends State<HomePatient> {
   }
 
   getPatient() async {
-    String getPatientURL = 'http://192.168.1.16:4000/patients/me';
+    String getPatientURL = '$baseUrl/patients/me';
     try {
       var getPatientResponse = await http.get("$getPatientURL", headers: {
         'Content-Type': 'application/json',

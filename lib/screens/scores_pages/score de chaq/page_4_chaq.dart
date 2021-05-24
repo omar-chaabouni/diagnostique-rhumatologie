@@ -77,7 +77,7 @@ class _Page4ChaqState extends State<Page4Chaq> {
     String evaluationFinalString = evaluationGlobale.toString() + " / 100";
 
     String fillChaqURL =
-        'http://192.168.1.16:4000/patients/${widget.patient.id.toString()}/fillChaq';
+        '$baseUrl/patients/${widget.patient.id.toString()}/fillChaq';
     try {
       var fillChaqResponse = await http.post("$fillChaqURL",
           body: json.encode({

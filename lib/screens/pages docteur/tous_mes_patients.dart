@@ -42,8 +42,7 @@ class _AllMyPatientsState extends State<AllMyPatients> {
   }
 
   _getDoctorsAllPatients(String doctorIdString) async {
-    String operationsURL =
-        'http://192.168.1.16:4000/doctors/$doctorIdString/patients';
+    String operationsURL = '$baseUrl/doctors/$doctorIdString/patients';
     try {
       var operationResponse = await http.get("$operationsURL", headers: {
         'Content-Type': 'application/json',

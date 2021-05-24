@@ -42,7 +42,7 @@ class _Page1JadasState extends State<Page1Jadas> {
       });
     } else {
       setState(() {
-        d = _vitesseSedimentation;
+        d = (_vitesseSedimentation - 20) / 10;
       });
     }
   }
@@ -52,12 +52,13 @@ class _Page1JadasState extends State<Page1Jadas> {
         _evaluationGlobaleParParent +
         _nbrArticulationsTumefiees +
         d;
-    double scoreFinal = num.parse((sommeScore / 71).toStringAsFixed(3));
+    double scoreFinal = num.parse((sommeScore).toStringAsFixed(3));
+    String scoreFinalString = scoreFinal.toString() + " / 40";
     String fillJadasURL =
-        'http://192.168.1.16:4000/patients/${widget.patient.id.toString()}/fillJadas';
+        '$baseUrl/patients/${widget.patient.id.toString()}/fillJadas';
     try {
       var fillJadasResponse = await http.post("$fillJadasURL",
-          body: json.encode({"score": scoreFinal}),
+          body: json.encode({"score": scoreFinalString}),
           headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ${widget.token}'

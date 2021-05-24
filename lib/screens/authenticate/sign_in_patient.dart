@@ -27,8 +27,8 @@ class _SignInPatientState extends State<SignInPatient> {
 
   signIn(int telephone, String password) async {
     Doctor result;
-    String loginURL = 'http://192.168.1.16:4000/patients/login';
-    String getPatientURL = 'http://192.168.1.16:4000/patients/me';
+    String loginURL = '$baseUrl/patients/login';
+    String getPatientURL = '$baseUrl/patients/me';
 
     try {
       var loginResponse = await http.post("$loginURL",

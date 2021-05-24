@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+String baseUrl = "http://192.168.1.107:4000";
 // #####################################################################
 
 final Color cyan1 = Color(0xff40bcd8);

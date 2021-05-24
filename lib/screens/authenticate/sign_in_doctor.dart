@@ -26,8 +26,8 @@ class _SignInDoctorState extends State<SignInDoctor> {
 
   signIn(String email, String password) async {
     Doctor result;
-    String loginURL = 'http://192.168.1.16:4000/doctors/login';
-    String getDoctorURL = 'http://192.168.1.16:4000/doctors/me';
+    String loginURL = '$baseUrl/doctors/login';
+    String getDoctorURL = '$baseUrl/doctors/me';
     try {
       var loginResponse = await http.post("$loginURL",
           body: json.encode({"mail": email, "password": password}),

@@ -64,7 +64,7 @@ class _Page1JspadaState extends State<Page1Jspada> {
     double scoreFinal = num.parse((sommeScore).toStringAsFixed(3));
     String scoreFinalString = scoreFinal.toString() + " / 7";
     String fillJspadaURL =
-        'http://192.168.1.16:4000/patients/${widget.patient.id.toString()}/fillJspada';
+        '$baseUrl/patients/${widget.patient.id.toString()}/fillJspada';
     try {
       var fillJspadaResponse = await http.post("$fillJspadaURL",
           body: json.encode({"score": scoreFinalString}),
