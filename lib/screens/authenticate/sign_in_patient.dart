@@ -205,9 +205,9 @@ class _SignInPatientState extends State<SignInPatient> {
                   children: <Widget>[
                     ThemeContainer(),
                     Container(
-                      height: double.infinity,
+                      // height: double.infinity,
                       child: SingleChildScrollView(
-                        physics: AlwaysScrollableScrollPhysics(),
+                        // physics: AlwaysScrollableScrollPhysics(),
                         padding: EdgeInsets.symmetric(
                           horizontal: 40.0,
                           vertical: 100.0,
@@ -242,6 +242,49 @@ class _SignInPatientState extends State<SignInPatient> {
                 ),
               ),
             ),
+            bottomNavigationBar: new Container(
+              color: cyan3,
+              height: 70,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 12.0, right: 12.0),
+                child: Column(
+                  children: [
+                    RichText(
+                      text: TextSpan(
+                        children: [
+                          TextSpan(
+                            text:
+                                'Ce travail a été réalisé par Omar CHAABOUNI, Chaima ARAIBI et Ahmed BELLAAJ; sous l\'encadrement de Dr. Wided MILED',
+                            style: white12Normal,
+                          ),
+                        ],
+                      ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Délivré de l\' INSAT',
+                          style: white12Normal,
+                        ),
+                        Padding(
+                          padding:
+                              EdgeInsets.only(left: 8, right: 8, bottom: 2),
+                          child: Image.asset('icons/flags/png/tn.png',
+                              width: 20.0, package: 'country_icons'),
+                        ),
+                        Text(
+                          '2021 \u00a9',
+                          style: white12Normal,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+
+            // color: Colors.red,
           );
   }
 }

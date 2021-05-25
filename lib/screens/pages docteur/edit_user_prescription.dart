@@ -783,7 +783,10 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
                                   builder: (context) => (HistoriqueScore(
                                       historiqueArguments: HistoriqueArguments(
                                           patient: widget.patient,
-                                          typeScore: typeScore)))));
+                                          typeScore: typeScore),
+                                      doctor: widget.doctor,
+                                      patient: widget.patient,
+                                      token: widget.token))));
                             },
                             focusColor: cyan2,
                             hoverColor: cyan2,

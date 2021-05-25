@@ -115,6 +115,8 @@ final whiteNormal = GoogleFonts.oxygen(color: Colors.white);
 final white11Bold = GoogleFonts.oxygen(
     fontWeight: FontWeight.bold, color: Colors.white, fontSize: 11.0);
 
+final white12Normal = GoogleFonts.oxygen(
+    fontWeight: FontWeight.normal, color: Colors.white, fontSize: 12.0);
 final white12Bold = GoogleFonts.oxygen(
     color: Colors.white, fontSize: 12.0, fontWeight: FontWeight.bold);
 

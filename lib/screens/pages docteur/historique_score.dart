@@ -2,18 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:rhumatologie/models/chaq.dart';
+import 'package:rhumatologie/models/doctor.dart';
 import 'package:rhumatologie/models/historique_arguments.dart';
 import 'package:rhumatologie/models/jadas.dart';
 import 'package:rhumatologie/models/jamar.dart';
 import 'package:rhumatologie/models/jspada.dart';
+import 'package:rhumatologie/models/patient.dart';
+import 'package:rhumatologie/screens/pages%20docteur/home_doctor.dart';
 import 'package:rhumatologie/shared/constants.dart';
 import 'package:rhumatologie/shared/utils.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:http/http.dart' as http;
 
 // ignore: must_be_immutable
 class HistoriqueScore extends StatefulWidget {
   HistoriqueArguments historiqueArguments;
-  HistoriqueScore({this.historiqueArguments});
+  Patient patient;
+  Doctor doctor;
+  String token;
+  HistoriqueScore(
+      {this.historiqueArguments, this.doctor, this.token, this.patient});
   @override
   _HistoriqueScoreState createState() => _HistoriqueScoreState();
 }
@@ -35,6 +43,42 @@ class _HistoriqueScoreState extends State<HistoriqueScore> {
     super.didChangeDependencies();
     getHistorique();
     fillHistoriqueCards();
+  }
+
+  deleteTest(String typeScore) async {
+    String deleteTestURL =
+        '$baseUrl/doctors/${widget.doctor.id}/patients/${widget.patient.id}/';
+    if (typeScore == "JADAS") {
+      deleteTestURL = deleteTestURL + "deleteJADAS";
+    } else if (typeScore == "JSPADA") {
+      deleteTestURL = deleteTestURL + "deleteJSPADA";
+    } else if (typeScore == "CHAQ") {
+      deleteTestURL = deleteTestURL + "deleteCHAQ";
+    } else {
+      deleteTestURL = deleteTestURL + "deleteJamar";
+    }
+    try {
+      var demanderTestResponse = await http.delete("$deleteTestURL", headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ${widget.token}'
+      });
+      if (demanderTestResponse.statusCode == 200 ||
+          demanderTestResponse.statusCode == 201 ||
+          demanderTestResponse.statusCode == 202 ||
+          demanderTestResponse.statusCode == 203) {
+        await enregistrerAvecSuccess(context);
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => HomeDoctor(
+            doctor: widget.doctor,
+            token: widget.token,
+          ),
+        ));
+      } else {
+        erreurEnregistrement(context);
+      }
+    } catch (e) {
+      print(e.toString());
+    }
   }
 
   String getStateString(int state) {
@@ -86,6 +130,7 @@ class _HistoriqueScoreState extends State<HistoriqueScore> {
         }
         allHistoriqueCards.add(historiqueCard(
             context,
+            i,
             dateDemande.toString(),
             dateValidation.toString(),
             dateCalcul.toString(),
@@ -125,6 +170,7 @@ class _HistoriqueScoreState extends State<HistoriqueScore> {
         }
         allHistoriqueCards.add(historiqueCard(
             context,
+            i,
             dateDemande.toString(),
             dateValidation.toString(),
             dateCalcul.toString(),
@@ -164,6 +210,7 @@ class _HistoriqueScoreState extends State<HistoriqueScore> {
         }
         allHistoriqueCards.add(historiqueCard(
             context,
+            i,
             dateDemande.toString(),
             dateValidation.toString(),
             dateCalcul.toString(),
@@ -203,6 +250,7 @@ class _HistoriqueScoreState extends State<HistoriqueScore> {
         }
         allHistoriqueCards.add(historiqueCard(
             context,
+            i,
             dateDemande.toString(),
             dateValidation.toString(),
             dateCalcul.toString(),
@@ -229,6 +277,165 @@ class _HistoriqueScoreState extends State<HistoriqueScore> {
     if (widget.historiqueArguments.typeScore == 'CHAQ') {
       testsChaq = widget.historiqueArguments.patient.chaq;
     }
+  }
+
+  Card historiqueCard(BuildContext context, int index, String dateDemande,
+      String dateValidation, String dateRempli, String state, String resultat) {
+    return Card(
+      elevation: 0,
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(bottom: 8.0),
+            child: Container(
+              margin: EdgeInsets.only(top: 10.0, right: 5.0, left: 5.0),
+              padding: EdgeInsets.only(right: 10.0, left: 10.0),
+              decoration: BoxDecoration(
+                border: Border.all(color: cyan2, width: 2.0),
+                borderRadius: BorderRadius.all(Radius.circular(8)),
+              ),
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      RichText(
+                        text: TextSpan(
+                          text: "Date demandé :  ",
+                          style: black16Bold,
+                          children: <TextSpan>[
+                            (dateDemande == "Pas encore demandé")
+                                ? TextSpan(
+                                    text: dateDemande, style: red16Normal)
+                                : TextSpan(
+                                    text: dateDemande, style: black16Normal),
+                          ],
+                        ),
+                      ),
+                      RichText(
+                        text: TextSpan(
+                          text: "Date rempli :  ",
+                          style: black16Bold,
+                          children: <TextSpan>[
+                            (dateRempli == "Pas encore rempli")
+                                ? TextSpan(text: dateRempli, style: red16Normal)
+                                : TextSpan(
+                                    text: dateRempli, style: black16Normal),
+                          ],
+                        ),
+                      ),
+                      RichText(
+                        text: TextSpan(
+                          text: "Date validation :  ",
+                          style: black16Bold,
+                          children: <TextSpan>[
+                            (dateValidation == "Pas encore validé")
+                                ? TextSpan(
+                                    text: dateValidation, style: red16Normal)
+                                : TextSpan(
+                                    text: dateValidation, style: black16Normal),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        child: Row(
+                          children: [
+                            RichText(
+                              text: TextSpan(
+                                text: "Etat :  ",
+                                style: black16Bold,
+                                children: <TextSpan>[
+                                  TextSpan(text: state, style: black16Normal),
+                                ],
+                              ),
+                            ),
+                            Spacer(),
+                            ((index == 0) && (resultat == null))
+                                ? Align(
+                                    alignment: Alignment.bottomRight,
+                                    child: Container(
+                                      margin: EdgeInsets.all(0.0),
+                                      child: FlatButton(
+                                        height: 32,
+                                        focusColor: Colors.red,
+                                        hoverColor: Colors.white,
+                                        highlightColor: Colors.grey[200],
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(8)),
+                                        minWidth: 12.0,
+                                        color: Colors.grey[200],
+                                        onPressed: () {
+                                          deleteTest(widget
+                                              .historiqueArguments.typeScore);
+                                        },
+                                        child: Icon(FontAwesomeIcons.trashAlt,
+                                            size: 16, color: Colors.red),
+                                      ),
+                                    ),
+                                  )
+                                : Container(),
+                          ],
+                        ),
+                      ),
+                      ((state != "Demandé") && (resultat != null))
+                          ? Row(
+                              children: [
+                                RichText(
+                                  text: TextSpan(
+                                    text: "Résultat : ",
+                                    style: black16Bold,
+                                    children: <TextSpan>[
+                                      TextSpan(
+                                          text: resultat, style: black16Normal),
+                                    ],
+                                  ),
+                                ),
+                                Spacer(),
+                                (index == 0)
+                                    ? Align(
+                                        alignment: Alignment.bottomRight,
+                                        child: Container(
+                                          margin: EdgeInsets.all(0.0),
+                                          child: FlatButton(
+                                            height: 32,
+                                            focusColor: Colors.red,
+                                            hoverColor: Colors.white,
+                                            highlightColor: Colors.grey[200],
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(8)),
+                                            minWidth: 12.0,
+                                            color: Colors.grey[200],
+                                            onPressed: () {
+                                              deleteTest(widget
+                                                  .historiqueArguments
+                                                  .typeScore);
+                                            },
+                                            child: Icon(
+                                                FontAwesomeIcons.trashAlt,
+                                                size: 16,
+                                                color: Colors.red),
+                                          ),
+                                        ),
+                                      )
+                                    : Container(),
+                              ],
+                            )
+                          : SizedBox(
+                              height: 0,
+                            ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
