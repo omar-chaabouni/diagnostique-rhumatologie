@@ -87,8 +87,7 @@ class _AddPatientState extends State<AddPatient> {
       listOrdonnance.add(contenucontrollerOrdonnance5);
     }
     patient.ordonnance = listOrdonnance;
-    String addPatientURL =
-        'http://192.168.1.16:4000/doctors/${widget.doctor.id}/patients/add';
+    String addPatientURL = '$baseUrl/doctors/${widget.doctor.id}/patients/add';
     try {
       var addPatientResponse = await http.post("$addPatientURL",
           body: json.encode(patient.toJson()),

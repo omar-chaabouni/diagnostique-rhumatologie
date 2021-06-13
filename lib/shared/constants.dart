@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+String baseUrl = "http://192.168.1.107:4000";
 // #####################################################################
 
 final Color cyan1 = Color(0xff40bcd8);
@@ -114,6 +115,8 @@ final whiteNormal = GoogleFonts.oxygen(color: Colors.white);
 final white11Bold = GoogleFonts.oxygen(
     fontWeight: FontWeight.bold, color: Colors.white, fontSize: 11.0);
 
+final white12Normal = GoogleFonts.oxygen(
+    fontWeight: FontWeight.normal, color: Colors.white, fontSize: 12.0);
 final white12Bold = GoogleFonts.oxygen(
     color: Colors.white, fontSize: 12.0, fontWeight: FontWeight.bold);
 

@@ -40,7 +40,7 @@ class _ValiderBilansState extends State<ValiderBilans> {
 
   validerBilan() async {
     String validateBilanURL =
-        'http://192.168.1.16:4000/doctors/${widget.doctor.id.toString()}/patients/${widget.patient.id.toString()}/validateBilan';
+        '$baseUrl/doctors/${widget.doctor.id.toString()}/patients/${widget.patient.id.toString()}/validateBilan';
     try {
       var validateBilanResponse = await http.post("$validateBilanURL",
           headers: {

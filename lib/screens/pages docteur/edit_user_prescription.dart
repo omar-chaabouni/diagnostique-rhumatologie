@@ -241,7 +241,7 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
 
   demanderTest(String typeScore, int testIndex, int demandAttempt) async {
     String demanderTestURL =
-        'http://192.168.1.16:4000/doctors/${widget.doctor.id}/patients/${widget.patient.id}/';
+        '$baseUrl/doctors/${widget.doctor.id}/patients/${widget.patient.id}/';
     if (typeScore == "JADAS") {
       demanderTestURL = demanderTestURL + "newJADAS";
     } else if (typeScore == "JSPADA") {
@@ -286,7 +286,7 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
 
   validerTest(String typeScore, int testIndex) async {
     String validerTestURL =
-        'http://192.168.1.16:4000/doctors/${widget.doctor.id}/patients/${widget.patient.id}/';
+        '$baseUrl/doctors/${widget.doctor.id}/patients/${widget.patient.id}/';
     if (typeScore == "JADAS") {
       validerTestURL = validerTestURL + "validJADAS";
     } else if (typeScore == "JSPADA") {
@@ -339,7 +339,7 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
     bool success2 = true;
     bool success3 = true;
     String updateEvaluationURL =
-        'http://192.168.1.16:4000/doctors/${widget.doctor.id.toString()}/patients/$patientIdString/updateEvaluation';
+        '$baseUrl/doctors/${widget.doctor.id.toString()}/patients/$patientIdString/updateEvaluation';
     if (evaluationGlobaleFaiteParMedecin.toInt() != widget.patient.evaluation) {
       try {
         var updateEvaluationResponse = await http.post("$updateEvaluationURL",
@@ -362,7 +362,7 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
       }
     }
     String updateOrdonnanceURL =
-        'http://192.168.1.16:4000/doctors/${widget.doctor.id.toString()}/patients/$patientIdString/updateOrdonnance';
+        '$baseUrl/doctors/${widget.doctor.id.toString()}/patients/$patientIdString/updateOrdonnance';
     try {
       var updateOrdonnanceResponse = await http.post("$updateOrdonnanceURL",
           body: json.encode({"ordonnance": nouvelleOrdonnance}),
@@ -437,7 +437,7 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
       nouveauBilan.add('Sérologie hépatite B');
     }
     String askForBilanURL =
-        'http://192.168.1.16:4000/doctors/${widget.doctor.id.toString()}/patients/$patientIdString/newBilan';
+        '$baseUrl/doctors/${widget.doctor.id.toString()}/patients/$patientIdString/newBilan';
     if (existeBilanNonValide == false) {
       try {
         var askForBilanResponse = await http.post("$askForBilanURL",
@@ -783,7 +783,10 @@ class _EditUserPrescriptionState extends State<EditUserPrescription> {
                                   builder: (context) => (HistoriqueScore(
                                       historiqueArguments: HistoriqueArguments(
                                           patient: widget.patient,
-                                          typeScore: typeScore)))));
+                                          typeScore: typeScore),
+                                      doctor: widget.doctor,
+                                      patient: widget.patient,
+                                      token: widget.token))));
                             },
                             focusColor: cyan2,
                             hoverColor: cyan2,
