@@ -104,7 +104,11 @@ Technologies used :
 Demo a very quick demo video : https://drive.google.com/file/d/1iN3pTCBalCRCTESgtyPAy6PYB00PX0AK/view?usp=sharing
 
 For visuals and more screenshots: https://drive.google.com/file/d/11Bu8H62HQO9-oloCeD2oWFJC3dXLiHDG/view?usp=sharing
- 
+
+## Code
+
+Quality of code could be upgraded. 
+
 ## Contact
 
  To support us or contribute in this project , you can contact us on :
