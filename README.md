@@ -1,7 +1,8 @@
 
 Mobile application for diagnostic and assistance in the management of patients with spondyloarthritis for the benefit of the Kassab Manouba institute Tunis, Tunisia.
 
-Project name : “RhumaKids”.\n
+Project name : “RhumaKids”.
+
 Description : RhumaKids is a mobile application for diagnostic and assistance in the management of patients with spondyloarthritis for the benefit of the Kassab Manouba institute Tunis, Tunisia.
 
 NB :The app ui is in french language responding to the client preferences.
