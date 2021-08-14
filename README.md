@@ -25,12 +25,12 @@ Through his interface, the doctor can :
 - Manage scores 
 - Manage health checks
 - Manage his patients
-- 
+
 Through his interface, the patient can :
 - Consult the doctor's instructions
 - Respond to score questionnaires
 - Consult his profile
-- 
+ 
 ########################
 
 Built With : 
