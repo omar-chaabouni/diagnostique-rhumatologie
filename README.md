@@ -39,8 +39,7 @@ Through his interface, the doctor can :
     <td><img src="https://user-images.githubusercontent.com/55398565/129442807-162c568e-1be0-49f1-9a40-cc20c3e04ffa.jpg" width="220" height="500"></td>
     <td><img src="https://user-images.githubusercontent.com/55398565/129442817-6e7ee30e-809f-4177-b75b-54cdb091b78a.jpg" width="220" height="500"></td>
     <td><img src="https://user-images.githubusercontent.com/55398565/129442820-c1996704-8fab-4298-80e0-79dfaf953500.jpg" width="220" height="500"></td>
-        <td><img src="https://user-images.githubusercontent.com/55398565/129442820-c1996704-8fab-4298-80e0-79dfaf953500.jpg" width="220" height="500"></td>
-
+    <td><img src="https://user-images.githubusercontent.com/55398565/129443480-4e8d76b7-4274-4409-b2da-64185854b709.jpg" width="220" height="500"></td>
   </tr>
  </table>
 
@@ -59,11 +58,25 @@ Through his interface, the doctor can :
   </tr>
  </table>
 
-
 Through his interface, the patient can :
 - Consult the doctor's instructions
 - Respond to score questionnaires
 - Consult his profile
+ 
+ <table>
+  <tr>
+    <td>Login page</td>
+     <td>Add patient 1/2</td>
+     <td>Add patient 2/2</td>
+    <td>List patients</td>
+  </tr>
+  <tr>
+    <td><img src="https://user-images.githubusercontent.com/55398565/129442807-162c568e-1be0-49f1-9a40-cc20c3e04ffa.jpg" width="220" height="500"></td>
+    <td><img src="https://user-images.githubusercontent.com/55398565/129442817-6e7ee30e-809f-4177-b75b-54cdb091b78a.jpg" width="220" height="500"></td>
+    <td><img src="https://user-images.githubusercontent.com/55398565/129442820-c1996704-8fab-4298-80e0-79dfaf953500.jpg" width="220" height="500"></td>
+    <td><img src="https://user-images.githubusercontent.com/55398565/129443480-4e8d76b7-4274-4409-b2da-64185854b709.jpg" width="220" height="500"></td>
+  </tr>
+ </table>
  
 ## Technologies used
 
