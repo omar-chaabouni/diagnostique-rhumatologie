@@ -1,15 +1,16 @@
+# RhumaKids
 
 Mobile application for diagnostic and assistance in the management of patients with spondyloarthritis for the benefit of the Kassab Manouba institute Tunis, Tunisia.
 
-Project name : “RhumaKids”.
-
-Description : RhumaKids is a mobile application for diagnostic and assistance in the management of patients with spondyloarthritis for the benefit of the Kassab Manouba institute Tunis, Tunisia.
+## Description
+RhumaKids is a mobile application for diagnostic and assistance in the management of patients with spondyloarthritis for the benefit of the Kassab Manouba institute Tunis, Tunisia.
 
 NB :The app ui is in french language responding to the client preferences.
 
 This project is End of year project realized by Omar CHAABOUNI, Chaima ARAIBI and Ahmed BELLAAJ 2nd year engineering students students of the National Institute Of applied Science and Technology (INSAT), in Tunis, Tunisia and specilized in Computer Networks and Telecommunications.
 
-########################
+
+## Objectives
 
 The project meets these objectives :
   - Digitization of medical records
@@ -32,7 +33,7 @@ Through his interface, the patient can :
 - Respond to score questionnaires
 - Consult his profile
  
-########################
+## Technologies used
 
 Built With : 
   - Flutter (Using Dart Language) for Frontend 
@@ -40,15 +41,15 @@ Built With :
 Technologies used :
   - git & github
   - AzureDevops
-  - 
-########################
+ 
+## Demo and Visuals
 
 Demo a very quick demo video : https://drive.google.com/file/d/1iN3pTCBalCRCTESgtyPAy6PYB00PX0AK/view?usp=sharing
 For visuals and more screenshots: https://drive.google.com/file/d/11Bu8H62HQO9-oloCeD2oWFJC3dXLiHDG/view?usp=sharing
  
-########################
+## Contact
 
-Contact: To support us or contribute in this project , you can contact us on :
+ To support us or contribute in this project , you can contact us on :
 - Chaima ARAIBI : chaima.araibi@insat.u-carthage.tn
 - Ahmed BELLAAJ : ahmed.belaaj@insat.u-carthage.tn
 - Omar CHAABOUNI : omar.chaabouni@outlook.com
