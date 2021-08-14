@@ -66,15 +66,26 @@ Through his interface, the patient can :
  <table>
   <tr>
     <td>Login page</td>
-     <td>Add patient 1/2</td>
-     <td>Add patient 2/2</td>
-    <td>List patients</td>
+     <td>Home screen</td>
+     <td>Requested tests</td>
   </tr>
   <tr>
-    <td><img src="https://user-images.githubusercontent.com/55398565/129442807-162c568e-1be0-49f1-9a40-cc20c3e04ffa.jpg" width="220" height="500"></td>
-    <td><img src="https://user-images.githubusercontent.com/55398565/129442817-6e7ee30e-809f-4177-b75b-54cdb091b78a.jpg" width="220" height="500"></td>
-    <td><img src="https://user-images.githubusercontent.com/55398565/129442820-c1996704-8fab-4298-80e0-79dfaf953500.jpg" width="220" height="500"></td>
-    <td><img src="https://user-images.githubusercontent.com/55398565/129443480-4e8d76b7-4274-4409-b2da-64185854b709.jpg" width="220" height="500"></td>
+    <td><img src="https://user-images.githubusercontent.com/55398565/129443521-4feb8aab-ef3b-4f95-8f90-5da4413a044d.jpg" width="220" height="500"></td>
+    <td><img src="https://user-images.githubusercontent.com/55398565/129443520-e00cd9d7-3ce1-4f0b-a409-a645827b2b01.jpg" width="220" height="500"></td>
+    <td><img src="https://user-images.githubusercontent.com/55398565/129443522-470c9cee-f95b-42fa-9bff-6255169acbad.jpg" width="220" height="500"></td>
+  </tr>
+ </table>
+ 
+  <table>
+  <tr>
+    <td>Profile</td>
+     <td>Jspada test example</td>
+     <td>Chaq test example</td>
+  </tr>
+  <tr>
+    <td><img src="https://user-images.githubusercontent.com/55398565/129443523-d552a5a0-4866-4c37-a6c1-f3ff7dae1cb2.jpg" width="220" height="500"></td>
+    <td><img src="https://user-images.githubusercontent.com/55398565/129443525-298d9fdb-0474-4363-9c3a-361800deec73.jpg" width="220" height="500"></td>
+    <td><img src="https://user-images.githubusercontent.com/55398565/129443532-a2c81870-25da-4757-9101-0b45c2520e17.jpg" width="220" height="500"></td>
   </tr>
  </table>
  
@@ -83,6 +94,7 @@ Through his interface, the patient can :
 Built With : 
   - Flutter (Using Dart Language) for Frontend 
   - NodeJS, Mongoose and Express for Backend and MongoDB as Database
+
 Technologies used :
   - git & github
   - AzureDevops
@@ -90,6 +102,7 @@ Technologies used :
 ## Demo and Visuals
 
 Demo a very quick demo video : https://drive.google.com/file/d/1iN3pTCBalCRCTESgtyPAy6PYB00PX0AK/view?usp=sharing
+
 For visuals and more screenshots: https://drive.google.com/file/d/11Bu8H62HQO9-oloCeD2oWFJC3dXLiHDG/view?usp=sharing
  
 ## Contact
